@@ -1,0 +1,24 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "accountant"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "officeName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170831184006",
+    "entityTableName": "accountant",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

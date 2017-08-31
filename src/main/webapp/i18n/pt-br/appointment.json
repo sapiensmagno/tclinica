@@ -1,0 +1,24 @@
+{
+    "tclinicaApp": {
+        "appointment" : {
+            "home": {
+                "title": "Appointments",
+                "createLabel": "Criar novo Appointment",
+                "createOrEditLabel": "Criar ou editar Appointment"
+            },
+            "created": "Um novo Appointment foi criado com o identificador {{ param }}",
+            "updated": "Um Appointment foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Appointment foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Appointment {{ id }}?"
+            },
+            "detail": {
+                "title": "Appointment"
+            },
+            "scheduledDate": "Scheduled Date",
+            "cancelled": "Cancelled",
+            "patient": "Patient",
+            "doctor": "Doctor"
+        }
+    }
+}

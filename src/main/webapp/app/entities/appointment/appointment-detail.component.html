@@ -1,0 +1,41 @@
+
+<div *ngIf="appointment">
+    <h2><span jhiTranslate="tclinicaApp.appointment.detail.title">Appointment</span> {{appointment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="tclinicaApp.appointment.scheduledDate">Scheduled Date</span></dt>
+        <dd>
+            <span>{{appointment.scheduledDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="tclinicaApp.appointment.cancelled">Cancelled</span></dt>
+        <dd>
+            <span>{{appointment.cancelled}}</span>
+        </dd>
+        <dt><span jhiTranslate="tclinicaApp.appointment.patient">Patient</span></dt>
+        <dd>
+            <div *ngIf="appointment.patient">
+                <a [routerLink]="['/patient', appointment.patient?.id]">{{appointment.patient?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="tclinicaApp.appointment.doctor">Doctor</span></dt>
+        <dd>
+            <div *ngIf="appointment.doctor">
+                <a [routerLink]="['/doctor', appointment.doctor?.id]">{{appointment.doctor?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'appointment/'+ appointment.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
