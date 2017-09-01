@@ -7,10 +7,6 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
-                "doctor": "Doctor",
-                "patient": "Patient",
-                "accountant": "Accountant",
-                "appointment": "Appointment",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -49,15 +45,8 @@
         },
         "messages": {
             "info": {
-                "authenticated": {
-                    "prefix": "Para ",
-                    "link": "entrar",
-                    "suffix": ", utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\")."
-                },
-                "register": {
-                    "noaccount": "Não possui uma conta ainda?",
-                    "link": "Crie uma nova conta"
-                }
+                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
+                "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Crie uma nova conta</a>"
             },
             "error": {
                 "dontmatch" : "A senha e sua confirmação devem ser iguais!"

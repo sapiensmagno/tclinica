@@ -1,3 +1,4 @@
+
 entity User
 
 entity Doctor {
@@ -18,12 +19,70 @@ relationship OneToOne {
     Accountant{User} to User
 }
 
-entity Appointment (appointment) {
+// Daily intervals, vacations and other events which
+//make a certain period unavailable may be 
+// inserted directly into google calendar
+
+entity DoctorSchedule (DoctorSchedule) {
+    appointmentsDurationMinutes Integer required,
+    intervalBetweenAppointmentsMinutes Integer,
+    earliestAppointmentTime ZonedDateTime required,
+    latestAppointmentTime ZonedDateTime required,
+    calendarId String
+}
+
+relationship OneToOne {
+    DoctorSchedule{Doctor} to Doctor{DoctorSchedule}
+}
+
+relationship OneToMany {
+    DoctorSchedule{AvailableWeekdays} to AvailableWeekdays
+}
+
+entity AvailableWeekdays {
+    weekday Weekdays required
+}
+
+enum Weekdays {
+    SUNDAY,
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY
+}
+
+entity Appointment (Appointment) {
     scheduledDate ZonedDateTime required,
     cancelled Boolean
 }
 
 relationship ManyToOne {
-    Appointment{Patient} to Patient
+    Appointment{Patient} to Patient,
     Appointment{Doctor} to Doctor
 }
+
+entity PaymentInstallment {
+    payDate ZonedDateTime,
+    dueDate ZonedDateTime,
+    value BigDecimal,
+    number Integer,
+    checkNum String,
+    cardType String,
+    cardFinal String,
+    payMethod String  
+}
+
+entity Healthcare {
+    name String
+}
+
+relationship OneToMany {
+    Healthcare to PaymentInstallment{Healthcare}
+    Appointment{PaymentInstallment} to PaymentInstallment{Appointment}
+}
+
+paginate Appointment with pagination
+service DoctorSchedule with serviceImpl
+angularSuffix * with tcc
