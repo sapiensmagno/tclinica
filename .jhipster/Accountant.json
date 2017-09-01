@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "accountant"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "officeName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170901235803",
+    "entityTableName": "accountant",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "angularJSSuffix": "tcc"
+}

@@ -1,0 +1,22 @@
+{
+    "tclinicaApp": {
+        "accountant" : {
+            "home": {
+                "title": "Accountants",
+                "createLabel": "Criar novo Accountant",
+                "createOrEditLabel": "Criar ou editar Accountant"
+            },
+            "created": "Um novo Accountant foi criado com o identificador {{ param }}",
+            "updated": "Um Accountant foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Accountant foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Accountant {{ id }}?"
+            },
+            "detail": {
+                "title": "Accountant"
+            },
+            "officeName": "Office Name",
+            "user": "User"
+        }
+    }
+}

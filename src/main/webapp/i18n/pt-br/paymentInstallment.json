@@ -1,0 +1,30 @@
+{
+    "tclinicaApp": {
+        "paymentInstallment" : {
+            "home": {
+                "title": "Payment Installments",
+                "createLabel": "Criar novo Payment Installment",
+                "createOrEditLabel": "Criar ou editar Payment Installment"
+            },
+            "created": "Um novo Payment Installment foi criado com o identificador {{ param }}",
+            "updated": "Um Payment Installment foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Payment Installment foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Payment Installment {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment Installment"
+            },
+            "payDate": "Pay Date",
+            "dueDate": "Due Date",
+            "value": "Value",
+            "number": "Number",
+            "checkNum": "Check Num",
+            "cardType": "Card Type",
+            "cardFinal": "Card Final",
+            "payMethod": "Pay Method",
+            "healthcare": "Healthcare",
+            "appointment": "Appointment"
+        }
+    }
+}

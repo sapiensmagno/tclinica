@@ -1,0 +1,23 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "paymentInstallment",
+            "otherEntityName": "paymentInstallment",
+            "otherEntityRelationshipName": "healthcare"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170901235808",
+    "entityTableName": "healthcare",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "angularJSSuffix": "tcc"
+}

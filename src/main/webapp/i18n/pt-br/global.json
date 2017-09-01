@@ -7,6 +7,14 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
+                "doctorTcc": "Doctor",
+                "patientTcc": "Patient",
+                "accountantTcc": "Accountant",
+                "doctorScheduleTcc": "Doctor Schedule",
+                "availableWeekdaysTcc": "Available Weekdays",
+                "appointmentTcc": "Appointment",
+                "paymentInstallmentTcc": "Payment Installment",
+                "healthcareTcc": "Healthcare",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

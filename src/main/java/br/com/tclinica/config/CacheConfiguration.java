@@ -43,6 +43,17 @@ public class CacheConfiguration {
             cm.createCache(br.com.tclinica.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Doctor.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Patient.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Accountant.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.DoctorSchedule.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.DoctorSchedule.class.getName() + ".availableWeekdays", jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.AvailableWeekdays.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Appointment.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Appointment.class.getName() + ".paymentInstallments", jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.PaymentInstallment.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Healthcare.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Healthcare.class.getName() + ".paymentInstallments", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,59 @@
+
+<div>
+    <h2><span data-translate="tclinicaApp.paymentInstallment.detail.title">Payment Installment</span> {{vm.paymentInstallment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.paymentInstallment.payDate">Pay Date</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.payDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.dueDate">Due Date</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.dueDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.value">Value</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.value}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.number">Number</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.number}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.checkNum">Check Num</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.checkNum}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.cardType">Card Type</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.cardType}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.cardFinal">Card Final</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.cardFinal}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.payMethod">Pay Method</span></dt>
+        <dd>
+            <span>{{vm.paymentInstallment.payMethod}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.healthcare">Healthcare</span></dt>
+        <dd>
+            <a ui-sref="healthcare-tcc-detail({id:vm.paymentInstallment.healthcare.id})">{{vm.paymentInstallment.healthcare.id}}</a>
+        </dd>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.appointment">Appointment</span></dt>
+        <dd>
+            <a ui-sref="appointment-tcc-detail({id:vm.paymentInstallment.appointment.id})">{{vm.paymentInstallment.appointment.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="payment-installment-tcc-detail.edit({id:vm.paymentInstallment.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

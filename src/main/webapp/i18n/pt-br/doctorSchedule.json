@@ -1,0 +1,27 @@
+{
+    "tclinicaApp": {
+        "doctorSchedule" : {
+            "home": {
+                "title": "Doctor Schedules",
+                "createLabel": "Criar novo Doctor Schedule",
+                "createOrEditLabel": "Criar ou editar Doctor Schedule"
+            },
+            "created": "Um novo Doctor Schedule foi criado com o identificador {{ param }}",
+            "updated": "Um Doctor Schedule foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Doctor Schedule foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Doctor Schedule {{ id }}?"
+            },
+            "detail": {
+                "title": "Doctor Schedule"
+            },
+            "appointmentsDurationMinutes": "Appointments Duration Minutes",
+            "intervalBetweenAppointmentsMinutes": "Interval Between Appointments Minutes",
+            "earliestAppointmentTime": "Earliest Appointment Time",
+            "latestAppointmentTime": "Latest Appointment Time",
+            "calendarId": "Calendar Id",
+            "doctor": "Doctor",
+            "availableWeekdays": "Available Weekdays"
+        }
+    }
+}

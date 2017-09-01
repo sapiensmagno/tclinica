@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity AvailableWeekdays.
+    -->
+    <changeSet id="20170901235805-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="doctor_schedule_id"
+                                 baseTableName="available_weekdays"
+                                 constraintName="fk_available_weekdays_doctor_schedule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="doctor_schedule"/>
+
+    </changeSet>
+</databaseChangeLog>

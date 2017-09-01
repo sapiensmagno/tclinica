@@ -1,0 +1,22 @@
+{
+    "tclinicaApp": {
+        "healthcare" : {
+            "home": {
+                "title": "Healthcares",
+                "createLabel": "Criar novo Healthcare",
+                "createOrEditLabel": "Criar ou editar Healthcare"
+            },
+            "created": "Um novo Healthcare foi criado com o identificador {{ param }}",
+            "updated": "Um Healthcare foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Healthcare foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Healthcare {{ id }}?"
+            },
+            "detail": {
+                "title": "Healthcare"
+            },
+            "name": "Name",
+            "paymentInstallment": "Payment Installment"
+        }
+    }
+}

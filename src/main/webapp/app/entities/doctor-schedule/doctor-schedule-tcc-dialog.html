@@ -1,0 +1,100 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myDoctorScheduleLabel" data-translate="tclinicaApp.doctorSchedule.home.createOrEditLabel">Create or edit a Doctor Schedule</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.doctorSchedule.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.doctorSchedule.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.appointmentsDurationMinutes" for="field_appointmentsDurationMinutes">Appointments Duration Minutes</label>
+            <input type="number" class="form-control" name="appointmentsDurationMinutes" id="field_appointmentsDurationMinutes"
+                    ng-model="vm.doctorSchedule.appointmentsDurationMinutes"
+                    required/>
+            <div ng-show="editForm.appointmentsDurationMinutes.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.appointmentsDurationMinutes.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.appointmentsDurationMinutes.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.intervalBetweenAppointmentsMinutes" for="field_intervalBetweenAppointmentsMinutes">Interval Between Appointments Minutes</label>
+            <input type="number" class="form-control" name="intervalBetweenAppointmentsMinutes" id="field_intervalBetweenAppointmentsMinutes"
+                    ng-model="vm.doctorSchedule.intervalBetweenAppointmentsMinutes"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.earliestAppointmentTime" for="field_earliestAppointmentTime">Earliest Appointment Time</label>
+                <div class="input-group">
+                    <input id="field_earliestAppointmentTime" type="text" class="form-control" name="earliestAppointmentTime" datetime-picker="{{dateformat}}" ng-model="vm.doctorSchedule.earliestAppointmentTime" is-open="vm.datePickerOpenStatus.earliestAppointmentTime"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('earliestAppointmentTime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.earliestAppointmentTime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.earliestAppointmentTime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.earliestAppointmentTime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.latestAppointmentTime" for="field_latestAppointmentTime">Latest Appointment Time</label>
+                <div class="input-group">
+                    <input id="field_latestAppointmentTime" type="text" class="form-control" name="latestAppointmentTime" datetime-picker="{{dateformat}}" ng-model="vm.doctorSchedule.latestAppointmentTime" is-open="vm.datePickerOpenStatus.latestAppointmentTime"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('latestAppointmentTime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.latestAppointmentTime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.latestAppointmentTime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.latestAppointmentTime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.calendarId" for="field_calendarId">Calendar Id</label>
+            <input type="text" class="form-control" name="calendarId" id="field_calendarId"
+                    ng-model="vm.doctorSchedule.calendarId"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="tclinicaApp.doctorSchedule.doctor" for="field_doctor">Doctor</label>
+            <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.doctorSchedule.doctor" ng-options="doctor as doctor.id for doctor in vm.doctors | orderBy:'id' track by doctor.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

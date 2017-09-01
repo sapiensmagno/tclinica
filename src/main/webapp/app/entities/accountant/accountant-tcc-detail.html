@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="tclinicaApp.accountant.detail.title">Accountant</span> {{vm.accountant.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.accountant.officeName">Office Name</span></dt>
+        <dd>
+            <span>{{vm.accountant.officeName}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.accountant.user">User</span></dt>
+        <dd>
+            {{vm.accountant.user.id}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="accountant-tcc-detail.edit({id:vm.accountant.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

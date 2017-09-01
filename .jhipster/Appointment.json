@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "paymentInstallment",
+            "otherEntityName": "paymentInstallment",
+            "otherEntityRelationshipName": "appointment"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "patient",
+            "otherEntityName": "patient",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "scheduledDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cancelled",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20170901235806",
+    "entityTableName": "appointment",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "angularJSSuffix": "tcc"
+}

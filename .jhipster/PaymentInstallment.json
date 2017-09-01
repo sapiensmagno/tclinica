@@ -1,0 +1,57 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "healthcare",
+            "otherEntityName": "healthcare",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "appointment",
+            "otherEntityName": "appointment",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "payDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "dueDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "number",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "checkNum",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cardType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cardFinal",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "payMethod",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170901235807",
+    "entityTableName": "payment_installment",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "angularJSSuffix": "tcc"
+}

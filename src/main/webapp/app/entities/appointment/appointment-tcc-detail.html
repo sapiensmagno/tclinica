@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="tclinicaApp.appointment.detail.title">Appointment</span> {{vm.appointment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.appointment.scheduledDate">Scheduled Date</span></dt>
+        <dd>
+            <span>{{vm.appointment.scheduledDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.appointment.cancelled">Cancelled</span></dt>
+        <dd>
+            <span>{{vm.appointment.cancelled}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.appointment.patient">Patient</span></dt>
+        <dd>
+            <a ui-sref="patient-tcc-detail({id:vm.appointment.patient.id})">{{vm.appointment.patient.id}}</a>
+        </dd>
+        <dt><span data-translate="tclinicaApp.appointment.doctor">Doctor</span></dt>
+        <dd>
+            <a ui-sref="doctor-tcc-detail({id:vm.appointment.doctor.id})">{{vm.appointment.doctor.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="appointment-tcc-detail.edit({id:vm.appointment.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

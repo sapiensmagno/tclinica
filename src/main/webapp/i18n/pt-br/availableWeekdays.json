@@ -1,0 +1,22 @@
+{
+    "tclinicaApp": {
+        "availableWeekdays" : {
+            "home": {
+                "title": "Available Weekdays",
+                "createLabel": "Criar novo Available Weekdays",
+                "createOrEditLabel": "Criar ou editar Available Weekdays"
+            },
+            "created": "Um novo Available Weekdays foi criado com o identificador {{ param }}",
+            "updated": "Um Available Weekdays foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Available Weekdays foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Available Weekdays {{ id }}?"
+            },
+            "detail": {
+                "title": "Available Weekdays"
+            },
+            "weekday": "Weekday",
+            "doctorSchedule": "Doctor Schedule"
+        }
+    }
+}

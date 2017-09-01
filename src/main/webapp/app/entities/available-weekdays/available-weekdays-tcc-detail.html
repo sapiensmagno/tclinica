@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="tclinicaApp.availableWeekdays.detail.title">Available Weekdays</span> {{vm.availableWeekdays.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.availableWeekdays.weekday">Weekday</span></dt>
+        <dd>
+            <span data-translate="{{'tclinicaApp.Weekdays.' + vm.availableWeekdays.weekday}}">{{vm.availableWeekdays.weekday}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.availableWeekdays.doctorSchedule">Doctor Schedule</span></dt>
+        <dd>
+            <a ui-sref="doctor-schedule-tcc-detail({id:vm.availableWeekdays.doctorSchedule.id})">{{vm.availableWeekdays.doctorSchedule.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="available-weekdays-tcc-detail.edit({id:vm.availableWeekdays.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

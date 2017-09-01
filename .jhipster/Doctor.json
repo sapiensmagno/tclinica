@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "doctorSchedule",
+            "otherEntityName": "doctorSchedule",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "doctor"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "specialty",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170901235801",
+    "entityTableName": "doctor",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "angularJSSuffix": "tcc"
+}
