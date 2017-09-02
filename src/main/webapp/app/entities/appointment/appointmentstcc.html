@@ -21,6 +21,8 @@
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="scheduledDate"><span data-translate="tclinicaApp.appointment.scheduledDate">Scheduled Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="cancelled"><span data-translate="tclinicaApp.appointment.cancelled">Cancelled</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="endScheduledDate"><span data-translate="tclinicaApp.appointment.endScheduledDate">End Scheduled Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="tclinicaApp.appointment.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="patient.id"><span data-translate="tclinicaApp.appointment.patient">Patient</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="doctor.id"><span data-translate="tclinicaApp.appointment.doctor">Doctor</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
@@ -31,6 +33,8 @@
                     <td><a ui-sref="appointment-tcc-detail({id:appointment.id})">{{appointment.id}}</a></td>
                     <td>{{appointment.scheduledDate | date:'medium'}}</td>
                     <td>{{appointment.cancelled}}</td>
+                    <td>{{appointment.endScheduledDate | date:'medium'}}</td>
+                    <td>{{appointment.description}}</td>
                     <td>
                         <a ui-sref="patient-tcc-detail({id:appointment.patient.id})">{{appointment.patient.id}}</a>
                     </td>

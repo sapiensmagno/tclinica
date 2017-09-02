@@ -23,12 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static br.com.tclinica.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,11 +46,11 @@ public class DoctorScheduleResourceIntTest {
     private static final Integer DEFAULT_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES = 1;
     private static final Integer UPDATED_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES = 2;
 
-    private static final ZonedDateTime DEFAULT_EARLIEST_APPOINTMENT_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_EARLIEST_APPOINTMENT_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_EARLIEST_APPOINTMENT_TIME = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_EARLIEST_APPOINTMENT_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final ZonedDateTime DEFAULT_LATEST_APPOINTMENT_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_LATEST_APPOINTMENT_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_LATEST_APPOINTMENT_TIME = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LATEST_APPOINTMENT_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_CALENDAR_ID = "AAAAAAAAAA";
     private static final String UPDATED_CALENDAR_ID = "BBBBBBBBBB";
@@ -219,8 +216,8 @@ public class DoctorScheduleResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(doctorSchedule.getId().intValue())))
             .andExpect(jsonPath("$.[*].appointmentsDurationMinutes").value(hasItem(DEFAULT_APPOINTMENTS_DURATION_MINUTES)))
             .andExpect(jsonPath("$.[*].intervalBetweenAppointmentsMinutes").value(hasItem(DEFAULT_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES)))
-            .andExpect(jsonPath("$.[*].earliestAppointmentTime").value(hasItem(sameInstant(DEFAULT_EARLIEST_APPOINTMENT_TIME))))
-            .andExpect(jsonPath("$.[*].latestAppointmentTime").value(hasItem(sameInstant(DEFAULT_LATEST_APPOINTMENT_TIME))))
+            .andExpect(jsonPath("$.[*].earliestAppointmentTime").value(hasItem(DEFAULT_EARLIEST_APPOINTMENT_TIME.toString())))
+            .andExpect(jsonPath("$.[*].latestAppointmentTime").value(hasItem(DEFAULT_LATEST_APPOINTMENT_TIME.toString())))
             .andExpect(jsonPath("$.[*].calendarId").value(hasItem(DEFAULT_CALENDAR_ID.toString())));
     }
 
@@ -237,8 +234,8 @@ public class DoctorScheduleResourceIntTest {
             .andExpect(jsonPath("$.id").value(doctorSchedule.getId().intValue()))
             .andExpect(jsonPath("$.appointmentsDurationMinutes").value(DEFAULT_APPOINTMENTS_DURATION_MINUTES))
             .andExpect(jsonPath("$.intervalBetweenAppointmentsMinutes").value(DEFAULT_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES))
-            .andExpect(jsonPath("$.earliestAppointmentTime").value(sameInstant(DEFAULT_EARLIEST_APPOINTMENT_TIME)))
-            .andExpect(jsonPath("$.latestAppointmentTime").value(sameInstant(DEFAULT_LATEST_APPOINTMENT_TIME)))
+            .andExpect(jsonPath("$.earliestAppointmentTime").value(DEFAULT_EARLIEST_APPOINTMENT_TIME.toString()))
+            .andExpect(jsonPath("$.latestAppointmentTime").value(DEFAULT_LATEST_APPOINTMENT_TIME.toString()))
             .andExpect(jsonPath("$.calendarId").value(DEFAULT_CALENDAR_ID.toString()));
     }
 

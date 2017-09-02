@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/doctor/doctorstcc.html',
+                    templateUrl: 'app/entities/doctor/doctorsTCC.html',
                     controller: 'DoctorTccController',
                     controllerAs: 'vm'
                 }
@@ -104,7 +104,6 @@
                     resolve: {
                         entity: function () {
                             return {
-                                specialty: null,
                                 id: null
                             };
                         }

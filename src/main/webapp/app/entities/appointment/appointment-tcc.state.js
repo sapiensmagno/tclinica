@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/appointment/appointmentstcc.html',
+                    templateUrl: 'app/entities/appointment/appointmentsTCC.html',
                     controller: 'AppointmentTccController',
                     controllerAs: 'vm'
                 }
@@ -124,7 +124,9 @@
                     resolve: {
                         entity: function () {
                             return {
-                                scheduledDate: null,
+                                startDate: null,
+                                endDate: null,
+                                description: null,
                                 cancelled: null,
                                 id: null
                             };

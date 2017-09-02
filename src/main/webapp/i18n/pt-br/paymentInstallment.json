@@ -18,11 +18,11 @@
             "payDate": "Pay Date",
             "dueDate": "Due Date",
             "value": "Value",
-            "number": "Number",
-            "checkNum": "Check Num",
-            "cardType": "Card Type",
-            "cardFinal": "Card Final",
-            "payMethod": "Pay Method",
+            "installmentNumber": "Installment Number",
+            "checkNumber": "Check Number",
+            "cardFinalNumber": "Card Final Number",
+            "paymentMethod": "Payment Method",
+            "cardBrand": "Card Brand",
             "healthcare": "Healthcare",
             "appointment": "Appointment"
         }

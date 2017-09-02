@@ -42,8 +42,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class AppointmentResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_SCHEDULED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_SCHEDULED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_CANCELLED = false;
     private static final Boolean UPDATED_CANCELLED = true;
@@ -85,7 +91,9 @@ public class AppointmentResourceIntTest {
      */
     public static Appointment createEntity(EntityManager em) {
         Appointment appointment = new Appointment()
-            .scheduledDate(DEFAULT_SCHEDULED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
+            .description(DEFAULT_DESCRIPTION)
             .cancelled(DEFAULT_CANCELLED);
         return appointment;
     }
@@ -110,7 +118,9 @@ public class AppointmentResourceIntTest {
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate + 1);
         Appointment testAppointment = appointmentList.get(appointmentList.size() - 1);
-        assertThat(testAppointment.getScheduledDate()).isEqualTo(DEFAULT_SCHEDULED_DATE);
+        assertThat(testAppointment.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testAppointment.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testAppointment.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAppointment.isCancelled()).isEqualTo(DEFAULT_CANCELLED);
     }
 
@@ -135,10 +145,28 @@ public class AppointmentResourceIntTest {
 
     @Test
     @Transactional
-    public void checkScheduledDateIsRequired() throws Exception {
+    public void checkStartDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = appointmentRepository.findAll().size();
         // set the field null
-        appointment.setScheduledDate(null);
+        appointment.setStartDate(null);
+
+        // Create the Appointment, which fails.
+
+        restAppointmentMockMvc.perform(post("/api/appointments")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(appointment)))
+            .andExpect(status().isBadRequest());
+
+        List<Appointment> appointmentList = appointmentRepository.findAll();
+        assertThat(appointmentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkEndDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = appointmentRepository.findAll().size();
+        // set the field null
+        appointment.setEndDate(null);
 
         // Create the Appointment, which fails.
 
@@ -162,7 +190,9 @@ public class AppointmentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(appointment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scheduledDate").value(hasItem(sameInstant(DEFAULT_SCHEDULED_DATE))))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].cancelled").value(hasItem(DEFAULT_CANCELLED.booleanValue())));
     }
 
@@ -177,7 +207,9 @@ public class AppointmentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(appointment.getId().intValue()))
-            .andExpect(jsonPath("$.scheduledDate").value(sameInstant(DEFAULT_SCHEDULED_DATE)))
+            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
+            .andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.cancelled").value(DEFAULT_CANCELLED.booleanValue()));
     }
 
@@ -199,7 +231,9 @@ public class AppointmentResourceIntTest {
         // Update the appointment
         Appointment updatedAppointment = appointmentRepository.findOne(appointment.getId());
         updatedAppointment
-            .scheduledDate(UPDATED_SCHEDULED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
+            .description(UPDATED_DESCRIPTION)
             .cancelled(UPDATED_CANCELLED);
 
         restAppointmentMockMvc.perform(put("/api/appointments")
@@ -211,7 +245,9 @@ public class AppointmentResourceIntTest {
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeUpdate);
         Appointment testAppointment = appointmentList.get(appointmentList.size() - 1);
-        assertThat(testAppointment.getScheduledDate()).isEqualTo(UPDATED_SCHEDULED_DATE);
+        assertThat(testAppointment.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        assertThat(testAppointment.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testAppointment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAppointment.isCancelled()).isEqualTo(UPDATED_CANCELLED);
     }
 

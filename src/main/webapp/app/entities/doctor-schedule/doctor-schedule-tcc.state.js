@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/doctor-schedule/doctor-schedulestcc.html',
+                    templateUrl: 'app/entities/doctor-schedule/doctor-schedulesTCC.html',
                     controller: 'DoctorScheduleTccController',
                     controllerAs: 'vm'
                 }

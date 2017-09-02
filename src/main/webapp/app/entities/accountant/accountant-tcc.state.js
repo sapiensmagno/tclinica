@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/accountant/accountantstcc.html',
+                    templateUrl: 'app/entities/accountant/accountantsTCC.html',
                     controller: 'AccountantTccController',
                     controllerAs: 'vm'
                 }
@@ -104,7 +104,6 @@
                     resolve: {
                         entity: function () {
                             return {
-                                officeName: null,
                                 id: null
                             };
                         }

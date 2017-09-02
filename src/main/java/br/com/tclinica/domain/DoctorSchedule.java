@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -35,11 +35,11 @@ public class DoctorSchedule implements Serializable {
 
     @NotNull
     @Column(name = "earliest_appointment_time", nullable = false)
-    private ZonedDateTime earliestAppointmentTime;
+    private Instant earliestAppointmentTime;
 
     @NotNull
     @Column(name = "latest_appointment_time", nullable = false)
-    private ZonedDateTime latestAppointmentTime;
+    private Instant latestAppointmentTime;
 
     @Column(name = "calendar_id")
     private String calendarId;
@@ -88,29 +88,29 @@ public class DoctorSchedule implements Serializable {
         this.intervalBetweenAppointmentsMinutes = intervalBetweenAppointmentsMinutes;
     }
 
-    public ZonedDateTime getEarliestAppointmentTime() {
+    public Instant getEarliestAppointmentTime() {
         return earliestAppointmentTime;
     }
 
-    public DoctorSchedule earliestAppointmentTime(ZonedDateTime earliestAppointmentTime) {
+    public DoctorSchedule earliestAppointmentTime(Instant earliestAppointmentTime) {
         this.earliestAppointmentTime = earliestAppointmentTime;
         return this;
     }
 
-    public void setEarliestAppointmentTime(ZonedDateTime earliestAppointmentTime) {
+    public void setEarliestAppointmentTime(Instant earliestAppointmentTime) {
         this.earliestAppointmentTime = earliestAppointmentTime;
     }
 
-    public ZonedDateTime getLatestAppointmentTime() {
+    public Instant getLatestAppointmentTime() {
         return latestAppointmentTime;
     }
 
-    public DoctorSchedule latestAppointmentTime(ZonedDateTime latestAppointmentTime) {
+    public DoctorSchedule latestAppointmentTime(Instant latestAppointmentTime) {
         this.latestAppointmentTime = latestAppointmentTime;
         return this;
     }
 
-    public void setLatestAppointmentTime(ZonedDateTime latestAppointmentTime) {
+    public void setLatestAppointmentTime(Instant latestAppointmentTime) {
         this.latestAppointmentTime = latestAppointmentTime;
     }
 

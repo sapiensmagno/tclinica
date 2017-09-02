@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/payment-installment/payment-installmentstcc.html',
+                    templateUrl: 'app/entities/payment-installment/payment-installmentsTCC.html',
                     controller: 'PaymentInstallmentTccController',
                     controllerAs: 'vm'
                 }
@@ -107,11 +107,9 @@
                                 payDate: null,
                                 dueDate: null,
                                 value: null,
-                                number: null,
-                                checkNum: null,
-                                cardType: null,
-                                cardFinal: null,
-                                payMethod: null,
+                                installmentNumber: null,
+                                checkNumber: null,
+                                cardFinalNumber: null,
                                 id: null
                             };
                         }

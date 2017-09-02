@@ -1,0 +1,82 @@
+<div>
+    <h2 data-translate="tclinicaApp.paymentInstallment.home.title">Payment Installments</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="payment-installment-tcc.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="tclinicaApp.paymentInstallment.home.createLabel">
+                        Create new Payment Installment
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.payDate">Pay Date</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.dueDate">Due Date</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.value">Value</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.installmentNumber">Installment Number</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.checkNumber">Check Number</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.cardFinalNumber">Card Final Number</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.paymentMethod">Payment Method</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.cardBrand">Card Brand</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.healthcare">Healthcare</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.appointment">Appointment</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="paymentInstallment in vm.paymentInstallments track by paymentInstallment.id">
+                    <td><a ui-sref="payment-installment-tcc-detail({id:paymentInstallment.id})">{{paymentInstallment.id}}</a></td>
+                        <td>{{paymentInstallment.payDate | date:'mediumDate'}}</td>
+                        <td>{{paymentInstallment.dueDate | date:'mediumDate'}}</td>
+                    <td>{{paymentInstallment.value}}</td>
+                    <td>{{paymentInstallment.installmentNumber}}</td>
+                    <td>{{paymentInstallment.checkNumber}}</td>
+                    <td>{{paymentInstallment.cardFinalNumber}}</td>
+                    <td>
+                        <a ui-sref="payment-method-tcc-detail({id:paymentInstallment.paymentMethod.id})">{{paymentInstallment.paymentMethod.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="card-brand-tcc-detail({id:paymentInstallment.cardBrand.id})">{{paymentInstallment.cardBrand.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="healthcare-tcc-detail({id:paymentInstallment.healthcare.id})">{{paymentInstallment.healthcare.id}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="appointment-tcc-detail({id:paymentInstallment.appointment.id})">{{paymentInstallment.appointment.id}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="payment-installment-tcc-detail({id:paymentInstallment.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="payment-installment-tcc.edit({id:paymentInstallment.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="payment-installment-tcc.delete({id:paymentInstallment.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

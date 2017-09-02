@@ -5,7 +5,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -23,10 +22,6 @@ public class Doctor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "specialty", nullable = false)
-    private String specialty;
-
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -42,19 +37,6 @@ public class Doctor implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public Doctor specialty(String specialty) {
-        this.specialty = specialty;
-        return this;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
     }
 
     public User getUser() {
@@ -108,7 +90,6 @@ public class Doctor implements Serializable {
     public String toString() {
         return "Doctor{" +
             "id=" + getId() +
-            ", specialty='" + getSpecialty() + "'" +
             "}";
     }
 }

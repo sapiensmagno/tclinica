@@ -16,7 +16,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.paymentInstallment.payDate" for="field_payDate">Pay Date</label>
                 <div class="input-group">
-                    <input id="field_payDate" type="text" class="form-control" name="payDate" datetime-picker="{{dateformat}}" ng-model="vm.paymentInstallment.payDate" is-open="vm.datePickerOpenStatus.payDate"
+                    <input id="field_payDate" type="text" class="form-control" name="payDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.paymentInstallment.payDate" is-open="vm.datePickerOpenStatus.payDate"
                     />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('payDate')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.paymentInstallment.dueDate" for="field_dueDate">Due Date</label>
                 <div class="input-group">
-                    <input id="field_dueDate" type="text" class="form-control" name="dueDate" datetime-picker="{{dateformat}}" ng-model="vm.paymentInstallment.dueDate" is-open="vm.datePickerOpenStatus.dueDate"
+                    <input id="field_dueDate" type="text" class="form-control" name="dueDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.paymentInstallment.dueDate" is-open="vm.datePickerOpenStatus.dueDate"
                     />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dueDate')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -40,36 +40,36 @@
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.number" for="field_number">Number</label>
-            <input type="number" class="form-control" name="number" id="field_number"
-                    ng-model="vm.paymentInstallment.number"
+            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.installmentNumber" for="field_installmentNumber">Installment Number</label>
+            <input type="number" class="form-control" name="installmentNumber" id="field_installmentNumber"
+                    ng-model="vm.paymentInstallment.installmentNumber"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.checkNum" for="field_checkNum">Check Num</label>
-            <input type="text" class="form-control" name="checkNum" id="field_checkNum"
-                    ng-model="vm.paymentInstallment.checkNum"
+            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.checkNumber" for="field_checkNumber">Check Number</label>
+            <input type="text" class="form-control" name="checkNumber" id="field_checkNumber"
+                    ng-model="vm.paymentInstallment.checkNumber"
                     />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.cardType" for="field_cardType">Card Type</label>
-            <input type="text" class="form-control" name="cardType" id="field_cardType"
-                    ng-model="vm.paymentInstallment.cardType"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.cardFinal" for="field_cardFinal">Card Final</label>
-            <input type="text" class="form-control" name="cardFinal" id="field_cardFinal"
-                    ng-model="vm.paymentInstallment.cardFinal"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.payMethod" for="field_payMethod">Pay Method</label>
-            <input type="text" class="form-control" name="payMethod" id="field_payMethod"
-                    ng-model="vm.paymentInstallment.payMethod"
+            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.cardFinalNumber" for="field_cardFinalNumber">Card Final Number</label>
+            <input type="text" class="form-control" name="cardFinalNumber" id="field_cardFinalNumber"
+                    ng-model="vm.paymentInstallment.cardFinalNumber"
                     />
         </div>
 
+        <div class="form-group">
+            <label data-translate="tclinicaApp.paymentInstallment.paymentMethod" for="field_paymentMethod">Payment Method</label>
+            <select class="form-control" id="field_paymentMethod" name="paymentMethod" ng-model="vm.paymentInstallment.paymentMethod" ng-options="paymentMethod as paymentMethod.id for paymentMethod in vm.paymentmethods | orderBy:'id' track by paymentMethod.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="tclinicaApp.paymentInstallment.cardBrand" for="field_cardBrand">Card Brand</label>
+            <select class="form-control" id="field_cardBrand" name="cardBrand" ng-model="vm.paymentInstallment.cardBrand" ng-options="cardBrand as cardBrand.id for cardBrand in vm.cardbrands | orderBy:'id' track by cardBrand.id">
+                <option value=""></option>
+            </select>
+        </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.healthcare" for="field_healthcare">Healthcare</label>
             <select class="form-control" id="field_healthcare" name="healthcare" ng-model="vm.paymentInstallment.healthcare" ng-options="healthcare as healthcare.id for healthcare in vm.healthcares track by healthcare.id">

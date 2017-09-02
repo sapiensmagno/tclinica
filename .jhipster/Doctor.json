@@ -17,19 +17,11 @@
             "otherEntityRelationshipName": "doctor"
         }
     ],
-    "fields": [
-        {
-            "fieldName": "specialty",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        }
-    ],
+    "fields": [],
     "changelogDate": "20170902162239",
     "entityTableName": "doctor",
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

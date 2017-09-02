@@ -22,13 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static br.com.tclinica.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,29 +40,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class PaymentInstallmentResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_PAY_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_PAY_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_PAY_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_PAY_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final ZonedDateTime DEFAULT_DUE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DUE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_DUE_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DUE_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final BigDecimal DEFAULT_VALUE = new BigDecimal(1);
     private static final BigDecimal UPDATED_VALUE = new BigDecimal(2);
 
-    private static final Integer DEFAULT_NUMBER = 1;
-    private static final Integer UPDATED_NUMBER = 2;
+    private static final Integer DEFAULT_INSTALLMENT_NUMBER = 1;
+    private static final Integer UPDATED_INSTALLMENT_NUMBER = 2;
 
-    private static final String DEFAULT_CHECK_NUM = "AAAAAAAAAA";
-    private static final String UPDATED_CHECK_NUM = "BBBBBBBBBB";
+    private static final String DEFAULT_CHECK_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_CHECK_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CARD_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_CARD_TYPE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CARD_FINAL = "AAAAAAAAAA";
-    private static final String UPDATED_CARD_FINAL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PAY_METHOD = "AAAAAAAAAA";
-    private static final String UPDATED_PAY_METHOD = "BBBBBBBBBB";
+    private static final String DEFAULT_CARD_FINAL_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_CARD_FINAL_NUMBER = "BBBBBBBBBB";
 
     @Autowired
     private PaymentInstallmentRepository paymentInstallmentRepository;
@@ -107,11 +98,9 @@ public class PaymentInstallmentResourceIntTest {
             .payDate(DEFAULT_PAY_DATE)
             .dueDate(DEFAULT_DUE_DATE)
             .value(DEFAULT_VALUE)
-            .number(DEFAULT_NUMBER)
-            .checkNum(DEFAULT_CHECK_NUM)
-            .cardType(DEFAULT_CARD_TYPE)
-            .cardFinal(DEFAULT_CARD_FINAL)
-            .payMethod(DEFAULT_PAY_METHOD);
+            .installmentNumber(DEFAULT_INSTALLMENT_NUMBER)
+            .checkNumber(DEFAULT_CHECK_NUMBER)
+            .cardFinalNumber(DEFAULT_CARD_FINAL_NUMBER);
         return paymentInstallment;
     }
 
@@ -138,11 +127,9 @@ public class PaymentInstallmentResourceIntTest {
         assertThat(testPaymentInstallment.getPayDate()).isEqualTo(DEFAULT_PAY_DATE);
         assertThat(testPaymentInstallment.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
         assertThat(testPaymentInstallment.getValue()).isEqualTo(DEFAULT_VALUE);
-        assertThat(testPaymentInstallment.getNumber()).isEqualTo(DEFAULT_NUMBER);
-        assertThat(testPaymentInstallment.getCheckNum()).isEqualTo(DEFAULT_CHECK_NUM);
-        assertThat(testPaymentInstallment.getCardType()).isEqualTo(DEFAULT_CARD_TYPE);
-        assertThat(testPaymentInstallment.getCardFinal()).isEqualTo(DEFAULT_CARD_FINAL);
-        assertThat(testPaymentInstallment.getPayMethod()).isEqualTo(DEFAULT_PAY_METHOD);
+        assertThat(testPaymentInstallment.getInstallmentNumber()).isEqualTo(DEFAULT_INSTALLMENT_NUMBER);
+        assertThat(testPaymentInstallment.getCheckNumber()).isEqualTo(DEFAULT_CHECK_NUMBER);
+        assertThat(testPaymentInstallment.getCardFinalNumber()).isEqualTo(DEFAULT_CARD_FINAL_NUMBER);
     }
 
     @Test
@@ -175,14 +162,12 @@ public class PaymentInstallmentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(paymentInstallment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].payDate").value(hasItem(sameInstant(DEFAULT_PAY_DATE))))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(sameInstant(DEFAULT_DUE_DATE))))
+            .andExpect(jsonPath("$.[*].payDate").value(hasItem(DEFAULT_PAY_DATE.toString())))
+            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
-            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)))
-            .andExpect(jsonPath("$.[*].checkNum").value(hasItem(DEFAULT_CHECK_NUM.toString())))
-            .andExpect(jsonPath("$.[*].cardType").value(hasItem(DEFAULT_CARD_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].cardFinal").value(hasItem(DEFAULT_CARD_FINAL.toString())))
-            .andExpect(jsonPath("$.[*].payMethod").value(hasItem(DEFAULT_PAY_METHOD.toString())));
+            .andExpect(jsonPath("$.[*].installmentNumber").value(hasItem(DEFAULT_INSTALLMENT_NUMBER)))
+            .andExpect(jsonPath("$.[*].checkNumber").value(hasItem(DEFAULT_CHECK_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].cardFinalNumber").value(hasItem(DEFAULT_CARD_FINAL_NUMBER.toString())));
     }
 
     @Test
@@ -196,14 +181,12 @@ public class PaymentInstallmentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(paymentInstallment.getId().intValue()))
-            .andExpect(jsonPath("$.payDate").value(sameInstant(DEFAULT_PAY_DATE)))
-            .andExpect(jsonPath("$.dueDate").value(sameInstant(DEFAULT_DUE_DATE)))
+            .andExpect(jsonPath("$.payDate").value(DEFAULT_PAY_DATE.toString()))
+            .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
-            .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER))
-            .andExpect(jsonPath("$.checkNum").value(DEFAULT_CHECK_NUM.toString()))
-            .andExpect(jsonPath("$.cardType").value(DEFAULT_CARD_TYPE.toString()))
-            .andExpect(jsonPath("$.cardFinal").value(DEFAULT_CARD_FINAL.toString()))
-            .andExpect(jsonPath("$.payMethod").value(DEFAULT_PAY_METHOD.toString()));
+            .andExpect(jsonPath("$.installmentNumber").value(DEFAULT_INSTALLMENT_NUMBER))
+            .andExpect(jsonPath("$.checkNumber").value(DEFAULT_CHECK_NUMBER.toString()))
+            .andExpect(jsonPath("$.cardFinalNumber").value(DEFAULT_CARD_FINAL_NUMBER.toString()));
     }
 
     @Test
@@ -227,11 +210,9 @@ public class PaymentInstallmentResourceIntTest {
             .payDate(UPDATED_PAY_DATE)
             .dueDate(UPDATED_DUE_DATE)
             .value(UPDATED_VALUE)
-            .number(UPDATED_NUMBER)
-            .checkNum(UPDATED_CHECK_NUM)
-            .cardType(UPDATED_CARD_TYPE)
-            .cardFinal(UPDATED_CARD_FINAL)
-            .payMethod(UPDATED_PAY_METHOD);
+            .installmentNumber(UPDATED_INSTALLMENT_NUMBER)
+            .checkNumber(UPDATED_CHECK_NUMBER)
+            .cardFinalNumber(UPDATED_CARD_FINAL_NUMBER);
 
         restPaymentInstallmentMockMvc.perform(put("/api/payment-installments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -245,11 +226,9 @@ public class PaymentInstallmentResourceIntTest {
         assertThat(testPaymentInstallment.getPayDate()).isEqualTo(UPDATED_PAY_DATE);
         assertThat(testPaymentInstallment.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
         assertThat(testPaymentInstallment.getValue()).isEqualTo(UPDATED_VALUE);
-        assertThat(testPaymentInstallment.getNumber()).isEqualTo(UPDATED_NUMBER);
-        assertThat(testPaymentInstallment.getCheckNum()).isEqualTo(UPDATED_CHECK_NUM);
-        assertThat(testPaymentInstallment.getCardType()).isEqualTo(UPDATED_CARD_TYPE);
-        assertThat(testPaymentInstallment.getCardFinal()).isEqualTo(UPDATED_CARD_FINAL);
-        assertThat(testPaymentInstallment.getPayMethod()).isEqualTo(UPDATED_PAY_METHOD);
+        assertThat(testPaymentInstallment.getInstallmentNumber()).isEqualTo(UPDATED_INSTALLMENT_NUMBER);
+        assertThat(testPaymentInstallment.getCheckNumber()).isEqualTo(UPDATED_CHECK_NUMBER);
+        assertThat(testPaymentInstallment.getCardFinalNumber()).isEqualTo(UPDATED_CARD_FINAL_NUMBER);
     }
 
     @Test

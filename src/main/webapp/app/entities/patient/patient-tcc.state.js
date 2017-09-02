@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/patient/patientstcc.html',
+                    templateUrl: 'app/entities/patient/patientsTCC.html',
                     controller: 'PatientTccController',
                     controllerAs: 'vm'
                 }
@@ -104,7 +104,6 @@
                     resolve: {
                         entity: function () {
                             return {
-                                gender: null,
                                 id: null
                             };
                         }

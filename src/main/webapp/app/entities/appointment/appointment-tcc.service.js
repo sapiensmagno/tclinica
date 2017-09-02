@@ -16,7 +16,8 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
-                        data.scheduledDate = DateUtils.convertDateTimeFromServer(data.scheduledDate);
+                        data.startDate = DateUtils.convertDateTimeFromServer(data.startDate);
+                        data.endDate = DateUtils.convertDateTimeFromServer(data.endDate);
                     }
                     return data;
                 }

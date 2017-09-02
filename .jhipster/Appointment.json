@@ -22,11 +22,22 @@
     ],
     "fields": [
         {
-            "fieldName": "scheduledDate",
+            "fieldName": "startDate",
             "fieldType": "ZonedDateTime",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
         },
         {
             "fieldName": "cancelled",
@@ -38,5 +49,5 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

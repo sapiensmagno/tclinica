@@ -21,9 +21,6 @@ public class Patient implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "gender")
-    private String gender;
-
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -35,19 +32,6 @@ public class Patient implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public Patient gender(String gender) {
-        this.gender = gender;
-        return this;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public User getUser() {
@@ -88,7 +72,6 @@ public class Patient implements Serializable {
     public String toString() {
         return "Patient{" +
             "id=" + getId() +
-            ", gender='" + getGender() + "'" +
             "}";
     }
 }

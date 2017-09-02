@@ -37,9 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class AccountantResourceIntTest {
 
-    private static final String DEFAULT_OFFICE_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_OFFICE_NAME = "BBBBBBBBBB";
-
     @Autowired
     private AccountantRepository accountantRepository;
 
@@ -76,8 +73,7 @@ public class AccountantResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Accountant createEntity(EntityManager em) {
-        Accountant accountant = new Accountant()
-            .officeName(DEFAULT_OFFICE_NAME);
+        Accountant accountant = new Accountant();
         return accountant;
     }
 
@@ -101,7 +97,6 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate + 1);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
-        assertThat(testAccountant.getOfficeName()).isEqualTo(DEFAULT_OFFICE_NAME);
     }
 
     @Test
@@ -133,8 +128,7 @@ public class AccountantResourceIntTest {
         restAccountantMockMvc.perform(get("/api/accountants?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].officeName").value(hasItem(DEFAULT_OFFICE_NAME.toString())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())));
     }
 
     @Test
@@ -147,8 +141,7 @@ public class AccountantResourceIntTest {
         restAccountantMockMvc.perform(get("/api/accountants/{id}", accountant.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(accountant.getId().intValue()))
-            .andExpect(jsonPath("$.officeName").value(DEFAULT_OFFICE_NAME.toString()));
+            .andExpect(jsonPath("$.id").value(accountant.getId().intValue()));
     }
 
     @Test
@@ -168,8 +161,6 @@ public class AccountantResourceIntTest {
 
         // Update the accountant
         Accountant updatedAccountant = accountantRepository.findOne(accountant.getId());
-        updatedAccountant
-            .officeName(UPDATED_OFFICE_NAME);
 
         restAccountantMockMvc.perform(put("/api/accountants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,7 +171,6 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeUpdate);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
-        assertThat(testAccountant.getOfficeName()).isEqualTo(UPDATED_OFFICE_NAME);
     }
 
     @Test

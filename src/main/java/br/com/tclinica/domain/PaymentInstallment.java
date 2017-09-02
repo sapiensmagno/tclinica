@@ -6,7 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -24,28 +24,30 @@ public class PaymentInstallment implements Serializable {
     private Long id;
 
     @Column(name = "pay_date")
-    private ZonedDateTime payDate;
+    private LocalDate payDate;
 
     @Column(name = "due_date")
-    private ZonedDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(name = "jhi_value", precision=10, scale=2)
     private BigDecimal value;
 
-    @Column(name = "jhi_number")
-    private Integer number;
+    @Column(name = "installment_number")
+    private Integer installmentNumber;
 
-    @Column(name = "check_num")
-    private String checkNum;
+    @Column(name = "check_number")
+    private String checkNumber;
 
-    @Column(name = "card_type")
-    private String cardType;
+    @Column(name = "card_final_number")
+    private String cardFinalNumber;
 
-    @Column(name = "card_final")
-    private String cardFinal;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private PaymentMethod paymentMethod;
 
-    @Column(name = "pay_method")
-    private String payMethod;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CardBrand cardBrand;
 
     @ManyToOne
     private Healthcare healthcare;
@@ -62,29 +64,29 @@ public class PaymentInstallment implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getPayDate() {
+    public LocalDate getPayDate() {
         return payDate;
     }
 
-    public PaymentInstallment payDate(ZonedDateTime payDate) {
+    public PaymentInstallment payDate(LocalDate payDate) {
         this.payDate = payDate;
         return this;
     }
 
-    public void setPayDate(ZonedDateTime payDate) {
+    public void setPayDate(LocalDate payDate) {
         this.payDate = payDate;
     }
 
-    public ZonedDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public PaymentInstallment dueDate(ZonedDateTime dueDate) {
+    public PaymentInstallment dueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
         return this;
     }
 
-    public void setDueDate(ZonedDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -101,69 +103,69 @@ public class PaymentInstallment implements Serializable {
         this.value = value;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getInstallmentNumber() {
+        return installmentNumber;
     }
 
-    public PaymentInstallment number(Integer number) {
-        this.number = number;
+    public PaymentInstallment installmentNumber(Integer installmentNumber) {
+        this.installmentNumber = installmentNumber;
         return this;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setInstallmentNumber(Integer installmentNumber) {
+        this.installmentNumber = installmentNumber;
     }
 
-    public String getCheckNum() {
-        return checkNum;
+    public String getCheckNumber() {
+        return checkNumber;
     }
 
-    public PaymentInstallment checkNum(String checkNum) {
-        this.checkNum = checkNum;
+    public PaymentInstallment checkNumber(String checkNumber) {
+        this.checkNumber = checkNumber;
         return this;
     }
 
-    public void setCheckNum(String checkNum) {
-        this.checkNum = checkNum;
+    public void setCheckNumber(String checkNumber) {
+        this.checkNumber = checkNumber;
     }
 
-    public String getCardType() {
-        return cardType;
+    public String getCardFinalNumber() {
+        return cardFinalNumber;
     }
 
-    public PaymentInstallment cardType(String cardType) {
-        this.cardType = cardType;
+    public PaymentInstallment cardFinalNumber(String cardFinalNumber) {
+        this.cardFinalNumber = cardFinalNumber;
         return this;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
+    public void setCardFinalNumber(String cardFinalNumber) {
+        this.cardFinalNumber = cardFinalNumber;
     }
 
-    public String getCardFinal() {
-        return cardFinal;
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public PaymentInstallment cardFinal(String cardFinal) {
-        this.cardFinal = cardFinal;
+    public PaymentInstallment paymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
         return this;
     }
 
-    public void setCardFinal(String cardFinal) {
-        this.cardFinal = cardFinal;
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public String getPayMethod() {
-        return payMethod;
+    public CardBrand getCardBrand() {
+        return cardBrand;
     }
 
-    public PaymentInstallment payMethod(String payMethod) {
-        this.payMethod = payMethod;
+    public PaymentInstallment cardBrand(CardBrand cardBrand) {
+        this.cardBrand = cardBrand;
         return this;
     }
 
-    public void setPayMethod(String payMethod) {
-        this.payMethod = payMethod;
+    public void setCardBrand(CardBrand cardBrand) {
+        this.cardBrand = cardBrand;
     }
 
     public Healthcare getHealthcare() {
@@ -220,11 +222,9 @@ public class PaymentInstallment implements Serializable {
             ", payDate='" + getPayDate() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", value='" + getValue() + "'" +
-            ", number='" + getNumber() + "'" +
-            ", checkNum='" + getCheckNum() + "'" +
-            ", cardType='" + getCardType() + "'" +
-            ", cardFinal='" + getCardFinal() + "'" +
-            ", payMethod='" + getPayMethod() + "'" +
+            ", installmentNumber='" + getInstallmentNumber() + "'" +
+            ", checkNumber='" + getCheckNumber() + "'" +
+            ", cardFinalNumber='" + getCardFinalNumber() + "'" +
             "}";
     }
 }

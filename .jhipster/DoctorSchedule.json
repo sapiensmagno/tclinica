@@ -30,14 +30,14 @@
         },
         {
             "fieldName": "earliestAppointmentTime",
-            "fieldType": "ZonedDateTime",
+            "fieldType": "Instant",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
             "fieldName": "latestAppointmentTime",
-            "fieldType": "ZonedDateTime",
+            "fieldType": "Instant",
             "fieldValidateRules": [
                 "required"
             ]
@@ -52,5 +52,5 @@
     "dto": "no",
     "pagination": "no",
     "service": "serviceImpl",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

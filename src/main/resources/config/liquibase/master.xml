@@ -15,6 +15,8 @@
     <include file="config/liquibase/changelog/20170902162244_added_entity_Appointment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170902162245_added_entity_PaymentInstallment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170902162246_added_entity_Healthcare.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170902185437_added_entity_CardBrand.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170902185438_added_entity_PaymentMethod.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20170902162239_added_entity_constraints_Doctor.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170902162240_added_entity_constraints_Patient.xml" relativeToChangelogFile="false"/>

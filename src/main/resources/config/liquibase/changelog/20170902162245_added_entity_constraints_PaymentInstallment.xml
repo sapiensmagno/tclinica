@@ -8,6 +8,18 @@
     -->
     <changeSet id="20170902162245-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="payment_method_id"
+                                 baseTableName="payment_installment"
+                                 constraintName="fk_payment_installment_payment_method_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment_method"/>
+
+        <addForeignKeyConstraint baseColumnNames="card_brand_id"
+                                 baseTableName="payment_installment"
+                                 constraintName="fk_payment_installment_card_brand_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="card_brand"/>
+
         <addForeignKeyConstraint baseColumnNames="healthcare_id"
                                  baseTableName="payment_installment"
                                  constraintName="fk_payment_installment_healthcare_id"

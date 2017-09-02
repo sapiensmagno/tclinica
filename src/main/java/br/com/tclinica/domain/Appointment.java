@@ -27,8 +27,15 @@ public class Appointment implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "scheduled_date", nullable = false)
-    private ZonedDateTime scheduledDate;
+    @Column(name = "start_date", nullable = false)
+    private ZonedDateTime startDate;
+
+    @NotNull
+    @Column(name = "end_date", nullable = false)
+    private ZonedDateTime endDate;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "cancelled")
     private Boolean cancelled;
@@ -53,17 +60,43 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getScheduledDate() {
-        return scheduledDate;
+    public ZonedDateTime getStartDate() {
+        return startDate;
     }
 
-    public Appointment scheduledDate(ZonedDateTime scheduledDate) {
-        this.scheduledDate = scheduledDate;
+    public Appointment startDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
         return this;
     }
 
-    public void setScheduledDate(ZonedDateTime scheduledDate) {
-        this.scheduledDate = scheduledDate;
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Appointment endDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Appointment description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Boolean isCancelled() {
@@ -155,7 +188,9 @@ public class Appointment implements Serializable {
     public String toString() {
         return "Appointment{" +
             "id=" + getId() +
-            ", scheduledDate='" + getScheduledDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", description='" + getDescription() + "'" +
             ", cancelled='" + isCancelled() + "'" +
             "}";
     }

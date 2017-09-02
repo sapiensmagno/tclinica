@@ -1,0 +1,21 @@
+{
+    "tclinicaApp": {
+        "cardBrand" : {
+            "home": {
+                "title": "Card Brands",
+                "createLabel": "Criar novo Card Brand",
+                "createOrEditLabel": "Criar ou editar Card Brand"
+            },
+            "created": "Um novo Card Brand foi criado com o identificador {{ param }}",
+            "updated": "Um Card Brand foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Card Brand foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Card Brand {{ id }}?"
+            },
+            "detail": {
+                "title": "Card Brand"
+            },
+            "name": "Name"
+        }
+    }
+}

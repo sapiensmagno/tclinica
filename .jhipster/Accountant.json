@@ -10,16 +10,11 @@
             "otherEntityRelationshipName": "accountant"
         }
     ],
-    "fields": [
-        {
-            "fieldName": "officeName",
-            "fieldType": "String"
-        }
-    ],
+    "fields": [],
     "changelogDate": "20170902162241",
     "entityTableName": "accountant",
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

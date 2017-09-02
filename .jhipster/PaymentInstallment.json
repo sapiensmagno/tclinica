@@ -2,6 +2,22 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "paymentMethod",
+            "otherEntityName": "paymentMethod",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "paymentInstallment"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cardBrand",
+            "otherEntityName": "cardBrand",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "paymentInstallment"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "healthcare",
             "otherEntityName": "healthcare",
@@ -17,34 +33,26 @@
     "fields": [
         {
             "fieldName": "payDate",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "LocalDate"
         },
         {
             "fieldName": "dueDate",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "LocalDate"
         },
         {
             "fieldName": "value",
             "fieldType": "BigDecimal"
         },
         {
-            "fieldName": "number",
+            "fieldName": "installmentNumber",
             "fieldType": "Integer"
         },
         {
-            "fieldName": "checkNum",
+            "fieldName": "checkNumber",
             "fieldType": "String"
         },
         {
-            "fieldName": "cardType",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "cardFinal",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "payMethod",
+            "fieldName": "cardFinalNumber",
             "fieldType": "String"
         }
     ],
@@ -53,5 +61,5 @@
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

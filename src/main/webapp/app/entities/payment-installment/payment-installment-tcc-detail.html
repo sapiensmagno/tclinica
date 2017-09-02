@@ -6,35 +6,35 @@
     <dl class="dl-horizontal jh-entity-details">
         <dt><span data-translate="tclinicaApp.paymentInstallment.payDate">Pay Date</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.payDate | date:'medium'}}</span>
+            <span>{{vm.paymentInstallment.payDate | date:'mediumDate'}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.dueDate">Due Date</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.dueDate | date:'medium'}}</span>
+            <span>{{vm.paymentInstallment.dueDate | date:'mediumDate'}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.value">Value</span></dt>
         <dd>
             <span>{{vm.paymentInstallment.value}}</span>
         </dd>
-        <dt><span data-translate="tclinicaApp.paymentInstallment.number">Number</span></dt>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.installmentNumber">Installment Number</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.number}}</span>
+            <span>{{vm.paymentInstallment.installmentNumber}}</span>
         </dd>
-        <dt><span data-translate="tclinicaApp.paymentInstallment.checkNum">Check Num</span></dt>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.checkNumber">Check Number</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.checkNum}}</span>
+            <span>{{vm.paymentInstallment.checkNumber}}</span>
         </dd>
-        <dt><span data-translate="tclinicaApp.paymentInstallment.cardType">Card Type</span></dt>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.cardFinalNumber">Card Final Number</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.cardType}}</span>
+            <span>{{vm.paymentInstallment.cardFinalNumber}}</span>
         </dd>
-        <dt><span data-translate="tclinicaApp.paymentInstallment.cardFinal">Card Final</span></dt>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.paymentMethod">Payment Method</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.cardFinal}}</span>
+            <a ui-sref="payment-method-tcc-detail({id:vm.paymentInstallment.paymentMethod.id})">{{vm.paymentInstallment.paymentMethod.id}}</a>
         </dd>
-        <dt><span data-translate="tclinicaApp.paymentInstallment.payMethod">Pay Method</span></dt>
+        <dt><span data-translate="tclinicaApp.paymentInstallment.cardBrand">Card Brand</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.payMethod}}</span>
+            <a ui-sref="card-brand-tcc-detail({id:vm.paymentInstallment.cardBrand.id})">{{vm.paymentInstallment.cardBrand.id}}</a>
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.healthcare">Healthcare</span></dt>
         <dd>

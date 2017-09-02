@@ -4,9 +4,17 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="tclinicaApp.appointment.scheduledDate">Scheduled Date</span></dt>
+        <dt><span data-translate="tclinicaApp.appointment.startDate">Start Date</span></dt>
         <dd>
-            <span>{{vm.appointment.scheduledDate | date:'medium'}}</span>
+            <span>{{vm.appointment.startDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.appointment.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.appointment.endDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.appointment.description">Description</span></dt>
+        <dd>
+            <span>{{vm.appointment.description}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.appointment.cancelled">Cancelled</span></dt>
         <dd>

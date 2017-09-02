@@ -10,16 +10,11 @@
             "otherEntityRelationshipName": "patient"
         }
     ],
-    "fields": [
-        {
-            "fieldName": "gender",
-            "fieldType": "String"
-        }
-    ],
+    "fields": [],
     "changelogDate": "20170902162240",
     "entityTableName": "patient",
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

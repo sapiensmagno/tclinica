@@ -15,7 +15,9 @@
             "detail": {
                 "title": "Appointment"
             },
-            "scheduledDate": "Scheduled Date",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "description": "Description",
             "cancelled": "Cancelled",
             "paymentInstallment": "Payment Installment",
             "patient": "Patient",

@@ -37,9 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class PatientResourceIntTest {
 
-    private static final String DEFAULT_GENDER = "AAAAAAAAAA";
-    private static final String UPDATED_GENDER = "BBBBBBBBBB";
-
     @Autowired
     private PatientRepository patientRepository;
 
@@ -76,8 +73,7 @@ public class PatientResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Patient createEntity(EntityManager em) {
-        Patient patient = new Patient()
-            .gender(DEFAULT_GENDER);
+        Patient patient = new Patient();
         return patient;
     }
 
@@ -101,7 +97,6 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate + 1);
         Patient testPatient = patientList.get(patientList.size() - 1);
-        assertThat(testPatient.getGender()).isEqualTo(DEFAULT_GENDER);
     }
 
     @Test
@@ -133,8 +128,7 @@ public class PatientResourceIntTest {
         restPatientMockMvc.perform(get("/api/patients?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())))
-            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())));
     }
 
     @Test
@@ -147,8 +141,7 @@ public class PatientResourceIntTest {
         restPatientMockMvc.perform(get("/api/patients/{id}", patient.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(patient.getId().intValue()))
-            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()));
+            .andExpect(jsonPath("$.id").value(patient.getId().intValue()));
     }
 
     @Test
@@ -168,8 +161,6 @@ public class PatientResourceIntTest {
 
         // Update the patient
         Patient updatedPatient = patientRepository.findOne(patient.getId());
-        updatedPatient
-            .gender(UPDATED_GENDER);
 
         restPatientMockMvc.perform(put("/api/patients")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,7 +171,6 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeUpdate);
         Patient testPatient = patientList.get(patientList.size() - 1);
-        assertThat(testPatient.getGender()).isEqualTo(UPDATED_GENDER);
     }
 
     @Test

@@ -22,8 +22,16 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="scheduled_date" type="timestamp">
+            <column name="start_date" type="timestamp">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="end_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="cancelled" type="bit">
@@ -40,7 +48,8 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="appointment" columnName="scheduled_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="appointment" columnName="start_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="appointment" columnName="end_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

@@ -21,9 +21,6 @@ public class Accountant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "office_name")
-    private String officeName;
-
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -35,19 +32,6 @@ public class Accountant implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOfficeName() {
-        return officeName;
-    }
-
-    public Accountant officeName(String officeName) {
-        this.officeName = officeName;
-        return this;
-    }
-
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
     }
 
     public User getUser() {
@@ -88,7 +72,6 @@ public class Accountant implements Serializable {
     public String toString() {
         return "Accountant{" +
             "id=" + getId() +
-            ", officeName='" + getOfficeName() + "'" +
             "}";
     }
 }
