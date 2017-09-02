@@ -16,7 +16,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170901235802",
+    "changelogDate": "20170902002544",
     "entityTableName": "patient",
     "dto": "no",
     "pagination": "no",

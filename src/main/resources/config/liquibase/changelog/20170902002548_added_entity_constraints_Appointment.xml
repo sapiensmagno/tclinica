@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Appointment.
     -->
-    <changeSet id="20170901235806-2" author="jhipster">
+    <changeSet id="20170902002548-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="patient_id"
                                  baseTableName="appointment"
