@@ -15,13 +15,22 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added ROLE_DOCTOR and ROLE_ACCOUNTANT to Authority.
+        Added the entity Accountant.
     -->
-    <changeSet author="sapiensmagno" id="insertDoctorAndAccountantRoles-00">
-        <insert tableName="JHI_AUTHORITY">
-            <column name="name">ROLE_DOCTOR</column>
-            <column name="name">ROLE_ACCOUNTANT</column>
-        </insert>
+    <changeSet id="20170902162241-1" author="jhipster">
+        <createTable tableName="accountant">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="office_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        
     </changeSet>
-
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

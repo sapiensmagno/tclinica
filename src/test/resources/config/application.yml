@@ -13,12 +13,6 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-    client:
-        enabled: true
-    instance:
-        appname: tclinica
-        instanceId: tclinica:${spring.application.instance-id:${random.value}}
 
 spring:
     application:
@@ -98,7 +92,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 6f518166eb058f4d867af2b8883778abff18ad3e
+                secret: 2f130ea5b72b8ba1ef8b55905e5747a6904ccb00
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

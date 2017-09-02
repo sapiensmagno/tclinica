@@ -47,7 +47,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170901235804",
+    "changelogDate": "20170902162242",
     "entityTableName": "doctor_schedule",
     "dto": "no",
     "pagination": "no",

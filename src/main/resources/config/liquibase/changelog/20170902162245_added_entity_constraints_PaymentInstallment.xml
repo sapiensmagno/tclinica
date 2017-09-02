@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity PaymentInstallment.
     -->
-    <changeSet id="20170901235807-2" author="jhipster">
+    <changeSet id="20170902162245-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="healthcare_id"
                                  baseTableName="payment_installment"

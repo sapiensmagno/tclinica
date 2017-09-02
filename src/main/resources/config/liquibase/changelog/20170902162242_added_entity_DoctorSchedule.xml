@@ -15,19 +15,39 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Healthcare.
+        Added the entity DoctorSchedule.
     -->
-    <changeSet id="20170901235808-1" author="jhipster">
-        <createTable tableName="healthcare">
+    <changeSet id="20170902162242-1" author="jhipster">
+        <createTable tableName="doctor_schedule">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="appointments_duration_minutes" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="interval_between_appointments_minutes" type="integer">
                 <constraints nullable="true" />
             </column>
 
+            <column name="earliest_appointment_time" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="latest_appointment_time" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="calendar_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="doctor_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="doctor_schedule" columnName="earliest_appointment_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="doctor_schedule" columnName="latest_appointment_time" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

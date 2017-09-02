@@ -14,7 +14,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170901235808",
+    "changelogDate": "20170902162246",
     "entityTableName": "healthcare",
     "dto": "no",
     "pagination": "no",
