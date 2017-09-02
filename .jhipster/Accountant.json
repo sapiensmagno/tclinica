@@ -16,7 +16,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170902002545",
+    "changelogDate": "20170901235803",
     "entityTableName": "accountant",
     "dto": "no",
     "pagination": "no",

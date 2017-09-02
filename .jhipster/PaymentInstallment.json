@@ -48,7 +48,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20170902002549",
+    "changelogDate": "20170901235807",
     "entityTableName": "payment_installment",
     "dto": "no",
     "pagination": "no",

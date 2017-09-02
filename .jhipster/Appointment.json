@@ -33,7 +33,7 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170902002548",
+    "changelogDate": "20170901235806",
     "entityTableName": "appointment",
     "dto": "no",
     "pagination": "pagination",
