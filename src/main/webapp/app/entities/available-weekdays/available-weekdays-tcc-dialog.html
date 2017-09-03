@@ -34,7 +34,7 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.availableWeekdays.doctorSchedule" for="field_doctorSchedule">Doctor Schedule</label>
-            <select class="form-control" id="field_doctorSchedule" name="doctorSchedule" ng-model="vm.availableWeekdays.doctorSchedule" ng-options="doctorSchedule as doctorSchedule.id for doctorSchedule in vm.doctorschedules track by doctorSchedule.id">
+            <select class="form-control" id="field_doctorSchedule" name="doctorSchedule" ng-model="vm.availableWeekdays.doctorSchedule" ng-options="doctorSchedule as doctorSchedule.doctor.nickname for doctorSchedule in vm.doctorschedules track by doctorSchedule.id">
                 <option value=""></option>
             </select>
         </div>

@@ -22,7 +22,7 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.accountant.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" ng-model="vm.accountant.user" ng-options="user as user.nickname for user in vm.users track by user.id" required>
+            <select class="form-control" id="field_user" name="user" ng-model="vm.accountant.user" ng-options="user as user.firstName for user in vm.users track by user.id" required>
             </select>
         </div>
         <div ng-show="editForm.user.$invalid">
