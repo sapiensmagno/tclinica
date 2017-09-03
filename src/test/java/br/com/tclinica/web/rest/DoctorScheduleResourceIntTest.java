@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.validation.constraints.AssertFalse;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -111,8 +113,8 @@ public class DoctorScheduleResourceIntTest {
     @Test
     @Transactional
     public void createDoctorSchedule() throws Exception {
-        int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
-
+    	int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
+         
         // Create the DoctorSchedule
         restDoctorScheduleMockMvc.perform(post("/api/doctor-schedules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -129,6 +131,25 @@ public class DoctorScheduleResourceIntTest {
         assertThat(testDoctorSchedule.getLatestAppointmentTime()).isEqualTo(DEFAULT_LATEST_APPOINTMENT_TIME);
         assertThat(testDoctorSchedule.getCalendarId()).isEqualTo(DEFAULT_CALENDAR_ID);
     }
+    
+    @Test
+    @Transactional
+    public void DoctorScheduleMustHaveADoctor () throws Exception {
+        int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
+
+        // Create the DoctorSchedule with an existing ID
+        doctorSchedule.setDoctor(null);
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restDoctorScheduleMockMvc.perform(post("/api/doctor-schedules")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the entity in the database
+        List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
+        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeCreate);
+    }
 
     @Test
     @Transactional
@@ -144,7 +165,7 @@ public class DoctorScheduleResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate in the database
         List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
         assertThat(doctorScheduleList).hasSize(databaseSizeBeforeCreate);
     }
@@ -285,17 +306,15 @@ public class DoctorScheduleResourceIntTest {
     public void updateNonExistingDoctorSchedule() throws Exception {
         int databaseSizeBeforeUpdate = doctorScheduleRepository.findAll().size();
 
-        // Create the DoctorSchedule
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, there's nothing to update
         restDoctorScheduleMockMvc.perform(put("/api/doctor-schedules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
-        // Validate the DoctorSchedule in the database
+        // Validate the DoctorSchedule isn't in the database
         List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
-        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test

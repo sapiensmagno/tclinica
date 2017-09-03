@@ -15,60 +15,74 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class DoctorScheduleServiceImpl implements DoctorScheduleService{
+public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
-    private final Logger log = LoggerFactory.getLogger(DoctorScheduleServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(DoctorScheduleServiceImpl.class);
 
-    private final DoctorScheduleRepository doctorScheduleRepository;
-    public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository) {
-        this.doctorScheduleRepository = doctorScheduleRepository;
-    }
+	private final DoctorScheduleRepository doctorScheduleRepository;
 
-    /**
-     * Save a doctorSchedule.
-     *
-     * @param doctorSchedule the entity to save
-     * @return the persisted entity
-     */
-    @Override
-    public DoctorSchedule save(DoctorSchedule doctorSchedule) {
-        log.debug("Request to save DoctorSchedule : {}", doctorSchedule);
-        return doctorScheduleRepository.save(doctorSchedule);
-    }
+	public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository) {
+		this.doctorScheduleRepository = doctorScheduleRepository;
+	}
+	
+	public boolean tryingToAddASecondDoctorSchedule (DoctorSchedule doctorSchedule) { 
+		DoctorSchedule previousSchedule = doctorScheduleRepository.findByDoctor(doctorSchedule.getDoctor());
+		return (previousSchedule != null
+			&& previousSchedule.getId() != doctorSchedule.getId());
+	}
 
-    /**
-     *  Get all the doctorSchedules.
-     *
-     *  @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<DoctorSchedule> findAll() {
-        log.debug("Request to get all DoctorSchedules");
-        return doctorScheduleRepository.findAll();
-    }
+	/**
+	 * Save a doctorSchedule.
+	 *
+	 * @param doctorSchedule
+	 *            the entity to save
+	 * @return the persisted entity
+	 */
+	@Override
+	public DoctorSchedule save(DoctorSchedule doctorSchedule) {
+		log.debug("Request to save DoctorSchedule : {}", doctorSchedule);
+		if (this.tryingToAddASecondDoctorSchedule (doctorSchedule)) {
+			log.error("Tried to add a second schedule to a doctor.");
+			return doctorSchedule;
+		}
+		return doctorScheduleRepository.save(doctorSchedule);
+	}
 
-    /**
-     *  Get one doctorSchedule by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public DoctorSchedule findOne(Long id) {
-        log.debug("Request to get DoctorSchedule : {}", id);
-        return doctorScheduleRepository.findOne(id);
-    }
+	/**
+	 * Get all the doctorSchedules.
+	 *
+	 * @return the list of entities
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<DoctorSchedule> findAll() {
+		log.debug("Request to get all DoctorSchedules");
+		return doctorScheduleRepository.findAll();
+	}
 
-    /**
-     *  Delete the  doctorSchedule by id.
-     *
-     *  @param id the id of the entity
-     */
-    @Override
-    public void delete(Long id) {
-        log.debug("Request to delete DoctorSchedule : {}", id);
-        doctorScheduleRepository.delete(id);
-    }
+	/**
+	 * Get one doctorSchedule by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the entity
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public DoctorSchedule findOne(Long id) {
+		log.debug("Request to get DoctorSchedule : {}", id);
+		return doctorScheduleRepository.findOne(id);
+	}
+
+	/**
+	 * Delete the doctorSchedule by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 */
+	@Override
+	public void delete(Long id) {
+		log.debug("Request to delete DoctorSchedule : {}", id);
+		doctorScheduleRepository.delete(id);
+	}
 }

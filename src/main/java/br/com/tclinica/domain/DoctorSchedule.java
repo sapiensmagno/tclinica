@@ -44,6 +44,7 @@ public class DoctorSchedule implements Serializable {
     @Column(name = "calendar_id")
     private String calendarId;
 
+    @NotNull
     @OneToOne
     @JoinColumn(unique = true)
     private Doctor doctor;
