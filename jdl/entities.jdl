@@ -1,0 +1,102 @@
+
+entity User
+
+entity Doctor {
+    nickname String
+}
+
+entity Patient {
+    nickname String
+}
+
+entity Accountant {
+    nickname String
+}
+
+relationship OneToOne {
+    Doctor{User(nickname) required} to User,
+    Patient{User(nickname) required} to User,
+    Accountant{User(nickname) required} to User
+}
+
+// Daily intervals, vacations and other events which
+// make a certain period unavailable may be 
+// inserted as appointments
+
+entity DoctorSchedule (DoctorSchedule) {
+    appointmentsDurationMinutes Integer required,
+    intervalBetweenAppointmentsMinutes Integer,
+    earliestAppointmentTime Instant required,
+    latestAppointmentTime Instant required,
+    calendarId String
+}
+
+relationship OneToOne {
+    DoctorSchedule{Doctor(nickname) required} to Doctor{DoctorSchedule}
+}
+
+relationship OneToMany {
+    DoctorSchedule{AvailableWeekdays(weekday)} to AvailableWeekdays
+}
+
+entity AvailableWeekdays {
+    weekday Weekdays required
+}
+
+enum Weekdays {
+    SUNDAY,
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY
+}
+
+entity Appointment (Appointment) {
+    startDate ZonedDateTime required,
+    endDate ZonedDateTime required,
+    description String,
+    cancelled Boolean
+}
+
+relationship ManyToOne {
+    Appointment{Patient(nickname) required} to Patient,
+    Appointment{Doctor(nickname) required} to Doctor
+    Appointment{DoctorSchedule required} to DoctorSchedule{Appointment(startDate)}
+}
+
+entity PaymentInstallment {
+    payDate LocalDate,
+    dueDate LocalDate,
+    value BigDecimal,
+    installmentNumber Integer,
+    checkNumber String,
+    cardFinalNumber String,
+}
+
+entity CardBrand {
+    name String required
+}
+
+entity PaymentMethod {
+    name String required
+}
+
+relationship OneToOne {
+    PaymentInstallment{PaymentMethod(name) required} to PaymentMethod
+    PaymentInstallment{CardBrand(name)} to CardBrand
+}
+
+entity Healthcare {
+    name String
+}
+
+relationship OneToMany {
+    Healthcare to PaymentInstallment{Healthcare(name)}
+    Appointment{PaymentInstallment(installmentNumber)} to PaymentInstallment{Appointment(startDate)}
+}
+
+paginate Appointment with pagination
+service DoctorSchedule, Appointment, PaymentInstallment with serviceImpl
+angularSuffix * with TCC
