@@ -14,9 +14,9 @@ entity Accountant {
 }
 
 relationship OneToOne {
-    Doctor{User(nickname) required} to User,
-    Patient{User(nickname) required} to User,
-    Accountant{User(nickname) required} to User
+    Doctor{User(firstName) required} to User,
+    Patient{User(firstName) required} to User,
+    Accountant{User(firstName) required} to User
 }
 
 // Daily intervals, vacations and other events which
