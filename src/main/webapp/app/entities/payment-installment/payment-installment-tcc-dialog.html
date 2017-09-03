@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -60,25 +60,30 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.paymentMethod" for="field_paymentMethod">Payment Method</label>
-            <select class="form-control" id="field_paymentMethod" name="paymentMethod" ng-model="vm.paymentInstallment.paymentMethod" ng-options="paymentMethod as paymentMethod.id for paymentMethod in vm.paymentmethods | orderBy:'id' track by paymentMethod.id">
-                <option value=""></option>
+            <select class="form-control" id="field_paymentMethod" name="paymentMethod" ng-model="vm.paymentInstallment.paymentMethod" ng-options="paymentMethod as paymentMethod.name for paymentMethod in vm.paymentmethods | orderBy:'id' track by paymentMethod.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.paymentMethod.$invalid">
+            <p class="help-block"
+                ng-show="editForm.paymentMethod.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.cardBrand" for="field_cardBrand">Card Brand</label>
-            <select class="form-control" id="field_cardBrand" name="cardBrand" ng-model="vm.paymentInstallment.cardBrand" ng-options="cardBrand as cardBrand.id for cardBrand in vm.cardbrands | orderBy:'id' track by cardBrand.id">
+            <select class="form-control" id="field_cardBrand" name="cardBrand" ng-model="vm.paymentInstallment.cardBrand" ng-options="cardBrand as cardBrand.name for cardBrand in vm.cardbrands | orderBy:'id' track by cardBrand.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.healthcare" for="field_healthcare">Healthcare</label>
-            <select class="form-control" id="field_healthcare" name="healthcare" ng-model="vm.paymentInstallment.healthcare" ng-options="healthcare as healthcare.id for healthcare in vm.healthcares track by healthcare.id">
+            <select class="form-control" id="field_healthcare" name="healthcare" ng-model="vm.paymentInstallment.healthcare" ng-options="healthcare as healthcare.name for healthcare in vm.healthcares track by healthcare.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.appointment" for="field_appointment">Appointment</label>
-            <select class="form-control" id="field_appointment" name="appointment" ng-model="vm.paymentInstallment.appointment" ng-options="appointment as appointment.id for appointment in vm.appointments track by appointment.id">
+            <select class="form-control" id="field_appointment" name="appointment" ng-model="vm.paymentInstallment.appointment" ng-options="appointment as appointment.startDate for appointment in vm.appointments track by appointment.id">
                 <option value=""></option>
             </select>
         </div>

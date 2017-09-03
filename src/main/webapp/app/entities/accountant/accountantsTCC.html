@@ -19,6 +19,7 @@
             <thead>
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="tclinicaApp.accountant.nickname">Nickname</span></th>
                     <th><span data-translate="tclinicaApp.accountant.user">User</span></th>
                     <th></th>
                 </tr>
@@ -26,8 +27,9 @@
             <tbody>
                 <tr ng-repeat="accountant in vm.accountants track by accountant.id">
                     <td><a ui-sref="accountant-tcc-detail({id:accountant.id})">{{accountant.id}}</a></td>
+                    <td>{{accountant.nickname}}</td>
                     <td>
-                        {{accountant.user.id}}
+                        {{accountant.user.nickname}}
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

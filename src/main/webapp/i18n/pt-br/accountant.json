@@ -15,6 +15,7 @@
             "detail": {
                 "title": "Accountant"
             },
+            "nickname": "Nickname",
             "user": "User"
         }
     }

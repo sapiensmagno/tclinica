@@ -21,7 +21,8 @@
             "cancelled": "Cancelled",
             "paymentInstallment": "Payment Installment",
             "patient": "Patient",
-            "doctor": "Doctor"
+            "doctor": "Doctor",
+            "doctorSchedule": "Doctor Schedule"
         }
     }
 }

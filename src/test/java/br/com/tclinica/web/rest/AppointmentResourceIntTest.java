@@ -3,7 +3,11 @@ package br.com.tclinica.web.rest;
 import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.service.AppointmentService;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -58,6 +62,9 @@ public class AppointmentResourceIntTest {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -76,7 +83,7 @@ public class AppointmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AppointmentResource appointmentResource = new AppointmentResource(appointmentRepository);
+        final AppointmentResource appointmentResource = new AppointmentResource(appointmentService);
         this.restAppointmentMockMvc = MockMvcBuilders.standaloneSetup(appointmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -95,6 +102,21 @@ public class AppointmentResourceIntTest {
             .endDate(DEFAULT_END_DATE)
             .description(DEFAULT_DESCRIPTION)
             .cancelled(DEFAULT_CANCELLED);
+        // Add required entity
+        Patient patient = PatientResourceIntTest.createEntity(em);
+        em.persist(patient);
+        em.flush();
+        appointment.setPatient(patient);
+        // Add required entity
+        Doctor doctor = DoctorResourceIntTest.createEntity(em);
+        em.persist(doctor);
+        em.flush();
+        appointment.setDoctor(doctor);
+        // Add required entity
+        DoctorSchedule doctorSchedule = DoctorScheduleResourceIntTest.createEntity(em);
+        em.persist(doctorSchedule);
+        em.flush();
+        appointment.setDoctorSchedule(doctorSchedule);
         return appointment;
     }
 
@@ -138,7 +160,7 @@ public class AppointmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Appointment in the database
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate);
     }
@@ -225,7 +247,8 @@ public class AppointmentResourceIntTest {
     @Transactional
     public void updateAppointment() throws Exception {
         // Initialize the database
-        appointmentRepository.saveAndFlush(appointment);
+        appointmentService.save(appointment);
+
         int databaseSizeBeforeUpdate = appointmentRepository.findAll().size();
 
         // Update the appointment
@@ -273,7 +296,8 @@ public class AppointmentResourceIntTest {
     @Transactional
     public void deleteAppointment() throws Exception {
         // Initialize the database
-        appointmentRepository.saveAndFlush(appointment);
+        appointmentService.save(appointment);
+
         int databaseSizeBeforeDelete = appointmentRepository.findAll().size();
 
         // Get the appointment

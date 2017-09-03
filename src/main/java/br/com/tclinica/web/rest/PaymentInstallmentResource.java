@@ -2,8 +2,7 @@ package br.com.tclinica.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.PaymentInstallment;
-
-import br.com.tclinica.repository.PaymentInstallmentRepository;
+import br.com.tclinica.service.PaymentInstallmentService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -28,9 +28,10 @@ public class PaymentInstallmentResource {
 
     private static final String ENTITY_NAME = "paymentInstallment";
 
-    private final PaymentInstallmentRepository paymentInstallmentRepository;
-    public PaymentInstallmentResource(PaymentInstallmentRepository paymentInstallmentRepository) {
-        this.paymentInstallmentRepository = paymentInstallmentRepository;
+    private final PaymentInstallmentService paymentInstallmentService;
+
+    public PaymentInstallmentResource(PaymentInstallmentService paymentInstallmentService) {
+        this.paymentInstallmentService = paymentInstallmentService;
     }
 
     /**
@@ -42,12 +43,12 @@ public class PaymentInstallmentResource {
      */
     @PostMapping("/payment-installments")
     @Timed
-    public ResponseEntity<PaymentInstallment> createPaymentInstallment(@RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
+    public ResponseEntity<PaymentInstallment> createPaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
         log.debug("REST request to save PaymentInstallment : {}", paymentInstallment);
         if (paymentInstallment.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new paymentInstallment cannot already have an ID")).body(null);
         }
-        PaymentInstallment result = paymentInstallmentRepository.save(paymentInstallment);
+        PaymentInstallment result = paymentInstallmentService.save(paymentInstallment);
         return ResponseEntity.created(new URI("/api/payment-installments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -64,12 +65,12 @@ public class PaymentInstallmentResource {
      */
     @PutMapping("/payment-installments")
     @Timed
-    public ResponseEntity<PaymentInstallment> updatePaymentInstallment(@RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
+    public ResponseEntity<PaymentInstallment> updatePaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
         log.debug("REST request to update PaymentInstallment : {}", paymentInstallment);
         if (paymentInstallment.getId() == null) {
             return createPaymentInstallment(paymentInstallment);
         }
-        PaymentInstallment result = paymentInstallmentRepository.save(paymentInstallment);
+        PaymentInstallment result = paymentInstallmentService.save(paymentInstallment);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentInstallment.getId().toString()))
             .body(result);
@@ -84,7 +85,7 @@ public class PaymentInstallmentResource {
     @Timed
     public List<PaymentInstallment> getAllPaymentInstallments() {
         log.debug("REST request to get all PaymentInstallments");
-        return paymentInstallmentRepository.findAll();
+        return paymentInstallmentService.findAll();
         }
 
     /**
@@ -97,7 +98,7 @@ public class PaymentInstallmentResource {
     @Timed
     public ResponseEntity<PaymentInstallment> getPaymentInstallment(@PathVariable Long id) {
         log.debug("REST request to get PaymentInstallment : {}", id);
-        PaymentInstallment paymentInstallment = paymentInstallmentRepository.findOne(id);
+        PaymentInstallment paymentInstallment = paymentInstallmentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentInstallment));
     }
 
@@ -111,7 +112,7 @@ public class PaymentInstallmentResource {
     @Timed
     public ResponseEntity<Void> deletePaymentInstallment(@PathVariable Long id) {
         log.debug("REST request to delete PaymentInstallment : {}", id);
-        paymentInstallmentRepository.delete(id);
+        paymentInstallmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

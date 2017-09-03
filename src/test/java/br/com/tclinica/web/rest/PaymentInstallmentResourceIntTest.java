@@ -3,7 +3,9 @@ package br.com.tclinica.web.rest;
 import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.PaymentInstallment;
+import br.com.tclinica.domain.PaymentMethod;
 import br.com.tclinica.repository.PaymentInstallmentRepository;
+import br.com.tclinica.service.PaymentInstallmentService;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -62,6 +64,9 @@ public class PaymentInstallmentResourceIntTest {
     private PaymentInstallmentRepository paymentInstallmentRepository;
 
     @Autowired
+    private PaymentInstallmentService paymentInstallmentService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -80,7 +85,7 @@ public class PaymentInstallmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PaymentInstallmentResource paymentInstallmentResource = new PaymentInstallmentResource(paymentInstallmentRepository);
+        final PaymentInstallmentResource paymentInstallmentResource = new PaymentInstallmentResource(paymentInstallmentService);
         this.restPaymentInstallmentMockMvc = MockMvcBuilders.standaloneSetup(paymentInstallmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -101,6 +106,11 @@ public class PaymentInstallmentResourceIntTest {
             .installmentNumber(DEFAULT_INSTALLMENT_NUMBER)
             .checkNumber(DEFAULT_CHECK_NUMBER)
             .cardFinalNumber(DEFAULT_CARD_FINAL_NUMBER);
+        // Add required entity
+        PaymentMethod paymentMethod = PaymentMethodResourceIntTest.createEntity(em);
+        em.persist(paymentMethod);
+        em.flush();
+        paymentInstallment.setPaymentMethod(paymentMethod);
         return paymentInstallment;
     }
 
@@ -146,7 +156,7 @@ public class PaymentInstallmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentInstallment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the PaymentInstallment in the database
         List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
         assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeCreate);
     }
@@ -201,7 +211,8 @@ public class PaymentInstallmentResourceIntTest {
     @Transactional
     public void updatePaymentInstallment() throws Exception {
         // Initialize the database
-        paymentInstallmentRepository.saveAndFlush(paymentInstallment);
+        paymentInstallmentService.save(paymentInstallment);
+
         int databaseSizeBeforeUpdate = paymentInstallmentRepository.findAll().size();
 
         // Update the paymentInstallment
@@ -253,7 +264,8 @@ public class PaymentInstallmentResourceIntTest {
     @Transactional
     public void deletePaymentInstallment() throws Exception {
         // Initialize the database
-        paymentInstallmentRepository.saveAndFlush(paymentInstallment);
+        paymentInstallmentService.save(paymentInstallment);
+
         int databaseSizeBeforeDelete = paymentInstallmentRepository.findAll().size();
 
         // Get the paymentInstallment

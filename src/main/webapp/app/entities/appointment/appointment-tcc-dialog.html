@@ -67,15 +67,36 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.appointment.patient" for="field_patient">Patient</label>
-            <select class="form-control" id="field_patient" name="patient" ng-model="vm.appointment.patient" ng-options="patient as patient.id for patient in vm.patients track by patient.id">
-                <option value=""></option>
+            <select class="form-control" id="field_patient" name="patient" ng-model="vm.appointment.patient" ng-options="patient as patient.nickname for patient in vm.patients track by patient.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.patient.$invalid">
+            <p class="help-block"
+                ng-show="editForm.patient.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.appointment.doctor" for="field_doctor">Doctor</label>
-            <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.appointment.doctor" ng-options="doctor as doctor.id for doctor in vm.doctors track by doctor.id">
-                <option value=""></option>
+            <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.appointment.doctor" ng-options="doctor as doctor.nickname for doctor in vm.doctors track by doctor.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.doctor.$invalid">
+            <p class="help-block"
+                ng-show="editForm.doctor.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        <div class="form-group">
+            <label data-translate="tclinicaApp.appointment.doctorSchedule" for="field_doctorSchedule">Doctor Schedule</label>
+            <select class="form-control" id="field_doctorSchedule" name="doctorSchedule" ng-model="vm.appointment.doctorSchedule" ng-options="doctorSchedule as doctorSchedule.id for doctorSchedule in vm.doctorschedules track by doctorSchedule.id" required>
+            </select>
+        </div>
+        <div ng-show="editForm.doctorSchedule.$invalid">
+            <p class="help-block"
+                ng-show="editForm.doctorSchedule.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
     </div>
     <div class="modal-footer">

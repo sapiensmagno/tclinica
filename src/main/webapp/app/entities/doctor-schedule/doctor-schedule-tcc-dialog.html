@@ -84,9 +84,14 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.doctorSchedule.doctor" for="field_doctor">Doctor</label>
-            <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.doctorSchedule.doctor" ng-options="doctor as doctor.id for doctor in vm.doctors | orderBy:'id' track by doctor.id">
-                <option value=""></option>
+            <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.doctorSchedule.doctor" ng-options="doctor as doctor.nickname for doctor in vm.doctors | orderBy:'id' track by doctor.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.doctor.$invalid">
+            <p class="help-block"
+                ng-show="editForm.doctor.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
     </div>
     <div class="modal-footer">

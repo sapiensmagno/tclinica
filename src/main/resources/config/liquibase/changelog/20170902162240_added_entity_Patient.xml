@@ -21,8 +21,12 @@
         <createTable tableName="patient">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>            <column name="user_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+            </column>
+            <column name="nickname" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints unique="true" nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

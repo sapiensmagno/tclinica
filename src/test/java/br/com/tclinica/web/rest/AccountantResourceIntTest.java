@@ -3,6 +3,7 @@ package br.com.tclinica.web.rest;
 import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.Accountant;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AccountantRepository;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
@@ -36,6 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TclinicaApp.class)
 public class AccountantResourceIntTest {
+
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
     @Autowired
     private AccountantRepository accountantRepository;
@@ -73,7 +77,13 @@ public class AccountantResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Accountant createEntity(EntityManager em) {
-        Accountant accountant = new Accountant();
+        Accountant accountant = new Accountant()
+            .nickname(DEFAULT_NICKNAME);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        accountant.setUser(user);
         return accountant;
     }
 
@@ -97,6 +107,7 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate + 1);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
+        assertThat(testAccountant.getNickname()).isEqualTo(DEFAULT_NICKNAME);
     }
 
     @Test
@@ -113,7 +124,7 @@ public class AccountantResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(accountant)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Accountant in the database
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate);
     }
@@ -128,7 +139,8 @@ public class AccountantResourceIntTest {
         restAccountantMockMvc.perform(get("/api/accountants?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())));
     }
 
     @Test
@@ -141,7 +153,8 @@ public class AccountantResourceIntTest {
         restAccountantMockMvc.perform(get("/api/accountants/{id}", accountant.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(accountant.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(accountant.getId().intValue()))
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()));
     }
 
     @Test
@@ -161,6 +174,8 @@ public class AccountantResourceIntTest {
 
         // Update the accountant
         Accountant updatedAccountant = accountantRepository.findOne(accountant.getId());
+        updatedAccountant
+            .nickname(UPDATED_NICKNAME);
 
         restAccountantMockMvc.perform(put("/api/accountants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -171,6 +186,7 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeUpdate);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
+        assertThat(testAccountant.getNickname()).isEqualTo(UPDATED_NICKNAME);
     }
 
     @Test

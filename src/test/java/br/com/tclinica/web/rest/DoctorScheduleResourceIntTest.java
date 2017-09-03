@@ -1,20 +1,12 @@
 package br.com.tclinica.web.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import br.com.tclinica.TclinicaApp;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import javax.persistence.EntityManager;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.repository.DoctorScheduleRepository;
+import br.com.tclinica.service.DoctorScheduleService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,13 +22,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.tclinica.TclinicaApp;
-import br.com.tclinica.domain.Doctor;
-import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.repository.DoctorRepository;
-import br.com.tclinica.repository.DoctorScheduleRepository;
-import br.com.tclinica.service.DoctorScheduleService;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the DoctorScheduleResource REST controller.
@@ -61,10 +55,10 @@ public class DoctorScheduleResourceIntTest {
 
     private static final String DEFAULT_CALENDAR_ID = "AAAAAAAAAA";
     private static final String UPDATED_CALENDAR_ID = "BBBBBBBBBB";
-    
+
     @Autowired
     private DoctorScheduleRepository doctorScheduleRepository;
-    
+
     @Autowired
     private DoctorScheduleService doctorScheduleService;
 
@@ -83,9 +77,7 @@ public class DoctorScheduleResourceIntTest {
     private MockMvc restDoctorScheduleMockMvc;
 
     private DoctorSchedule doctorSchedule;
-    
-    private Doctor doctorWithASchedule;
-    
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -109,23 +101,24 @@ public class DoctorScheduleResourceIntTest {
             .earliestAppointmentTime(DEFAULT_EARLIEST_APPOINTMENT_TIME)
             .latestAppointmentTime(DEFAULT_LATEST_APPOINTMENT_TIME)
             .calendarId(DEFAULT_CALENDAR_ID);
+        // Add required entity
+        Doctor doctor = DoctorResourceIntTest.createEntity(em);
+        em.persist(doctor);
+        em.flush();
+        doctorSchedule.setDoctor(doctor);
         return doctorSchedule;
     }
 
     @Before
     public void initTest() {
         doctorSchedule = createEntity(em);
-        
-        doctorWithASchedule= new Doctor();
-    	em.persist(doctorWithASchedule);
-        doctorSchedule.doctor(em.find(Doctor.class, doctorWithASchedule.getId()));
     }
 
     @Test
     @Transactional
     public void createDoctorSchedule() throws Exception {
-    	int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
-         
+        int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
+
         // Create the DoctorSchedule
         restDoctorScheduleMockMvc.perform(post("/api/doctor-schedules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -142,25 +135,6 @@ public class DoctorScheduleResourceIntTest {
         assertThat(testDoctorSchedule.getLatestAppointmentTime()).isEqualTo(DEFAULT_LATEST_APPOINTMENT_TIME);
         assertThat(testDoctorSchedule.getCalendarId()).isEqualTo(DEFAULT_CALENDAR_ID);
     }
-    
-    @Test
-    @Transactional
-    public void DoctorScheduleMustHaveADoctor () throws Exception {
-        int databaseSizeBeforeCreate = doctorScheduleRepository.findAll().size();
-
-        // Create the DoctorSchedule with an existing ID
-        doctorSchedule.setDoctor(null);
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restDoctorScheduleMockMvc.perform(post("/api/doctor-schedules")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the entity in the database
-        List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
-        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeCreate);
-    }
 
     @Test
     @Transactional
@@ -176,7 +150,7 @@ public class DoctorScheduleResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
             .andExpect(status().isBadRequest());
 
-        // Validate in the database
+        // Validate the DoctorSchedule in the database
         List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
         assertThat(doctorScheduleList).hasSize(databaseSizeBeforeCreate);
     }
@@ -317,15 +291,17 @@ public class DoctorScheduleResourceIntTest {
     public void updateNonExistingDoctorSchedule() throws Exception {
         int databaseSizeBeforeUpdate = doctorScheduleRepository.findAll().size();
 
-        // If the entity doesn't have an ID, there's nothing to update
+        // Create the DoctorSchedule
+
+        // If the entity doesn't have an ID, it will be created instead of just being updated
         restDoctorScheduleMockMvc.perform(put("/api/doctor-schedules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(doctorSchedule)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isCreated());
 
-        // Validate the DoctorSchedule isn't in the database
+        // Validate the DoctorSchedule in the database
         List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
-        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeUpdate);
+        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test

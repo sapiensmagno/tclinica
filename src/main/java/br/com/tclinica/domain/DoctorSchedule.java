@@ -44,8 +44,8 @@ public class DoctorSchedule implements Serializable {
     @Column(name = "calendar_id")
     private String calendarId;
 
+    @OneToOne(optional = false)
     @NotNull
-    @OneToOne
     @JoinColumn(unique = true)
     private Doctor doctor;
 
@@ -53,6 +53,11 @@ public class DoctorSchedule implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AvailableWeekdays> availableWeekdays = new HashSet<>();
+
+    @OneToMany(mappedBy = "doctorSchedule")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Appointment> appointments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -164,6 +169,31 @@ public class DoctorSchedule implements Serializable {
 
     public void setAvailableWeekdays(Set<AvailableWeekdays> availableWeekdays) {
         this.availableWeekdays = availableWeekdays;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public DoctorSchedule appointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+        return this;
+    }
+
+    public DoctorSchedule addAppointment(Appointment appointment) {
+        this.appointments.add(appointment);
+        appointment.setDoctorSchedule(this);
+        return this;
+    }
+
+    public DoctorSchedule removeAppointment(Appointment appointment) {
+        this.appointments.remove(appointment);
+        appointment.setDoctorSchedule(null);
+        return this;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 

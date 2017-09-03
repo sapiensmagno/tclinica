@@ -3,9 +3,10 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "doctor",
             "otherEntityName": "doctor",
-            "otherEntityField": "id",
+            "otherEntityField": "nickname",
             "ownerSide": true,
             "otherEntityRelationshipName": "doctorSchedule"
         },
@@ -13,6 +14,12 @@
             "relationshipType": "one-to-many",
             "relationshipName": "availableWeekdays",
             "otherEntityName": "availableWeekdays",
+            "otherEntityRelationshipName": "doctorSchedule"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "appointment",
+            "otherEntityName": "appointment",
             "otherEntityRelationshipName": "doctorSchedule"
         }
     ],

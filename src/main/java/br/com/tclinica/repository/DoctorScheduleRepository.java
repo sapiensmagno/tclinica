@@ -1,10 +1,9 @@
 package br.com.tclinica.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.tclinica.domain.DoctorSchedule;
 import org.springframework.stereotype.Repository;
 
-import br.com.tclinica.domain.Doctor;
-import br.com.tclinica.domain.DoctorSchedule;
+import org.springframework.data.jpa.repository.*;
 
 
 /**
@@ -13,7 +12,5 @@ import br.com.tclinica.domain.DoctorSchedule;
 @SuppressWarnings("unused")
 @Repository
 public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, Long> {
-	
-	public DoctorSchedule findByDoctor(Doctor doctor);
 
 }

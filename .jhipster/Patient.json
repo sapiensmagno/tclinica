@@ -3,14 +3,20 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "nickname",
             "ownerSide": true,
             "otherEntityRelationshipName": "patient"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "nickname",
+            "fieldType": "String"
+        }
+    ],
     "changelogDate": "20170902162240",
     "entityTableName": "patient",
     "dto": "no",

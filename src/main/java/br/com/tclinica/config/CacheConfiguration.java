@@ -53,6 +53,7 @@ public class CacheConfiguration {
             cm.createCache(br.com.tclinica.domain.Healthcare.class.getName() + ".paymentInstallments", jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.CardBrand.class.getName(), jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.PaymentMethod.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.DoctorSchedule.class.getName() + ".appointments", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -4,9 +4,13 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.patient.nickname">Nickname</span></dt>
+        <dd>
+            <span>{{vm.patient.nickname}}</span>
+        </dd>
         <dt><span data-translate="tclinicaApp.patient.user">User</span></dt>
         <dd>
-            {{vm.patient.user.id}}
+            {{vm.patient.user.nickname}}
         </dd>
     </dl>
 

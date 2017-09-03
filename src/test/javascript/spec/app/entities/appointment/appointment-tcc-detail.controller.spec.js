@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('Appointment Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockAppointment, MockPaymentInstallment, MockPatient, MockDoctor;
+        var MockEntity, MockPreviousState, MockAppointment, MockPaymentInstallment, MockPatient, MockDoctor, MockDoctorSchedule;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -16,6 +16,7 @@ describe('Controller Tests', function() {
             MockPaymentInstallment = jasmine.createSpy('MockPaymentInstallment');
             MockPatient = jasmine.createSpy('MockPatient');
             MockDoctor = jasmine.createSpy('MockDoctor');
+            MockDoctorSchedule = jasmine.createSpy('MockDoctorSchedule');
             
 
             var locals = {
@@ -26,7 +27,8 @@ describe('Controller Tests', function() {
                 'Appointment': MockAppointment,
                 'PaymentInstallment': MockPaymentInstallment,
                 'Patient': MockPatient,
-                'Doctor': MockDoctor
+                'Doctor': MockDoctor,
+                'DoctorSchedule': MockDoctorSchedule
             };
             createController = function() {
                 $injector.get('$controller')("AppointmentTccDetailController", locals);

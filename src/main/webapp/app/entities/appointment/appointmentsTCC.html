@@ -23,8 +23,9 @@
                     <th jh-sort-by="endDate"><span data-translate="tclinicaApp.appointment.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="description"><span data-translate="tclinicaApp.appointment.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="cancelled"><span data-translate="tclinicaApp.appointment.cancelled">Cancelled</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="patient.id"><span data-translate="tclinicaApp.appointment.patient">Patient</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="doctor.id"><span data-translate="tclinicaApp.appointment.doctor">Doctor</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="patient.nickname"><span data-translate="tclinicaApp.appointment.patient">Patient</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="doctor.nickname"><span data-translate="tclinicaApp.appointment.doctor">Doctor</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="doctorSchedule.id"><span data-translate="tclinicaApp.appointment.doctorSchedule">Doctor Schedule</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -36,10 +37,13 @@
                     <td>{{appointment.description}}</td>
                     <td>{{appointment.cancelled}}</td>
                     <td>
-                        <a ui-sref="patient-tcc-detail({id:appointment.patient.id})">{{appointment.patient.id}}</a>
+                        <a ui-sref="patient-tcc-detail({id:appointment.patient.id})">{{appointment.patient.nickname}}</a>
                     </td>
                     <td>
-                        <a ui-sref="doctor-tcc-detail({id:appointment.doctor.id})">{{appointment.doctor.id}}</a>
+                        <a ui-sref="doctor-tcc-detail({id:appointment.doctor.id})">{{appointment.doctor.nickname}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="doctor-schedule-tcc-detail({id:appointment.doctorSchedule.id})">{{appointment.doctorSchedule.id}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

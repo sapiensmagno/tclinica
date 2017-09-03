@@ -45,11 +45,17 @@ public class Appointment implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PaymentInstallment> paymentInstallments = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Patient patient;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Doctor doctor;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private DoctorSchedule doctorSchedule;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -161,6 +167,19 @@ public class Appointment implements Serializable {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public DoctorSchedule getDoctorSchedule() {
+        return doctorSchedule;
+    }
+
+    public Appointment doctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
+        return this;
+    }
+
+    public void setDoctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 

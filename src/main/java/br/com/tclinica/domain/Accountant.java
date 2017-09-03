@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,7 +22,11 @@ public class Accountant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @Column(name = "nickname")
+    private String nickname;
+
+    @OneToOne(optional = false)
+    @NotNull
     @JoinColumn(unique = true)
     private User user;
 
@@ -32,6 +37,19 @@ public class Accountant implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public Accountant nickname(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public User getUser() {
@@ -72,6 +90,7 @@ public class Accountant implements Serializable {
     public String toString() {
         return "Accountant{" +
             "id=" + getId() +
+            ", nickname='" + getNickname() + "'" +
             "}";
     }
 }

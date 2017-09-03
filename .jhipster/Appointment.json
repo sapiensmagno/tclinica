@@ -9,14 +9,23 @@
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "patient",
             "otherEntityName": "patient",
-            "otherEntityField": "id"
+            "otherEntityField": "nickname"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "doctor",
             "otherEntityName": "doctor",
+            "otherEntityField": "nickname"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "doctorSchedule",
+            "otherEntityName": "doctorSchedule",
             "otherEntityField": "id"
         }
     ],
@@ -48,6 +57,6 @@
     "entityTableName": "appointment",
     "dto": "no",
     "pagination": "pagination",
-    "service": "no",
+    "service": "serviceImpl",
     "angularJSSuffix": "TCC"
 }

@@ -3,6 +3,7 @@ package br.com.tclinica.web.rest;
 import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.Patient;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
@@ -36,6 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TclinicaApp.class)
 public class PatientResourceIntTest {
+
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
     @Autowired
     private PatientRepository patientRepository;
@@ -73,7 +77,13 @@ public class PatientResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Patient createEntity(EntityManager em) {
-        Patient patient = new Patient();
+        Patient patient = new Patient()
+            .nickname(DEFAULT_NICKNAME);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        patient.setUser(user);
         return patient;
     }
 
@@ -97,6 +107,7 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate + 1);
         Patient testPatient = patientList.get(patientList.size() - 1);
+        assertThat(testPatient.getNickname()).isEqualTo(DEFAULT_NICKNAME);
     }
 
     @Test
@@ -113,7 +124,7 @@ public class PatientResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(patient)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Patient in the database
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate);
     }
@@ -128,7 +139,8 @@ public class PatientResourceIntTest {
         restPatientMockMvc.perform(get("/api/patients?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())));
     }
 
     @Test
@@ -141,7 +153,8 @@ public class PatientResourceIntTest {
         restPatientMockMvc.perform(get("/api/patients/{id}", patient.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(patient.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(patient.getId().intValue()))
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()));
     }
 
     @Test
@@ -161,6 +174,8 @@ public class PatientResourceIntTest {
 
         // Update the patient
         Patient updatedPatient = patientRepository.findOne(patient.getId());
+        updatedPatient
+            .nickname(UPDATED_NICKNAME);
 
         restPatientMockMvc.perform(put("/api/patients")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -171,6 +186,7 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeUpdate);
         Patient testPatient = patientList.get(patientList.size() - 1);
+        assertThat(testPatient.getNickname()).isEqualTo(UPDATED_NICKNAME);
     }
 
     @Test

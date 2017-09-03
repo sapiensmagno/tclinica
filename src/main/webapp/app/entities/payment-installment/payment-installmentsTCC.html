@@ -42,16 +42,16 @@
                     <td>{{paymentInstallment.checkNumber}}</td>
                     <td>{{paymentInstallment.cardFinalNumber}}</td>
                     <td>
-                        <a ui-sref="payment-method-tcc-detail({id:paymentInstallment.paymentMethod.id})">{{paymentInstallment.paymentMethod.id}}</a>
+                        <a ui-sref="payment-method-tcc-detail({id:paymentInstallment.paymentMethod.id})">{{paymentInstallment.paymentMethod.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="card-brand-tcc-detail({id:paymentInstallment.cardBrand.id})">{{paymentInstallment.cardBrand.id}}</a>
+                        <a ui-sref="card-brand-tcc-detail({id:paymentInstallment.cardBrand.id})">{{paymentInstallment.cardBrand.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="healthcare-tcc-detail({id:paymentInstallment.healthcare.id})">{{paymentInstallment.healthcare.id}}</a>
+                        <a ui-sref="healthcare-tcc-detail({id:paymentInstallment.healthcare.id})">{{paymentInstallment.healthcare.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="appointment-tcc-detail({id:paymentInstallment.appointment.id})">{{paymentInstallment.appointment.id}}</a>
+                        <a ui-sref="appointment-tcc-detail({id:paymentInstallment.appointment.id})">{{paymentInstallment.appointment.startDate}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

@@ -21,7 +21,8 @@
             "latestAppointmentTime": "Latest Appointment Time",
             "calendarId": "Calendar Id",
             "doctor": "Doctor",
-            "availableWeekdays": "Available Weekdays"
+            "availableWeekdays": "Available Weekdays",
+            "appointment": "Appointment"
         }
     }
 }

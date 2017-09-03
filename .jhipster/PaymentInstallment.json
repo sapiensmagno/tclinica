@@ -3,9 +3,10 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "paymentMethod",
             "otherEntityName": "paymentMethod",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "paymentInstallment"
         },
@@ -13,7 +14,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "cardBrand",
             "otherEntityName": "cardBrand",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "paymentInstallment"
         },
@@ -21,13 +22,13 @@
             "relationshipType": "many-to-one",
             "relationshipName": "healthcare",
             "otherEntityName": "healthcare",
-            "otherEntityField": "id"
+            "otherEntityField": "name"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipName": "appointment",
             "otherEntityName": "appointment",
-            "otherEntityField": "id"
+            "otherEntityField": "startDate"
         }
     ],
     "fields": [
@@ -60,6 +61,6 @@
     "entityTableName": "payment_installment",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceImpl",
     "angularJSSuffix": "TCC"
 }

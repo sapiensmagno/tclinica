@@ -2,8 +2,7 @@ package br.com.tclinica.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.Appointment;
-
-import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.service.AppointmentService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import br.com.tclinica.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -35,9 +34,10 @@ public class AppointmentResource {
 
     private static final String ENTITY_NAME = "appointment";
 
-    private final AppointmentRepository appointmentRepository;
-    public AppointmentResource(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
+    private final AppointmentService appointmentService;
+
+    public AppointmentResource(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
     /**
@@ -54,7 +54,7 @@ public class AppointmentResource {
         if (appointment.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new appointment cannot already have an ID")).body(null);
         }
-        Appointment result = appointmentRepository.save(appointment);
+        Appointment result = appointmentService.save(appointment);
         return ResponseEntity.created(new URI("/api/appointments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -76,7 +76,7 @@ public class AppointmentResource {
         if (appointment.getId() == null) {
             return createAppointment(appointment);
         }
-        Appointment result = appointmentRepository.save(appointment);
+        Appointment result = appointmentService.save(appointment);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, appointment.getId().toString()))
             .body(result);
@@ -92,7 +92,7 @@ public class AppointmentResource {
     @Timed
     public ResponseEntity<List<Appointment>> getAllAppointments(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Appointments");
-        Page<Appointment> page = appointmentRepository.findAll(pageable);
+        Page<Appointment> page = appointmentService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/appointments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -107,7 +107,7 @@ public class AppointmentResource {
     @Timed
     public ResponseEntity<Appointment> getAppointment(@PathVariable Long id) {
         log.debug("REST request to get Appointment : {}", id);
-        Appointment appointment = appointmentRepository.findOne(id);
+        Appointment appointment = appointmentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(appointment));
     }
 
@@ -121,7 +121,7 @@ public class AppointmentResource {
     @Timed
     public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
         log.debug("REST request to delete Appointment : {}", id);
-        appointmentRepository.delete(id);
+        appointmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

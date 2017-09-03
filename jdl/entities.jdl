@@ -62,7 +62,7 @@ entity Appointment (Appointment) {
 
 relationship ManyToOne {
     Appointment{Patient(nickname) required} to Patient,
-    Appointment{Doctor(nickname) required} to Doctor
+    Appointment{Doctor(nickname) required} to Doctor,
     Appointment{DoctorSchedule required} to DoctorSchedule{Appointment(startDate)}
 }
 
@@ -84,7 +84,7 @@ entity PaymentMethod {
 }
 
 relationship OneToOne {
-    PaymentInstallment{PaymentMethod(name) required} to PaymentMethod
+    PaymentInstallment{PaymentMethod(name) required} to PaymentMethod,
     PaymentInstallment{CardBrand(name)} to CardBrand
 }
 
@@ -93,7 +93,7 @@ entity Healthcare {
 }
 
 relationship OneToMany {
-    Healthcare to PaymentInstallment{Healthcare(name)}
+    Healthcare to PaymentInstallment{Healthcare(name)},
     Appointment{PaymentInstallment(installmentNumber)} to PaymentInstallment{Appointment(startDate)}
 }
 
