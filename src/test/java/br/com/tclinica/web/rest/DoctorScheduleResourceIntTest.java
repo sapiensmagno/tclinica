@@ -1,11 +1,20 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.repository.DoctorScheduleRepository;
-import br.com.tclinica.service.DoctorScheduleService;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +30,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.validation.constraints.AssertFalse;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.repository.DoctorRepository;
+import br.com.tclinica.repository.DoctorScheduleRepository;
+import br.com.tclinica.service.DoctorScheduleService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the DoctorScheduleResource REST controller.
@@ -56,10 +61,10 @@ public class DoctorScheduleResourceIntTest {
 
     private static final String DEFAULT_CALENDAR_ID = "AAAAAAAAAA";
     private static final String UPDATED_CALENDAR_ID = "BBBBBBBBBB";
-
+    
     @Autowired
     private DoctorScheduleRepository doctorScheduleRepository;
-
+    
     @Autowired
     private DoctorScheduleService doctorScheduleService;
 
@@ -78,7 +83,9 @@ public class DoctorScheduleResourceIntTest {
     private MockMvc restDoctorScheduleMockMvc;
 
     private DoctorSchedule doctorSchedule;
-
+    
+    private Doctor doctorWithASchedule;
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -108,6 +115,10 @@ public class DoctorScheduleResourceIntTest {
     @Before
     public void initTest() {
         doctorSchedule = createEntity(em);
+        
+        doctorWithASchedule= new Doctor();
+    	em.persist(doctorWithASchedule);
+        doctorSchedule.doctor(em.find(Doctor.class, doctorWithASchedule.getId()));
     }
 
     @Test
