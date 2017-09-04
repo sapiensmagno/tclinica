@@ -28,6 +28,6 @@
     "entityTableName": "doctor",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceImpl",
     "angularJSSuffix": "TCC"
 }

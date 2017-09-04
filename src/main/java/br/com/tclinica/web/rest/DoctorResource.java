@@ -2,8 +2,7 @@ package br.com.tclinica.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.Doctor;
-
-import br.com.tclinica.repository.DoctorRepository;
+import br.com.tclinica.service.DoctorService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -31,9 +29,10 @@ public class DoctorResource {
 
     private static final String ENTITY_NAME = "doctor";
 
-    private final DoctorRepository doctorRepository;
-    public DoctorResource(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
+    private final DoctorService doctorService;
+
+    public DoctorResource(DoctorService doctorService) {
+        this.doctorService = doctorService;
     }
 
     /**
@@ -50,7 +49,7 @@ public class DoctorResource {
         if (doctor.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new doctor cannot already have an ID")).body(null);
         }
-        Doctor result = doctorRepository.save(doctor);
+        Doctor result = doctorService.save(doctor);
         return ResponseEntity.created(new URI("/api/doctors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -72,7 +71,7 @@ public class DoctorResource {
         if (doctor.getId() == null) {
             return createDoctor(doctor);
         }
-        Doctor result = doctorRepository.save(doctor);
+        Doctor result = doctorService.save(doctor);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, doctor.getId().toString()))
             .body(result);
@@ -89,13 +88,10 @@ public class DoctorResource {
     public List<Doctor> getAllDoctors(@RequestParam(required = false) String filter) {
         if ("doctorschedule-is-null".equals(filter)) {
             log.debug("REST request to get all Doctors where doctorSchedule is null");
-            return StreamSupport
-                .stream(doctorRepository.findAll().spliterator(), false)
-                .filter(doctor -> doctor.getDoctorSchedule() == null)
-                .collect(Collectors.toList());
+            return doctorService.findAllWhereDoctorScheduleIsNull();
         }
         log.debug("REST request to get all Doctors");
-        return doctorRepository.findAll();
+        return doctorService.findAll();
         }
 
     /**
@@ -108,7 +104,7 @@ public class DoctorResource {
     @Timed
     public ResponseEntity<Doctor> getDoctor(@PathVariable Long id) {
         log.debug("REST request to get Doctor : {}", id);
-        Doctor doctor = doctorRepository.findOne(id);
+        Doctor doctor = doctorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(doctor));
     }
 
@@ -122,7 +118,7 @@ public class DoctorResource {
     @Timed
     public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
         log.debug("REST request to delete Doctor : {}", id);
-        doctorRepository.delete(id);
+        doctorService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
