@@ -4,6 +4,7 @@ import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.repository.AvailableWeekdaysRepository;
+import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class AvailableWeekdaysResourceIntTest {
     private AvailableWeekdaysRepository availableWeekdaysRepository;
 
     @Autowired
+    private AvailableWeekdaysService availableWeekdaysService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +67,7 @@ public class AvailableWeekdaysResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AvailableWeekdaysResource availableWeekdaysResource = new AvailableWeekdaysResource(availableWeekdaysRepository);
+        final AvailableWeekdaysResource availableWeekdaysResource = new AvailableWeekdaysResource(availableWeekdaysService);
         this.restAvailableWeekdaysMockMvc = MockMvcBuilders.standaloneSetup(availableWeekdaysResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -182,7 +186,8 @@ public class AvailableWeekdaysResourceIntTest {
     @Transactional
     public void updateAvailableWeekdays() throws Exception {
         // Initialize the database
-        availableWeekdaysRepository.saveAndFlush(availableWeekdays);
+        availableWeekdaysService.save(availableWeekdays);
+
         int databaseSizeBeforeUpdate = availableWeekdaysRepository.findAll().size();
 
         // Update the availableWeekdays
@@ -224,7 +229,8 @@ public class AvailableWeekdaysResourceIntTest {
     @Transactional
     public void deleteAvailableWeekdays() throws Exception {
         // Initialize the database
-        availableWeekdaysRepository.saveAndFlush(availableWeekdays);
+        availableWeekdaysService.save(availableWeekdays);
+
         int databaseSizeBeforeDelete = availableWeekdaysRepository.findAll().size();
 
         // Get the availableWeekdays

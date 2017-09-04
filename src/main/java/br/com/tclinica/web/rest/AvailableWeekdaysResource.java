@@ -2,8 +2,7 @@ package br.com.tclinica.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.AvailableWeekdays;
-
-import br.com.tclinica.repository.AvailableWeekdaysRepository;
+import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -29,9 +28,10 @@ public class AvailableWeekdaysResource {
 
     private static final String ENTITY_NAME = "availableWeekdays";
 
-    private final AvailableWeekdaysRepository availableWeekdaysRepository;
-    public AvailableWeekdaysResource(AvailableWeekdaysRepository availableWeekdaysRepository) {
-        this.availableWeekdaysRepository = availableWeekdaysRepository;
+    private final AvailableWeekdaysService availableWeekdaysService;
+
+    public AvailableWeekdaysResource(AvailableWeekdaysService availableWeekdaysService) {
+        this.availableWeekdaysService = availableWeekdaysService;
     }
 
     /**
@@ -48,7 +48,7 @@ public class AvailableWeekdaysResource {
         if (availableWeekdays.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new availableWeekdays cannot already have an ID")).body(null);
         }
-        AvailableWeekdays result = availableWeekdaysRepository.save(availableWeekdays);
+        AvailableWeekdays result = availableWeekdaysService.save(availableWeekdays);
         return ResponseEntity.created(new URI("/api/available-weekdays/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -70,7 +70,7 @@ public class AvailableWeekdaysResource {
         if (availableWeekdays.getId() == null) {
             return createAvailableWeekdays(availableWeekdays);
         }
-        AvailableWeekdays result = availableWeekdaysRepository.save(availableWeekdays);
+        AvailableWeekdays result = availableWeekdaysService.save(availableWeekdays);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, availableWeekdays.getId().toString()))
             .body(result);
@@ -85,7 +85,7 @@ public class AvailableWeekdaysResource {
     @Timed
     public List<AvailableWeekdays> getAllAvailableWeekdays() {
         log.debug("REST request to get all AvailableWeekdays");
-        return availableWeekdaysRepository.findAll();
+        return availableWeekdaysService.findAll();
         }
 
     /**
@@ -98,7 +98,7 @@ public class AvailableWeekdaysResource {
     @Timed
     public ResponseEntity<AvailableWeekdays> getAvailableWeekdays(@PathVariable Long id) {
         log.debug("REST request to get AvailableWeekdays : {}", id);
-        AvailableWeekdays availableWeekdays = availableWeekdaysRepository.findOne(id);
+        AvailableWeekdays availableWeekdays = availableWeekdaysService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(availableWeekdays));
     }
 
@@ -112,7 +112,7 @@ public class AvailableWeekdaysResource {
     @Timed
     public ResponseEntity<Void> deleteAvailableWeekdays(@PathVariable Long id) {
         log.debug("REST request to delete AvailableWeekdays : {}", id);
-        availableWeekdaysRepository.delete(id);
+        availableWeekdaysService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

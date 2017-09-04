@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.DoctorScheduleRepository;
+import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.service.DoctorScheduleService;
 
 /**
@@ -23,8 +24,12 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     private final Logger log = LoggerFactory.getLogger(DoctorScheduleServiceImpl.class);
 
     private final DoctorScheduleRepository doctorScheduleRepository;
-    public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository) {
+    
+    private final AvailableWeekdaysService availableWeekdaysService;
+    
+    public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository, AvailableWeekdaysService availableWeekdaysService) {
         this.doctorScheduleRepository = doctorScheduleRepository;
+        this.availableWeekdaysService = availableWeekdaysService;
     }
 
     /**
@@ -42,13 +47,18 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
         return doctorScheduleRepository.save(doctorSchedule);
     }
     
-    // when creating a new schedule, set default weekdays
+    // when creating a new schedule, set default fields and create available weekdays
     public DoctorSchedule create(DoctorSchedule doctorSchedule) {
     	doctorSchedule.setEarliestAppointmentTime(doctorSchedule.getDefaultStartTime());
     	doctorSchedule.setAppointmentsDurationMinutes(doctorSchedule.getDefaultAppointmentDuration());
     	doctorSchedule.setLatestAppointmentTime(doctorSchedule.getDefaultStartTime().plus(10, ChronoUnit.HOURS));
+    	
     	doctorScheduleRepository.save(doctorSchedule);
-    	AvailableWeekdays.getWorkingDays().forEach(wd -> wd.setDoctorSchedule(doctorSchedule));
+    	
+    	AvailableWeekdays.getWorkingDays().stream()
+    	.map(wd -> wd.doctorSchedule(doctorSchedule))
+    	.forEach(wd -> availableWeekdaysService.save(wd));
+    	
     	return doctorSchedule;
     }
     

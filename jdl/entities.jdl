@@ -98,5 +98,5 @@ relationship OneToMany {
 }
 
 paginate Appointment with pagination
-service DoctorSchedule, Appointment, PaymentInstallment, Doctor with serviceImpl
+service DoctorSchedule, Appointment, PaymentInstallment, Doctor, AvailableWeekdays with serviceImpl
 angularSuffix * with TCC

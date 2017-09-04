@@ -22,6 +22,6 @@
     "entityTableName": "available_weekdays",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
-    "angularJSSuffix": "tcc"
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
 }

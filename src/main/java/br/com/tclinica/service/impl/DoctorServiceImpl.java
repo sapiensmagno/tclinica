@@ -6,18 +6,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tclinica.domain.Authority;
-import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.Doctor;
 import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.domain.enumeration.Weekdays;
 import br.com.tclinica.repository.DoctorRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.DoctorScheduleService;
@@ -34,11 +30,11 @@ public class DoctorServiceImpl implements DoctorService{
 
     private final DoctorRepository doctorRepository;
     
-    @Resource
-    private DoctorScheduleService doctorScheduleService;
+    private final DoctorScheduleService doctorScheduleService;
         
-    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorScheduleService doctorScheduleService) {
         this.doctorRepository = doctorRepository;
+        this.doctorScheduleService = doctorScheduleService;
     }
 
     /**
