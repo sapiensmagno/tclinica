@@ -89,7 +89,7 @@
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.appointment.doctorSchedule" for="field_doctorSchedule">Doctor Schedule</label>
-            <select class="form-control" id="field_doctorSchedule" name="doctorSchedule" ng-model="vm.appointment.doctorSchedule" ng-options="doctorSchedule as doctorSchedule.id for doctorSchedule in vm.doctorschedules track by doctorSchedule.id" required>
+            <select class="form-control" id="field_doctorSchedule" name="doctorSchedule" ng-model="vm.appointment.doctorSchedule" ng-options="doctorSchedule as doctorSchedule.doctor.nickname for doctorSchedule in vm.doctorschedules track by doctorSchedule.id" required>
             </select>
         </div>
         <div ng-show="editForm.doctorSchedule.$invalid">
