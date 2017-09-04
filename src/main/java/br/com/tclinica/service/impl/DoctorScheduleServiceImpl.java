@@ -13,6 +13,7 @@ import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.DoctorScheduleRepository;
 import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.service.DoctorScheduleService;
+import br.com.tclinica.service.util.ExistenceUtil;
 
 /**
  * Service Implementation for managing DoctorSchedule.
@@ -41,7 +42,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     @Override
     public DoctorSchedule save(DoctorSchedule doctorSchedule) {
         log.debug("Request to save DoctorSchedule : {}", doctorSchedule);
-        if (!scheduleAlreadyExists(doctorSchedule)) {
+        if (ExistenceUtil.entityDoesntExist(doctorSchedule.getId(), doctorScheduleRepository)) {
         	return create(doctorSchedule);
         }
         return doctorScheduleRepository.save(doctorSchedule);
@@ -61,14 +62,6 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     	
     	return doctorSchedule;
     }
-    
-    private boolean scheduleAlreadyExists(DoctorSchedule doctorSchedule) {
-    	if (doctorSchedule.getId() == null) {
-    		return false;
-    	}
-		DoctorSchedule previousSchedule = doctorScheduleRepository.findOne(doctorSchedule.getId());
-		return (previousSchedule != null && previousSchedule.getId() == doctorSchedule.getId());
-	}
 
     /**
      *  Get all the doctorSchedules.

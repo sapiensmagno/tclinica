@@ -1,7 +1,9 @@
 package br.com.tclinica.service.impl;
 
 import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.service.util.ExistenceUtil;
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.Doctor;
 import br.com.tclinica.repository.AppointmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +36,16 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public Appointment save(Appointment appointment) {
         log.debug("Request to save Appointment : {}", appointment);
+        if (ExistenceUtil.entityDoesntExist(appointment.getId(), appointmentRepository)) {
+        	create(appointment);
+        }
         return appointmentRepository.save(appointment);
     }
-
+    
+    public Appointment create (Appointment appointment) {
+    	return null;
+    }
+    
     /**
      *  Get all the appointments.
      *

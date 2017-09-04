@@ -18,6 +18,7 @@ import br.com.tclinica.repository.DoctorRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.DoctorScheduleService;
 import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.service.util.ExistenceUtil;
 
 /**
  * Service Implementation for managing Doctor.
@@ -46,7 +47,7 @@ public class DoctorServiceImpl implements DoctorService{
     @Override
     public Doctor save(Doctor doctor) {
         log.debug("Request to save Doctor : {}", doctor);
-        if (!doctorAlreadyExists(doctor)) {
+        if (ExistenceUtil.entityDoesntExist(doctor.getId(), doctorRepository)) {
         	return create(doctor);
         }
         return doctorRepository.save(doctor);
@@ -80,14 +81,6 @@ public class DoctorServiceImpl implements DoctorService{
 		return authorities;
     }
     
-	private boolean doctorAlreadyExists(Doctor doctor) {
-		if (doctor.getId() == null) {
-			return false;
-		}
-		Doctor previousDoctor = doctorRepository.findOne(doctor.getId());
-		return (previousDoctor != null && previousDoctor.getId() == doctor.getId());
-	}
-
     /**
      *  Get all the doctors.
      *
