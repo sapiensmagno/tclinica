@@ -43,7 +43,12 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
     
     public Appointment create (Appointment appointment) {
-    	return null;
+    	// Call DoctorSchedule service to calculate an endDate from our startDate
+
+    	// check if dates are available using DoctorScheduleService 
+    	//(which will also check available weekdays for us
+    	
+    	return appointmentRepository.save(appointment);
     }
     
     /**
@@ -79,7 +84,9 @@ public class AppointmentServiceImpl implements AppointmentService{
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Appointment : {}", id);
-        appointmentRepository.delete(id);
+        log.debug("Request to delete Appointment : {}. Cancelling it.", id);
+        Appointment appointment = findOne(id);
+        appointment.setCancelled(true);
+        appointmentRepository.save(appointment);
     }
 }
