@@ -18,6 +18,8 @@ import br.com.tclinica.repository.DoctorRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.DoctorScheduleService;
 import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.mapper.UserMapper;
 import br.com.tclinica.service.util.ExistenceUtil;
 
 /**
@@ -32,10 +34,13 @@ public class DoctorServiceImpl implements DoctorService{
     private final DoctorRepository doctorRepository;
     
     private final DoctorScheduleService doctorScheduleService;
-        
-    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorScheduleService doctorScheduleService) {
+    
+    private final UserService userService;
+    
+    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorScheduleService doctorScheduleService, UserService userService) {
         this.doctorRepository = doctorRepository;
         this.doctorScheduleService = doctorScheduleService;
+        this.userService = userService;
     }
 
     /**
@@ -56,6 +61,9 @@ public class DoctorServiceImpl implements DoctorService{
     // when creating a new schedule, set default values and create a schedule
     public Doctor create (Doctor doctor) {
     	doctor.getUser().setAuthorities(defineDefaultAuthorities());
+    	UserMapper mapper = new UserMapper();
+    	this.userService.updateUser(mapper.userToUserDTO(doctor.getUser()));
+    	
     	doctor.setNickname(defineDefaultNickname(doctor));
     	doctor = doctorRepository.save(doctor);
     	
