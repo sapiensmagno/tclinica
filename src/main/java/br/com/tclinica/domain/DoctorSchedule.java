@@ -1,16 +1,29 @@
 package br.com.tclinica.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A DoctorSchedule.
@@ -227,5 +240,14 @@ public class DoctorSchedule implements Serializable {
             ", latestAppointmentTime='" + getLatestAppointmentTime() + "'" +
             ", calendarId='" + getCalendarId() + "'" +
             "}";
+    }
+    
+    public Instant getDefaultStartTime () {
+    	ZoneId defaultZone = ZoneId.systemDefault();
+    	return ZonedDateTime.of(2017, 05, 1, 8, 0, 0, 0, defaultZone).toInstant();
+    }
+    
+    public Integer getDefaultAppointmentDuration () {
+    	return 30;
     }
 }

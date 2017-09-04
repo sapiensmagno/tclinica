@@ -6,7 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import br.com.tclinica.domain.enumeration.Weekdays;
 
@@ -19,8 +21,8 @@ import br.com.tclinica.domain.enumeration.Weekdays;
 public class AvailableWeekdays implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
+        
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -95,4 +97,25 @@ public class AvailableWeekdays implements Serializable {
             ", weekday='" + getWeekday() + "'" +
             "}";
     }
+    
+public static Set<AvailableWeekdays> getWorkingDays() {
+	Set<AvailableWeekdays> workingDays = new HashSet<>();
+	AvailableWeekdays monday = new AvailableWeekdays();
+	AvailableWeekdays tuesday = new AvailableWeekdays();
+	AvailableWeekdays wednesday = new AvailableWeekdays();
+	AvailableWeekdays thursday = new AvailableWeekdays();
+	AvailableWeekdays friday = new AvailableWeekdays();
+	monday.setWeekday(Weekdays.MONDAY);
+	tuesday.setWeekday(Weekdays.TUESDAY);
+	wednesday.setWeekday(Weekdays.WEDNESDAY);
+	thursday.setWeekday(Weekdays.THURSDAY);
+	friday.setWeekday(Weekdays.FRIDAY);
+	workingDays.add(monday);
+	workingDays.add(tuesday);
+	workingDays.add(wednesday);
+	workingDays.add(thursday);
+	workingDays.add(friday);
+	return workingDays;
+		
+	}
 }
