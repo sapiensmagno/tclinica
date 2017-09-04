@@ -128,6 +128,25 @@ public class DoctorResourceIntTest {
         List<Doctor> doctorList = doctorRepository.findAll();
         assertThat(doctorList).hasSize(databaseSizeBeforeCreate);
     }
+    
+    @Test
+    @Transactional
+    public void createDoctorWithoutUser() throws Exception {
+        int databaseSizeBeforeCreate = doctorRepository.findAll().size();
+
+        // Create the Doctor without a user
+        doctor.setUser(null);
+
+        // A doctor must have a user, so this API call must fail
+        restDoctorMockMvc.perform(post("/api/doctors")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(doctor)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Doctor in the database
+        List<Doctor> doctorList = doctorRepository.findAll();
+        assertThat(doctorList).hasSize(databaseSizeBeforeCreate);
+    }
 
     @Test
     @Transactional
