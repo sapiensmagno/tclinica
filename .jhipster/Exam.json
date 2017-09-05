@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "examType",
+            "otherEntityName": "examType",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "exam"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "examStatus",
+            "otherEntityName": "examStatus",
+            "otherEntityRelationshipName": "exam"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "medicalRecord",
+            "otherEntityName": "medicalRecord",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170905182941",
+    "entityTableName": "exam",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "angularJSSuffix": "TCC"
+}

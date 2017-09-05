@@ -1,11 +1,10 @@
 package br.com.tclinica.service;
 
 import java.time.ZonedDateTime;
-
+import br.com.tclinica.domain.Appointment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import br.com.tclinica.domain.Appointment;
+import java.util.List;
 
 /**
  * Service Interface for managing Appointment.
@@ -27,6 +26,12 @@ public interface AppointmentService {
      *  @return the list of entities
      */
     Page<Appointment> findAll(Pageable pageable);
+    /**
+     *  Get all the AppointmentDTO where MedicalRecord is null.
+     *
+     *  @return the list of entities
+     */
+    List<Appointment> findAllWhereMedicalRecordIsNull();
 
     /**
      *  Get the "id" appointment.

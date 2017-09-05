@@ -1,0 +1,24 @@
+{
+    "tclinicaApp": {
+        "medicalRecord" : {
+            "home": {
+                "title": "Medical Records",
+                "createLabel": "Criar novo Medical Record",
+                "createOrEditLabel": "Criar ou editar Medical Record"
+            },
+            "created": "Um novo Medical Record foi criado com o identificador {{ param }}",
+            "updated": "Um Medical Record foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Medical Record foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Medical Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Medical Record"
+            },
+            "description": "Description",
+            "appointment": "Appointment",
+            "exam": "Exam",
+            "prescription": "Prescription"
+        }
+    }
+}

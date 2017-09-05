@@ -40,6 +40,9 @@ public class PaymentMethodResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
+
     @Autowired
     private PaymentMethodRepository paymentMethodRepository;
 
@@ -77,7 +80,8 @@ public class PaymentMethodResourceIntTest {
      */
     public static PaymentMethod createEntity(EntityManager em) {
         PaymentMethod paymentMethod = new PaymentMethod()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .inactive(DEFAULT_INACTIVE);
         return paymentMethod;
     }
 
@@ -102,6 +106,7 @@ public class PaymentMethodResourceIntTest {
         assertThat(paymentMethodList).hasSize(databaseSizeBeforeCreate + 1);
         PaymentMethod testPaymentMethod = paymentMethodList.get(paymentMethodList.size() - 1);
         assertThat(testPaymentMethod.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testPaymentMethod.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -152,7 +157,8 @@ public class PaymentMethodResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(paymentMethod.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -166,7 +172,8 @@ public class PaymentMethodResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(paymentMethod.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -187,7 +194,8 @@ public class PaymentMethodResourceIntTest {
         // Update the paymentMethod
         PaymentMethod updatedPaymentMethod = paymentMethodRepository.findOne(paymentMethod.getId());
         updatedPaymentMethod
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .inactive(UPDATED_INACTIVE);
 
         restPaymentMethodMockMvc.perform(put("/api/payment-methods")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -199,6 +207,7 @@ public class PaymentMethodResourceIntTest {
         assertThat(paymentMethodList).hasSize(databaseSizeBeforeUpdate);
         PaymentMethod testPaymentMethod = paymentMethodList.get(paymentMethodList.size() - 1);
         assertThat(testPaymentMethod.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testPaymentMethod.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test

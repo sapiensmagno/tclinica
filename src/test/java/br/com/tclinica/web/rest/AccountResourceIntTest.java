@@ -1,16 +1,21 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
-import br.com.tclinica.domain.Authority;
-import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.AuthorityRepository;
-import br.com.tclinica.repository.UserRepository;
-import br.com.tclinica.security.AuthoritiesConstants;
-import br.com.tclinica.service.MailService;
-import br.com.tclinica.service.UserService;
-import br.com.tclinica.service.dto.UserDTO;
-import br.com.tclinica.web.rest.vm.KeyAndPasswordVM;
-import br.com.tclinica.web.rest.vm.ManagedUserVM;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,19 +33,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Authority;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.AuthorityRepository;
+import br.com.tclinica.repository.UserRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.MailService;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.dto.UserDTO;
+import br.com.tclinica.web.rest.vm.KeyAndPasswordVM;
+import br.com.tclinica.web.rest.vm.ManagedUserVM;
 
 /**
  * Test class for the AccountResource REST controller.

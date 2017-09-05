@@ -41,6 +41,9 @@ public class AccountantResourceIntTest {
     private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
     private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
+
     @Autowired
     private AccountantRepository accountantRepository;
 
@@ -78,7 +81,8 @@ public class AccountantResourceIntTest {
      */
     public static Accountant createEntity(EntityManager em) {
         Accountant accountant = new Accountant()
-            .nickname(DEFAULT_NICKNAME);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
@@ -108,6 +112,7 @@ public class AccountantResourceIntTest {
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate + 1);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
         assertThat(testAccountant.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testAccountant.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -124,7 +129,7 @@ public class AccountantResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(accountant)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Accountant in the database
+        // Validate the Alice in the database
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate);
     }
@@ -140,7 +145,8 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -154,7 +160,8 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(accountant.getId().intValue()))
-            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -175,7 +182,8 @@ public class AccountantResourceIntTest {
         // Update the accountant
         Accountant updatedAccountant = accountantRepository.findOne(accountant.getId());
         updatedAccountant
-            .nickname(UPDATED_NICKNAME);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restAccountantMockMvc.perform(put("/api/accountants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -187,6 +195,7 @@ public class AccountantResourceIntTest {
         assertThat(accountantList).hasSize(databaseSizeBeforeUpdate);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
         assertThat(testAccountant.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testAccountant.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test

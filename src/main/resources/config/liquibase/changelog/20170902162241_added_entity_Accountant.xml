@@ -25,6 +25,10 @@
             <column name="nickname" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="inactive" type="bit">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>

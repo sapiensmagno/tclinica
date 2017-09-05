@@ -12,6 +12,10 @@
         {
             "fieldName": "name",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170902162246",
@@ -19,5 +23,5 @@
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "angularJSSuffix": "tcc"
+    "angularJSSuffix": "TCC"
 }

@@ -15,6 +15,10 @@
         {
             "fieldName": "nickname",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170902162241",

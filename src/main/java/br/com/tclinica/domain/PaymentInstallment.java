@@ -42,6 +42,9 @@ public class PaymentInstallment implements Serializable {
     @Column(name = "card_final_number")
     private String cardFinalNumber;
 
+    @Column(name = "cancelled")
+    private Boolean cancelled;
+
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
@@ -144,6 +147,19 @@ public class PaymentInstallment implements Serializable {
         this.cardFinalNumber = cardFinalNumber;
     }
 
+    public Boolean isCancelled() {
+        return cancelled;
+    }
+
+    public PaymentInstallment cancelled(Boolean cancelled) {
+        this.cancelled = cancelled;
+        return this;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
@@ -227,6 +243,7 @@ public class PaymentInstallment implements Serializable {
             ", installmentNumber='" + getInstallmentNumber() + "'" +
             ", checkNumber='" + getCheckNumber() + "'" +
             ", cardFinalNumber='" + getCardFinalNumber() + "'" +
+            ", cancelled='" + isCancelled() + "'" +
             "}";
     }
 }

@@ -41,6 +41,9 @@ public class PatientResourceIntTest {
     private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
     private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
+
     @Autowired
     private PatientRepository patientRepository;
 
@@ -78,7 +81,8 @@ public class PatientResourceIntTest {
      */
     public static Patient createEntity(EntityManager em) {
         Patient patient = new Patient()
-            .nickname(DEFAULT_NICKNAME);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
@@ -108,6 +112,7 @@ public class PatientResourceIntTest {
         assertThat(patientList).hasSize(databaseSizeBeforeCreate + 1);
         Patient testPatient = patientList.get(patientList.size() - 1);
         assertThat(testPatient.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testPatient.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -124,7 +129,7 @@ public class PatientResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(patient)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Patient in the database
+        // Validate the Alice in the database
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate);
     }
@@ -140,7 +145,8 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -154,7 +160,8 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(patient.getId().intValue()))
-            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -175,7 +182,8 @@ public class PatientResourceIntTest {
         // Update the patient
         Patient updatedPatient = patientRepository.findOne(patient.getId());
         updatedPatient
-            .nickname(UPDATED_NICKNAME);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restPatientMockMvc.perform(put("/api/patients")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -187,6 +195,7 @@ public class PatientResourceIntTest {
         assertThat(patientList).hasSize(databaseSizeBeforeUpdate);
         Patient testPatient = patientList.get(patientList.size() - 1);
         assertThat(testPatient.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testPatient.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test

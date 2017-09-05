@@ -53,6 +53,10 @@ public class Appointment implements Serializable {
     @NotNull
     private DoctorSchedule doctorSchedule;
 
+    @OneToOne(mappedBy = "appointment")
+    @JsonIgnore
+    private MedicalRecord medicalRecord;
+
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -166,6 +170,19 @@ public class Appointment implements Serializable {
 
     public void setDoctorSchedule(DoctorSchedule doctorSchedule) {
         this.doctorSchedule = doctorSchedule;
+    }
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public Appointment medicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+        return this;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 

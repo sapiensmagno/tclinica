@@ -1,24 +1,19 @@
 package br.com.tclinica.service.impl;
 
 import java.time.DayOfWeek;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.tclinica.domain.Appointment;
-import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.DoctorScheduleRepository;
 import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.service.DoctorScheduleService;
 import br.com.tclinica.service.util.ExistenceUtil;
-import io.jsonwebtoken.lang.Arrays;
 
 /**
  * Service Implementation for managing DoctorSchedule.
@@ -56,7 +51,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     // when creating a new schedule, set default fields and create available weekdays
     public DoctorSchedule create(DoctorSchedule doctorSchedule) {
     	doctorSchedule.setEarliestAppointmentTime(doctorSchedule.getDefaultStartTime());
-    	doctorSchedule.setAppointmentsDurationMinutes(doctorSchedule.getDefaultAppointmentDuration());
+    	doctorSchedule.setAppointmentsDurationMinutes(DoctorSchedule.getDefaultAppointmentDuration());
     	doctorSchedule.setLatestAppointmentTime(doctorSchedule.getDefaultStartTime().plus(10, ChronoUnit.HOURS));
     	final DoctorSchedule savedSchedule = doctorScheduleRepository.save(doctorSchedule);
     	

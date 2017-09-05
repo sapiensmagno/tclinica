@@ -21,6 +21,7 @@
             "installmentNumber": "Installment Number",
             "checkNumber": "Check Number",
             "cardFinalNumber": "Card Final Number",
+            "cancelled": "Cancelled",
             "paymentMethod": "Payment Method",
             "cardBrand": "Card Brand",
             "healthcare": "Healthcare",

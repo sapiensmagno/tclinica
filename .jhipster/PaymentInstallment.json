@@ -55,6 +55,10 @@
         {
             "fieldName": "cardFinalNumber",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "cancelled",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170902162245",

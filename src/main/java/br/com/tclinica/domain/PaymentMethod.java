@@ -26,6 +26,9 @@ public class PaymentMethod implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "inactive")
+    private Boolean inactive;
+
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -46,6 +49,19 @@ public class PaymentMethod implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean isInactive() {
+        return inactive;
+    }
+
+    public PaymentMethod inactive(Boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(Boolean inactive) {
+        this.inactive = inactive;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -74,6 +90,7 @@ public class PaymentMethod implements Serializable {
         return "PaymentMethod{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

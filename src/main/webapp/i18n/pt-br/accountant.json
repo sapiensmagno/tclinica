@@ -16,6 +16,7 @@
                 "title": "Accountant"
             },
             "nickname": "Nickname",
+            "inactive": "Inactive",
             "user": "User"
         }
     }

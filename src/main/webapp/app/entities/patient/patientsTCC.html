@@ -20,6 +20,7 @@
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="tclinicaApp.patient.nickname">Nickname</span></th>
+                    <th><span data-translate="tclinicaApp.patient.inactive">Inactive</span></th>
                     <th><span data-translate="tclinicaApp.patient.user">User</span></th>
                     <th></th>
                 </tr>
@@ -28,6 +29,7 @@
                 <tr ng-repeat="patient in vm.patients track by patient.id">
                     <td><a ui-sref="patient-tcc-detail({id:patient.id})">{{patient.id}}</a></td>
                     <td>{{patient.nickname}}</td>
+                    <td>{{patient.inactive}}</td>
                     <td>
                         {{patient.user.firstName}}
                     </td>

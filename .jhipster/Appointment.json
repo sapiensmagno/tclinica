@@ -20,6 +20,13 @@
             "relationshipName": "doctorSchedule",
             "otherEntityName": "doctorSchedule",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "medicalRecord",
+            "otherEntityName": "medicalRecord",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "appointment"
         }
     ],
     "fields": [

@@ -8,6 +8,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170902185438",

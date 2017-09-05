@@ -40,6 +40,9 @@ public class HealthcareResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
+
     @Autowired
     private HealthcareRepository healthcareRepository;
 
@@ -77,7 +80,8 @@ public class HealthcareResourceIntTest {
      */
     public static Healthcare createEntity(EntityManager em) {
         Healthcare healthcare = new Healthcare()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .inactive(DEFAULT_INACTIVE);
         return healthcare;
     }
 
@@ -102,6 +106,7 @@ public class HealthcareResourceIntTest {
         assertThat(healthcareList).hasSize(databaseSizeBeforeCreate + 1);
         Healthcare testHealthcare = healthcareList.get(healthcareList.size() - 1);
         assertThat(testHealthcare.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testHealthcare.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -134,7 +139,8 @@ public class HealthcareResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(healthcare.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -148,7 +154,8 @@ public class HealthcareResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(healthcare.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -169,7 +176,8 @@ public class HealthcareResourceIntTest {
         // Update the healthcare
         Healthcare updatedHealthcare = healthcareRepository.findOne(healthcare.getId());
         updatedHealthcare
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .inactive(UPDATED_INACTIVE);
 
         restHealthcareMockMvc.perform(put("/api/healthcares")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -181,6 +189,7 @@ public class HealthcareResourceIntTest {
         assertThat(healthcareList).hasSize(databaseSizeBeforeUpdate);
         Healthcare testHealthcare = healthcareList.get(healthcareList.size() - 1);
         assertThat(testHealthcare.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testHealthcare.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test

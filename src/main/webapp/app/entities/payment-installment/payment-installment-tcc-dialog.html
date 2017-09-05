@@ -57,6 +57,11 @@
                     ng-model="vm.paymentInstallment.cardFinalNumber"
                     />
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.paymentInstallment.cancelled" for="field_cancelled">Cancelled</label>
+                <input type="checkbox" name="cancelled" id="field_cancelled"
+                          ng-model="vm.paymentInstallment.cancelled"/>
+        </div>
 
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.paymentMethod" for="field_paymentMethod">Payment Method</label>

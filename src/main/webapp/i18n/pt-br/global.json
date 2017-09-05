@@ -17,6 +17,12 @@
                 "healthcareTcc": "Healthcare",
                 "cardBrandTcc": "Card Brand",
                 "paymentMethodTcc": "Payment Method",
+                "medicalRecordTcc": "Medical Record",
+                "examTcc": "Exam",
+                "examTypeTcc": "Exam Type",
+                "examStatusTcc": "Exam Status",
+                "prescriptionTcc": "Prescription",
+                "medicineTcc": "Medicine",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

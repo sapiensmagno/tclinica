@@ -2,7 +2,6 @@ package br.com.tclinica.domain;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
-import java.util.Collection;
 import java.util.Objects;
 
 import javax.persistence.Column;

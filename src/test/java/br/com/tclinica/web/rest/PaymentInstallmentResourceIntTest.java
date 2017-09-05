@@ -60,6 +60,9 @@ public class PaymentInstallmentResourceIntTest {
     private static final String DEFAULT_CARD_FINAL_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_CARD_FINAL_NUMBER = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_CANCELLED = false;
+    private static final Boolean UPDATED_CANCELLED = true;
+
     @Autowired
     private PaymentInstallmentRepository paymentInstallmentRepository;
 
@@ -105,7 +108,8 @@ public class PaymentInstallmentResourceIntTest {
             .value(DEFAULT_VALUE)
             .installmentNumber(DEFAULT_INSTALLMENT_NUMBER)
             .checkNumber(DEFAULT_CHECK_NUMBER)
-            .cardFinalNumber(DEFAULT_CARD_FINAL_NUMBER);
+            .cardFinalNumber(DEFAULT_CARD_FINAL_NUMBER)
+            .cancelled(DEFAULT_CANCELLED);
         // Add required entity
         PaymentMethod paymentMethod = PaymentMethodResourceIntTest.createEntity(em);
         em.persist(paymentMethod);
@@ -140,6 +144,7 @@ public class PaymentInstallmentResourceIntTest {
         assertThat(testPaymentInstallment.getInstallmentNumber()).isEqualTo(DEFAULT_INSTALLMENT_NUMBER);
         assertThat(testPaymentInstallment.getCheckNumber()).isEqualTo(DEFAULT_CHECK_NUMBER);
         assertThat(testPaymentInstallment.getCardFinalNumber()).isEqualTo(DEFAULT_CARD_FINAL_NUMBER);
+        assertThat(testPaymentInstallment.isCancelled()).isEqualTo(DEFAULT_CANCELLED);
     }
 
     @Test
@@ -156,7 +161,7 @@ public class PaymentInstallmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentInstallment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the PaymentInstallment in the database
+        // Validate the Alice in the database
         List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
         assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeCreate);
     }
@@ -177,7 +182,8 @@ public class PaymentInstallmentResourceIntTest {
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
             .andExpect(jsonPath("$.[*].installmentNumber").value(hasItem(DEFAULT_INSTALLMENT_NUMBER)))
             .andExpect(jsonPath("$.[*].checkNumber").value(hasItem(DEFAULT_CHECK_NUMBER.toString())))
-            .andExpect(jsonPath("$.[*].cardFinalNumber").value(hasItem(DEFAULT_CARD_FINAL_NUMBER.toString())));
+            .andExpect(jsonPath("$.[*].cardFinalNumber").value(hasItem(DEFAULT_CARD_FINAL_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].cancelled").value(hasItem(DEFAULT_CANCELLED.booleanValue())));
     }
 
     @Test
@@ -196,7 +202,8 @@ public class PaymentInstallmentResourceIntTest {
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
             .andExpect(jsonPath("$.installmentNumber").value(DEFAULT_INSTALLMENT_NUMBER))
             .andExpect(jsonPath("$.checkNumber").value(DEFAULT_CHECK_NUMBER.toString()))
-            .andExpect(jsonPath("$.cardFinalNumber").value(DEFAULT_CARD_FINAL_NUMBER.toString()));
+            .andExpect(jsonPath("$.cardFinalNumber").value(DEFAULT_CARD_FINAL_NUMBER.toString()))
+            .andExpect(jsonPath("$.cancelled").value(DEFAULT_CANCELLED.booleanValue()));
     }
 
     @Test
@@ -223,7 +230,8 @@ public class PaymentInstallmentResourceIntTest {
             .value(UPDATED_VALUE)
             .installmentNumber(UPDATED_INSTALLMENT_NUMBER)
             .checkNumber(UPDATED_CHECK_NUMBER)
-            .cardFinalNumber(UPDATED_CARD_FINAL_NUMBER);
+            .cardFinalNumber(UPDATED_CARD_FINAL_NUMBER)
+            .cancelled(UPDATED_CANCELLED);
 
         restPaymentInstallmentMockMvc.perform(put("/api/payment-installments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -240,6 +248,7 @@ public class PaymentInstallmentResourceIntTest {
         assertThat(testPaymentInstallment.getInstallmentNumber()).isEqualTo(UPDATED_INSTALLMENT_NUMBER);
         assertThat(testPaymentInstallment.getCheckNumber()).isEqualTo(UPDATED_CHECK_NUMBER);
         assertThat(testPaymentInstallment.getCardFinalNumber()).isEqualTo(UPDATED_CARD_FINAL_NUMBER);
+        assertThat(testPaymentInstallment.isCancelled()).isEqualTo(UPDATED_CANCELLED);
     }
 
     @Test

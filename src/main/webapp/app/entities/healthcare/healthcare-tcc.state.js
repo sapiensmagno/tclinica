@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/healthcare/healthcarestcc.html',
+                    templateUrl: 'app/entities/healthcare/healthcaresTCC.html',
                     controller: 'HealthcareTccController',
                     controllerAs: 'vm'
                 }
@@ -105,6 +105,7 @@
                         entity: function () {
                             return {
                                 name: null,
+                                inactive: null,
                                 id: null
                             };
                         }

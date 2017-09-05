@@ -26,6 +26,9 @@ public class Doctor implements Serializable {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "inactive")
+    private Boolean inactive;
+
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
@@ -55,6 +58,22 @@ public class Doctor implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Boolean isInactive() {
+    	if  (inactive == null) {
+    		return false;
+    	}
+        return inactive;
+    }
+
+    public Doctor inactive(Boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(Boolean inactive) {
+        this.inactive = inactive;
     }
 
     public User getUser() {
@@ -109,6 +128,7 @@ public class Doctor implements Serializable {
         return "Doctor{" +
             "id=" + getId() +
             ", nickname='" + getNickname() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

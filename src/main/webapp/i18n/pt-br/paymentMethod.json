@@ -15,7 +15,8 @@
             "detail": {
                 "title": "Payment Method"
             },
-            "name": "Name"
+            "name": "Name",
+            "inactive": "Inactive"
         }
     }
 }

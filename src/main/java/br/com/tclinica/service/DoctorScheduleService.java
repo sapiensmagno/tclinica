@@ -1,10 +1,7 @@
 package br.com.tclinica.service;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 
-import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.domain.DoctorSchedule;
 
 /**

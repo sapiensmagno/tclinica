@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "examStatus" : {
+            "home": {
+                "title": "Exam Statuses",
+                "createLabel": "Criar novo Exam Status",
+                "createOrEditLabel": "Criar ou editar Exam Status"
+            },
+            "created": "Um novo Exam Status foi criado com o identificador {{ param }}",
+            "updated": "Um Exam Status foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Exam Status foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Exam Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Exam Status"
+            },
+            "name": "Name",
+            "creationDate": "Creation Date",
+            "exam": "Exam"
+        }
+    }
+}

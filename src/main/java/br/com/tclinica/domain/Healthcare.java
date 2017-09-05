@@ -27,6 +27,9 @@ public class Healthcare implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "inactive")
+    private Boolean inactive;
+
     @OneToMany(mappedBy = "healthcare")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -52,6 +55,19 @@ public class Healthcare implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean isInactive() {
+        return inactive;
+    }
+
+    public Healthcare inactive(Boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(Boolean inactive) {
+        this.inactive = inactive;
     }
 
     public Set<PaymentInstallment> getPaymentInstallments() {
@@ -105,6 +121,7 @@ public class Healthcare implements Serializable {
         return "Healthcare{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

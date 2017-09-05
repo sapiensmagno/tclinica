@@ -1,13 +1,22 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static br.com.tclinica.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Appointment;
-import br.com.tclinica.domain.Patient;
-import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.repository.AppointmentRepository;
-import br.com.tclinica.service.AppointmentService;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,18 +32,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static br.com.tclinica.web.rest.TestUtil.sameInstant;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the AppointmentResource REST controller.

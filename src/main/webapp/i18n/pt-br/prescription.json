@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "prescription" : {
+            "home": {
+                "title": "Prescriptions",
+                "createLabel": "Criar novo Prescription",
+                "createOrEditLabel": "Criar ou editar Prescription"
+            },
+            "created": "Um novo Prescription foi criado com o identificador {{ param }}",
+            "updated": "Um Prescription foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Prescription foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Prescription {{ id }}?"
+            },
+            "detail": {
+                "title": "Prescription"
+            },
+            "number": "Number",
+            "medicine": "Medicine",
+            "medicalRecord": "Medical Record"
+        }
+    }
+}

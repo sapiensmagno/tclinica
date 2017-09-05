@@ -105,6 +105,7 @@
                         entity: function () {
                             return {
                                 nickname: null,
+                                inactive: null,
                                 id: null
                             };
                         }

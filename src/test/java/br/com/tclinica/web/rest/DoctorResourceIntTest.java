@@ -42,6 +42,9 @@ public class DoctorResourceIntTest {
     private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
     private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
+
     @Autowired
     private DoctorRepository doctorRepository;
 
@@ -82,7 +85,8 @@ public class DoctorResourceIntTest {
      */
     public static Doctor createEntity(EntityManager em) {
         Doctor doctor = new Doctor()
-            .nickname(DEFAULT_NICKNAME);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
@@ -112,6 +116,7 @@ public class DoctorResourceIntTest {
         assertThat(doctorList).hasSize(databaseSizeBeforeCreate + 1);
         Doctor testDoctor = doctorList.get(doctorList.size() - 1);
         assertThat(testDoctor.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testDoctor.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -144,7 +149,8 @@ public class DoctorResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(doctor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -158,7 +164,8 @@ public class DoctorResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(doctor.getId().intValue()))
-            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -180,7 +187,8 @@ public class DoctorResourceIntTest {
         // Update the doctor
         Doctor updatedDoctor = doctorRepository.findOne(doctor.getId());
         updatedDoctor
-            .nickname(UPDATED_NICKNAME);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restDoctorMockMvc.perform(put("/api/doctors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -192,6 +200,7 @@ public class DoctorResourceIntTest {
         assertThat(doctorList).hasSize(databaseSizeBeforeUpdate);
         Doctor testDoctor = doctorList.get(doctorList.size() - 1);
         assertThat(testDoctor.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testDoctor.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test

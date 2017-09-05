@@ -25,6 +25,9 @@ public class Accountant implements Serializable {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "inactive")
+    private Boolean inactive;
+
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
@@ -50,6 +53,19 @@ public class Accountant implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Boolean isInactive() {
+        return inactive;
+    }
+
+    public Accountant inactive(Boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(Boolean inactive) {
+        this.inactive = inactive;
     }
 
     public User getUser() {
@@ -91,6 +107,7 @@ public class Accountant implements Serializable {
         return "Accountant{" +
             "id=" + getId() +
             ", nickname='" + getNickname() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

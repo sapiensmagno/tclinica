@@ -19,6 +19,11 @@
                     ng-model="vm.patient.nickname"
                     />
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="tclinicaApp.patient.inactive" for="field_inactive">Inactive</label>
+                <input type="checkbox" name="inactive" id="field_inactive"
+                          ng-model="vm.patient.inactive"/>
+        </div>
 
         <div class="form-group">
             <label data-translate="tclinicaApp.patient.user" for="field_user">User</label>

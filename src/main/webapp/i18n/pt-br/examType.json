@@ -1,0 +1,21 @@
+{
+    "tclinicaApp": {
+        "examType" : {
+            "home": {
+                "title": "Exam Types",
+                "createLabel": "Criar novo Exam Type",
+                "createOrEditLabel": "Criar ou editar Exam Type"
+            },
+            "created": "Um novo Exam Type foi criado com o identificador {{ param }}",
+            "updated": "Um Exam Type foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Exam Type foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Exam Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Exam Type"
+            },
+            "name": "Name"
+        }
+    }
+}

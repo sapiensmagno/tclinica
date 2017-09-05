@@ -110,6 +110,7 @@
                                 installmentNumber: null,
                                 checkNumber: null,
                                 cardFinalNumber: null,
+                                cancelled: null,
                                 id: null
                             };
                         }

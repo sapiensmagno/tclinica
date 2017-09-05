@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "exam" : {
+            "home": {
+                "title": "Exams",
+                "createLabel": "Criar novo Exam",
+                "createOrEditLabel": "Criar ou editar Exam"
+            },
+            "created": "Um novo Exam foi criado com o identificador {{ param }}",
+            "updated": "Um Exam foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Exam foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Exam {{ id }}?"
+            },
+            "detail": {
+                "title": "Exam"
+            },
+            "examType": "Exam Type",
+            "examStatus": "Exam Status",
+            "medicalRecord": "Medical Record"
+        }
+    }
+}

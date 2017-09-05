@@ -45,6 +45,10 @@
             <column name="card_final_number" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="cancelled" type="bit">
+                <constraints nullable="true" />
+            </column>
             <column name="payment_method_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>            <column name="card_brand_id" type="bigint">

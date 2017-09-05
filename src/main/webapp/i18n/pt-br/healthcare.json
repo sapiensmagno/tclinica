@@ -16,6 +16,7 @@
                 "title": "Healthcare"
             },
             "name": "Name",
+            "inactive": "Inactive",
             "paymentInstallment": "Payment Installment"
         }
     }

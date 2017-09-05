@@ -5,9 +5,9 @@
         .module('tclinicaApp')
         .controller('AppointmentTccDialogController', AppointmentTccDialogController);
 
-    AppointmentTccDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Appointment', 'PaymentInstallment', 'Patient', 'DoctorSchedule'];
+    AppointmentTccDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Appointment', 'PaymentInstallment', 'Patient', 'DoctorSchedule', 'MedicalRecord'];
 
-    function AppointmentTccDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Appointment, PaymentInstallment, Patient, DoctorSchedule) {
+    function AppointmentTccDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Appointment, PaymentInstallment, Patient, DoctorSchedule, MedicalRecord) {
         var vm = this;
 
         vm.appointment = entity;
@@ -18,6 +18,7 @@
         vm.paymentinstallments = PaymentInstallment.query();
         vm.patients = Patient.query();
         vm.doctorschedules = DoctorSchedule.query();
+        vm.medicalrecords = MedicalRecord.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

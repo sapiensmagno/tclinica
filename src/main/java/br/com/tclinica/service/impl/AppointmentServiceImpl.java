@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.repository.AppointmentRepository;
 import br.com.tclinica.service.AppointmentService;
-import br.com.tclinica.service.DoctorScheduleService;
-
 
 /**
  * Service Implementation for managing Appointment.
@@ -29,11 +29,9 @@ public class AppointmentServiceImpl implements AppointmentService{
     private final Logger log = LoggerFactory.getLogger(AppointmentServiceImpl.class);
 
     private final AppointmentRepository appointmentRepository;
-    private final DoctorScheduleService doctorScheduleService;
-    
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, DoctorScheduleService doctorScheduleService) {
+        
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
-        this.doctorScheduleService = doctorScheduleService;
     }
 
     /**
@@ -59,6 +57,20 @@ public class AppointmentServiceImpl implements AppointmentService{
     public Page<Appointment> findAll(Pageable pageable) {
         log.debug("Request to get all Appointments");
         return appointmentRepository.findAll(pageable);
+    }
+
+
+    /**
+     *  get all the appointments where MedicalRecord is null.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<Appointment> findAllWhereMedicalRecordIsNull() {
+        log.debug("Request to get all appointments where MedicalRecord is null");
+        return StreamSupport
+            .stream(appointmentRepository.findAll().spliterator(), false)
+            .filter(appointment -> appointment.getMedicalRecord() == null)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -126,6 +138,5 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public ZonedDateTime calculateEnd (Appointment appointment) {
     	return appointment.getStartDate().plusMinutes(appointment.getDoctorSchedule().getAppointmentsDurationMinutes());
-}
-    
+    }
 }

@@ -25,6 +25,7 @@
                     <th><span data-translate="tclinicaApp.paymentInstallment.installmentNumber">Installment Number</span></th>
                     <th><span data-translate="tclinicaApp.paymentInstallment.checkNumber">Check Number</span></th>
                     <th><span data-translate="tclinicaApp.paymentInstallment.cardFinalNumber">Card Final Number</span></th>
+                    <th><span data-translate="tclinicaApp.paymentInstallment.cancelled">Cancelled</span></th>
                     <th><span data-translate="tclinicaApp.paymentInstallment.paymentMethod">Payment Method</span></th>
                     <th><span data-translate="tclinicaApp.paymentInstallment.cardBrand">Card Brand</span></th>
                     <th><span data-translate="tclinicaApp.paymentInstallment.healthcare">Healthcare</span></th>
@@ -41,6 +42,7 @@
                     <td>{{paymentInstallment.installmentNumber}}</td>
                     <td>{{paymentInstallment.checkNumber}}</td>
                     <td>{{paymentInstallment.cardFinalNumber}}</td>
+                    <td>{{paymentInstallment.cancelled}}</td>
                     <td>
                         <a ui-sref="payment-method-tcc-detail({id:paymentInstallment.paymentMethod.id})">{{paymentInstallment.paymentMethod.name}}</a>
                     </td>
