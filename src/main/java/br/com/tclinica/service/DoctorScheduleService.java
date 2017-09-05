@@ -1,7 +1,11 @@
 package br.com.tclinica.service;
 
-import br.com.tclinica.domain.DoctorSchedule;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Set;
+
+import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.DoctorSchedule;
 
 /**
  * Service Interface for managing DoctorSchedule.
@@ -37,4 +41,6 @@ public interface DoctorScheduleService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+	Set<Appointment> listAppointments(DoctorSchedule doctorSchedule, ZonedDateTime startDate, ZonedDateTime endDate);
 }

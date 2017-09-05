@@ -51,8 +51,12 @@ public class AppointmentResource {
     @Timed
     public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to save Appointment : {}", appointment);
+        appointment.setEndDate(appointmentService.calculateEnd(appointment));
         if (appointment.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new appointment cannot already have an ID")).body(null);
+        }
+        if (!appointmentService.isValid(appointment)) {
+        	return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "Appointment invalid", "Appointment is invalid and cannot be created.")).body(null);
         }
         Appointment result = appointmentService.save(appointment);
         return ResponseEntity.created(new URI("/api/appointments/" + result.getId()))
@@ -75,6 +79,9 @@ public class AppointmentResource {
         log.debug("REST request to update Appointment : {}", appointment);
         if (appointment.getId() == null) {
             return createAppointment(appointment);
+        }
+        if (!appointmentService.isValid(appointment)) {
+        	return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "invalid", "Appointment is invalid and cannot be created.")).body(null);
         }
         Appointment result = appointmentService.save(appointment);
         return ResponseEntity.ok()

@@ -1,13 +1,16 @@
 package br.com.tclinica.service.impl;
 
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.DoctorScheduleRepository;
@@ -98,4 +101,10 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
         log.debug("Request to delete DoctorSchedule : {}", id);
         doctorScheduleRepository.delete(id);
     }
+
+	@Override
+	public Set<Appointment> listAppointments(DoctorSchedule doctorSchedule, ZonedDateTime startDate, ZonedDateTime endDate) {
+		doctorSchedule = doctorScheduleRepository.findOne(doctorSchedule.getId());
+		return null;
+	}
 }

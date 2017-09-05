@@ -2,7 +2,6 @@ package br.com.tclinica.domain;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -243,8 +242,9 @@ public class DoctorSchedule implements Serializable {
     }
     
     public Instant getDefaultStartTime () {
+    	//TODO work with LocalTime    	
     	ZoneId defaultZone = ZoneId.systemDefault();
-    	return ZonedDateTime.of(2017, 05, 1, 8, 0, 0, 0, defaultZone).toInstant();
+    	return ZonedDateTime.of(1900, 01, 1, 8, 0, 0, 0, defaultZone).toInstant();
     }
     
     public Integer getDefaultAppointmentDuration () {
