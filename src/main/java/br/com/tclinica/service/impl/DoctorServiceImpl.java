@@ -86,6 +86,9 @@ public class DoctorServiceImpl implements DoctorService{
 		Authority authority = new Authority();
 		authority.setName(AuthoritiesConstants.DOCTOR);
 		authorities.add(authority);
+		authority = new Authority();
+		authority.setName(AuthoritiesConstants.USER);
+		authorities.add(authority);
 		return authorities;
     }
     
