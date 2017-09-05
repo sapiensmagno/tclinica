@@ -1,5 +1,6 @@
 package br.com.tclinica.service.impl;
 
+import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -17,6 +18,7 @@ import br.com.tclinica.repository.DoctorScheduleRepository;
 import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.service.DoctorScheduleService;
 import br.com.tclinica.service.util.ExistenceUtil;
+import io.jsonwebtoken.lang.Arrays;
 
 /**
  * Service Implementation for managing DoctorSchedule.
@@ -56,16 +58,17 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     	doctorSchedule.setEarliestAppointmentTime(doctorSchedule.getDefaultStartTime());
     	doctorSchedule.setAppointmentsDurationMinutes(doctorSchedule.getDefaultAppointmentDuration());
     	doctorSchedule.setLatestAppointmentTime(doctorSchedule.getDefaultStartTime().plus(10, ChronoUnit.HOURS));
+    	final DoctorSchedule savedSchedule = doctorScheduleRepository.save(doctorSchedule);
     	
-    	doctorScheduleRepository.save(doctorSchedule);
+    	java.util.Arrays.asList(DayOfWeek.values())
+    	.stream()
+    	.limit(DayOfWeek.FRIDAY.getValue())
+    	.map(day -> availableWeekdaysService.createInstance(day, savedSchedule))
+    	.forEach(availableDay -> availableWeekdaysService.save(availableDay));
     	
-    	AvailableWeekdays.getWorkingDays().stream()
-    	.map(wd -> wd.doctorSchedule(doctorSchedule))
-    	.forEach(wd -> availableWeekdaysService.save(wd));
-    	
-    	return doctorSchedule;
+    	return savedSchedule;
     }
-
+    
     /**
      *  Get all the doctorSchedules.
      *
@@ -101,10 +104,4 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
         log.debug("Request to delete DoctorSchedule : {}", id);
         doctorScheduleRepository.delete(id);
     }
-
-	@Override
-	public Set<Appointment> listAppointments(DoctorSchedule doctorSchedule, ZonedDateTime startDate, ZonedDateTime endDate) {
-		doctorSchedule = doctorScheduleRepository.findOne(doctorSchedule.getId());
-		return null;
-	}
 }

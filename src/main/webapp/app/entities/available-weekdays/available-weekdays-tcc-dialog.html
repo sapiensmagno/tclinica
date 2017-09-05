@@ -15,19 +15,17 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.availableWeekdays.weekday" for="field_weekday">Weekday</label>
-            <select class="form-control" name="weekday" ng-model="vm.availableWeekdays.weekday" id="field_weekday" required>
-                <option value="SUNDAY" data-translate="tclinicaApp.Weekdays.SUNDAY">SUNDAY</option>
-                <option value="MONDAY" data-translate="tclinicaApp.Weekdays.MONDAY">MONDAY</option>
-                <option value="TUESDAY" data-translate="tclinicaApp.Weekdays.TUESDAY">TUESDAY</option>
-                <option value="WEDNESDAY" data-translate="tclinicaApp.Weekdays.WEDNESDAY">WEDNESDAY</option>
-                <option value="THURSDAY" data-translate="tclinicaApp.Weekdays.THURSDAY">THURSDAY</option>
-                <option value="FRIDAY" data-translate="tclinicaApp.Weekdays.FRIDAY">FRIDAY</option>
-                <option value="SATURDAY" data-translate="tclinicaApp.Weekdays.SATURDAY">SATURDAY</option>
-            </select>
+            <input type="number" class="form-control" name="weekday" id="field_weekday"
+                    ng-model="vm.availableWeekdays.weekday"
+                    required/>
             <div ng-show="editForm.weekday.$invalid">
                 <p class="help-block"
                     ng-show="editForm.weekday.$error.required" data-translate="entity.validation.required">
                     This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.weekday.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
                 </p>
             </div>
         </div>

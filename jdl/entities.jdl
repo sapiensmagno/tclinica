@@ -40,17 +40,7 @@ relationship OneToMany {
 }
 
 entity AvailableWeekdays {
-    weekday Weekdays required
-}
-
-enum Weekdays {
-    SUNDAY,
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY
+    weekday Integer required
 }
 
 entity Appointment (Appointment) {
@@ -62,7 +52,6 @@ entity Appointment (Appointment) {
 
 relationship ManyToOne {
     Appointment{Patient(nickname) required} to Patient,
-    Appointment{Doctor(nickname) required} to Doctor,
     Appointment{DoctorSchedule required} to DoctorSchedule{Appointment(startDate)}
 }
 

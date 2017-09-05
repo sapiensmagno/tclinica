@@ -11,8 +11,7 @@
     "fields": [
         {
             "fieldName": "weekday",
-            "fieldType": "Weekdays",
-            "fieldValues": "SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]

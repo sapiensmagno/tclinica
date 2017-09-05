@@ -1,26 +1,16 @@
 package br.com.tclinica.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
 
 /**
  * A Appointment.
@@ -31,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -58,10 +48,6 @@ public class Appointment implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private Patient patient;
-
-    @ManyToOne(optional = false)
-    @NotNull
-    private Doctor doctor;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -167,19 +153,6 @@ public class Appointment implements Serializable {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public Appointment doctor(Doctor doctor) {
-        this.doctor = doctor;
-        return this;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
     }
 
     public DoctorSchedule getDoctorSchedule() {

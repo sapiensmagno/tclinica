@@ -17,13 +17,6 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "doctor",
-            "otherEntityName": "doctor",
-            "otherEntityField": "nickname"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
             "relationshipName": "doctorSchedule",
             "otherEntityName": "doctorSchedule",
             "otherEntityField": "id"

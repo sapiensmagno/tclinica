@@ -2,12 +2,14 @@ package br.com.tclinica.service.impl;
 
 import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.repository.AvailableWeekdaysRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 /**
@@ -70,5 +72,13 @@ public class AvailableWeekdaysServiceImpl implements AvailableWeekdaysService{
     public void delete(Long id) {
         log.debug("Request to delete AvailableWeekdays : {}", id);
         availableWeekdaysRepository.delete(id);
+    }
+    
+    @Override
+    public AvailableWeekdays createInstance (DayOfWeek day, DoctorSchedule doctorSchedule) {
+    	AvailableWeekdays availableDay = new AvailableWeekdays();
+    	availableDay.setWeekday(day);
+    	availableDay.setDoctorSchedule(doctorSchedule);
+    	return availableDay;
     }
 }

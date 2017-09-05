@@ -242,12 +242,12 @@ public class DoctorSchedule implements Serializable {
     }
     
     public Instant getDefaultStartTime () {
-    	//TODO work with LocalTime    	
+    	//TODO work with LocalTime instead of Instant 	
     	ZoneId defaultZone = ZoneId.systemDefault();
-    	return ZonedDateTime.of(1900, 01, 1, 8, 0, 0, 0, defaultZone).toInstant();
+    	return ZonedDateTime.of(2000, 01, 1, 8, 0, 0, 0, defaultZone).toInstant();
     }
     
-    public Integer getDefaultAppointmentDuration () {
+    public static Integer getDefaultAppointmentDuration () {
     	return 30;
     }
 }

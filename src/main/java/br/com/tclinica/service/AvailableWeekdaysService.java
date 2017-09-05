@@ -1,6 +1,9 @@
 package br.com.tclinica.service;
 
 import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.domain.DoctorSchedule;
+
+import java.time.DayOfWeek;
 import java.util.List;
 
 /**
@@ -37,4 +40,6 @@ public interface AvailableWeekdaysService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+	AvailableWeekdays createInstance(DayOfWeek day, DoctorSchedule doctorSchedule);
 }

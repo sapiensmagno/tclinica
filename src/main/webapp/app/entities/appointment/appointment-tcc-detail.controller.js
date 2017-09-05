@@ -5,9 +5,9 @@
         .module('tclinicaApp')
         .controller('AppointmentTccDetailController', AppointmentTccDetailController);
 
-    AppointmentTccDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Appointment', 'PaymentInstallment', 'Patient', 'Doctor', 'DoctorSchedule'];
+    AppointmentTccDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Appointment', 'PaymentInstallment', 'Patient', 'DoctorSchedule'];
 
-    function AppointmentTccDetailController($scope, $rootScope, $stateParams, previousState, entity, Appointment, PaymentInstallment, Patient, Doctor, DoctorSchedule) {
+    function AppointmentTccDetailController($scope, $rootScope, $stateParams, previousState, entity, Appointment, PaymentInstallment, Patient, DoctorSchedule) {
         var vm = this;
 
         vm.appointment = entity;

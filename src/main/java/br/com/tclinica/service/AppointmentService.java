@@ -1,11 +1,11 @@
 package br.com.tclinica.service;
 
-import br.com.tclinica.domain.Appointment;
-
 import java.time.ZonedDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import br.com.tclinica.domain.Appointment;
 
 /**
  * Service Interface for managing Appointment.
@@ -42,8 +42,8 @@ public interface AppointmentService {
      *  @param id the id of the entity
      */
     void delete(Long id);
-
-	boolean isValid(Appointment appointment);
-
-	ZonedDateTime calculateEnd(Appointment appointment);
+    
+    boolean isValid(Appointment appointment);
+    
+    ZonedDateTime calculateEnd(Appointment appointment);
 }

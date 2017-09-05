@@ -1,9 +1,9 @@
 package br.com.tclinica.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.time.DayOfWeek;
+import java.util.Collection;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +19,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import br.com.tclinica.domain.enumeration.Weekdays;
-
 /**
  * A AvailableWeekdays.
  */
@@ -30,15 +28,15 @@ import br.com.tclinica.domain.enumeration.Weekdays;
 public class AvailableWeekdays implements Serializable {
 
     private static final long serialVersionUID = 1L;
-        
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "weekday", nullable = false)
-    private Weekdays weekday;
+    @Enumerated(EnumType.ORDINAL)
+    private DayOfWeek weekday;
 
     @ManyToOne
     private DoctorSchedule doctorSchedule;
@@ -52,16 +50,16 @@ public class AvailableWeekdays implements Serializable {
         this.id = id;
     }
 
-    public Weekdays getWeekday() {
+    public DayOfWeek getWeekday() {
         return weekday;
     }
 
-    public AvailableWeekdays weekday(Weekdays weekday) {
+    public AvailableWeekdays weekday(DayOfWeek weekday) {
         this.weekday = weekday;
         return this;
     }
 
-    public void setWeekday(Weekdays weekday) {
+    public void setWeekday(DayOfWeek weekday) {
         this.weekday = weekday;
     }
 
@@ -106,25 +104,4 @@ public class AvailableWeekdays implements Serializable {
             ", weekday='" + getWeekday() + "'" +
             "}";
     }
-    
-    public static Set<AvailableWeekdays> getWorkingDays() {
-		Set<AvailableWeekdays> workingDays = new HashSet<>();
-		AvailableWeekdays monday = new AvailableWeekdays();
-		AvailableWeekdays tuesday = new AvailableWeekdays();
-		AvailableWeekdays wednesday = new AvailableWeekdays();
-		AvailableWeekdays thursday = new AvailableWeekdays();
-		AvailableWeekdays friday = new AvailableWeekdays();
-		monday.setWeekday(Weekdays.MONDAY);
-		tuesday.setWeekday(Weekdays.TUESDAY);
-		wednesday.setWeekday(Weekdays.WEDNESDAY);
-		thursday.setWeekday(Weekdays.THURSDAY);
-		friday.setWeekday(Weekdays.FRIDAY);
-		workingDays.add(monday);
-		workingDays.add(tuesday);
-		workingDays.add(wednesday);
-		workingDays.add(thursday);
-		workingDays.add(friday);
-		
-		return workingDays;		
-	}
 }

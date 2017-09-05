@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class DoctorScheduleResourceIntTest {
 
-    private static final Integer DEFAULT_APPOINTMENTS_DURATION_MINUTES = 1;
+    private static final Integer DEFAULT_APPOINTMENTS_DURATION_MINUTES = DoctorSchedule.getDefaultAppointmentDuration();
     private static final Integer UPDATED_APPOINTMENTS_DURATION_MINUTES = 2;
 
     private static final Integer DEFAULT_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES = 1;

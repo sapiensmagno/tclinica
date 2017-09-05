@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.time.DayOfWeek;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +31,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import br.com.tclinica.domain.enumeration.Weekdays;
 /**
  * Test class for the AvailableWeekdaysResource REST controller.
  *
@@ -39,8 +40,8 @@ import br.com.tclinica.domain.enumeration.Weekdays;
 @SpringBootTest(classes = TclinicaApp.class)
 public class AvailableWeekdaysResourceIntTest {
 
-    private static final Weekdays DEFAULT_WEEKDAY = Weekdays.SUNDAY;
-    private static final Weekdays UPDATED_WEEKDAY = Weekdays.MONDAY;
+    private static final DayOfWeek DEFAULT_WEEKDAY = DayOfWeek.of(1);
+    private static final DayOfWeek UPDATED_WEEKDAY = DayOfWeek.of(2);
 
     @Autowired
     private AvailableWeekdaysRepository availableWeekdaysRepository;
@@ -157,7 +158,7 @@ public class AvailableWeekdaysResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(availableWeekdays.getId().intValue())))
-            .andExpect(jsonPath("$.[*].weekday").value(hasItem(DEFAULT_WEEKDAY.toString())));
+            .andExpect(jsonPath("$.[*].weekday").value(hasItem(DEFAULT_WEEKDAY)));
     }
 
     @Test
@@ -171,7 +172,7 @@ public class AvailableWeekdaysResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(availableWeekdays.getId().intValue()))
-            .andExpect(jsonPath("$.weekday").value(DEFAULT_WEEKDAY.toString()));
+            .andExpect(jsonPath("$.weekday").value(DEFAULT_WEEKDAY));
     }
 
     @Test

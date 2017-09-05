@@ -41,6 +41,4 @@ public interface DoctorScheduleService {
      *  @param id the id of the entity
      */
     void delete(Long id);
-
-	Set<Appointment> listAppointments(DoctorSchedule doctorSchedule, ZonedDateTime startDate, ZonedDateTime endDate);
 }

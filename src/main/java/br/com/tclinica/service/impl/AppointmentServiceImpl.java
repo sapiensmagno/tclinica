@@ -3,7 +3,7 @@ package br.com.tclinica.service.impl;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         log.debug("Request to save Appointment : {}", appointment);
         return appointmentRepository.save(appointment);
     }
-    
+
     /**
      *  Get all the appointments.
      *
@@ -81,7 +81,7 @@ public class AppointmentServiceImpl implements AppointmentService{
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Appointment : {}. Cancelling it.", id);
+    	log.debug("Request to delete Appointment : {}. Cancelling it.", id);
         Appointment appointment = findOne(id);
         appointment.setCancelled(true);
         appointmentRepository.save(appointment);
@@ -91,22 +91,23 @@ public class AppointmentServiceImpl implements AppointmentService{
     public boolean isValid(Appointment appointment) {
     	// Fail fast: using short-circuit to avoid trying all scenarios
     	boolean valid;
-    	Set<Appointment> existingAppointments;
+    	List<Appointment> existingAppointments;
     	Predicate<Appointment> appointmentsDontCrash;    	
     	// Does start and end make sense?
     	valid = appointment.getStartDate().isBefore(appointment.getEndDate());
     	// Is it too early?
-    	LocalTime appointmentStartTime = appointment.getStartDate().toLocalTime();
+    	LocalTime appointmentStartTime = appointment.getStartDate().withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
     	LocalTime earliestAppointmentPossible = LocalTime.from(appointment.getDoctorSchedule().getEarliestAppointmentTime().atZone(ZoneId.systemDefault()));
     	valid = valid && appointmentStartTime.isAfter(earliestAppointmentPossible);
     	// Is it too late?
-    	LocalTime appointmentEndTime = appointment.getEndDate().toLocalTime();
+    	LocalTime appointmentEndTime = appointment.getEndDate().withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
     	LocalTime latestAppointmentPossible = LocalTime.from(appointment.getDoctorSchedule().getLatestAppointmentTime().atZone(ZoneId.systemDefault()));
     	valid = valid && appointmentEndTime.isBefore(latestAppointmentPossible);
     	// TODO Is it an available weekday? (eliminate Weekdays and work with java's DayOfWeek)
-    	// Load doctor schedule to get its appointments
-    	appointment.setDoctorSchedule(doctorScheduleService.findOne(appointment.getDoctorSchedule().getId()));
-    	existingAppointments = appointment.getDoctorSchedule().getAppointments();
+
+    	// Load appointments in this schedule
+    	existingAppointments = appointmentRepository.findByDoctorSchedule(appointment.getDoctorSchedule());
+    	
     	// Is there a crash?
     	appointmentsDontCrash = existingAppointment ->
 			(appointment.getStartDate().isAfter(existingAppointment.getEndDate()) || 
@@ -117,7 +118,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     	valid = valid && 
     			(existingAppointments.isEmpty() ||
     			existingAppointments.stream()
-    			.filter(ap -> !ap.isCancelled())
+    			.filter(aptmnt -> !aptmnt.isCancelled())
     			.allMatch(appointmentsDontCrash));
     	return valid;
     }
@@ -125,5 +126,6 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public ZonedDateTime calculateEnd (Appointment appointment) {
     	return appointment.getStartDate().plusMinutes(appointment.getDoctorSchedule().getAppointmentsDurationMinutes());
-    }
+}
+    
 }

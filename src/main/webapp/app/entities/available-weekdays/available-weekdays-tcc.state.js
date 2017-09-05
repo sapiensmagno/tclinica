@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/available-weekdays/available-weekdaystcc.html',
+                    templateUrl: 'app/entities/available-weekdays/available-weekdaysTCC.html',
                     controller: 'AvailableWeekdaysTccController',
                     controllerAs: 'vm'
                 }
@@ -26,7 +26,6 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('availableWeekdays');
-                    $translatePartialLoader.addPart('weekdays');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -49,7 +48,6 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('availableWeekdays');
-                    $translatePartialLoader.addPart('weekdays');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'AvailableWeekdays', function($stateParams, AvailableWeekdays) {
