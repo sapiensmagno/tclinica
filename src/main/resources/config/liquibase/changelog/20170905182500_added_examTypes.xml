@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Add entries for medical tests on table ExamType
+    -->
+    <changeSet author="sapiensmagno" id="insertExamTypes-00">
+        <insert tableName="exam_type">
+            <column name="name">hemogram</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">X-ray</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">electrocardiogram</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">blood glucose</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">calcium</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">blood urea nitrogen</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">albumin-to-creatinine ratio</column>
+        </insert>
+        <insert tableName="exam_type">
+            <column name="name">glomerular filtration rate</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
