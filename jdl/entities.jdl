@@ -2,15 +2,18 @@
 entity User
 
 entity Doctor {
-    nickname String
+    nickname String,
+    inactive Boolean
 }
 
 entity Patient {
-    nickname String
+    nickname String,
+    inactive Boolean
 }
 
 entity Accountant {
-    nickname String
+    nickname String,
+    inactive Boolean
 }
 
 relationship OneToOne {
@@ -62,6 +65,7 @@ entity PaymentInstallment {
     installmentNumber Integer,
     checkNumber String,
     cardFinalNumber String,
+    cancelled Boolean
 }
 
 entity CardBrand {
@@ -69,7 +73,8 @@ entity CardBrand {
 }
 
 entity PaymentMethod {
-    name String required
+    name String required,
+    inactive Boolean
 }
 
 relationship OneToOne {
@@ -78,7 +83,8 @@ relationship OneToOne {
 }
 
 entity Healthcare {
-    name String
+    name String,
+    inactive Boolean
 }
 
 relationship OneToMany {
@@ -86,6 +92,54 @@ relationship OneToMany {
     Appointment{PaymentInstallment(installmentNumber)} to PaymentInstallment{Appointment(startDate)}
 }
 
-paginate Appointment with pagination
+entity MedicalRecord {
+    description String
+}
+
+relationship OneToMany {
+    MedicalRecord{Exam(ExamType)} to Exam{MedicalRecord},
+    MedicalRecord{Prescription(number)} to Prescription{MedicalRecord}
+}
+
+relationship OneToOne {
+    MedicalRecord{Appointment(startDate)} to Appointment{MedicalRecord}    
+}
+
+entity Exam { 
+}
+
+entity ExamType {
+    name String required
+}
+
+entity ExamStatus {
+    name String required,
+    creationDate ZonedDateTime required
+}
+
+relationship OneToOne {
+    Exam{ExamType(name)} to ExamType
+}
+
+relationship OneToMany {
+    Exam{ExamStatus(name)} to ExamStatus
+}
+
+entity Prescription {
+    number Integer required
+}
+
+entity Medicine {
+    genericName String required,
+    brandName String,
+    manufacturer String,
+    inactive Boolean
+}
+
+relationship ManyToMany {
+	Prescription{Medicine(genericName)} to Medicine
+}
+
+paginate Appointment, Medicine, ExamType with pagination
 service DoctorSchedule, Appointment, PaymentInstallment, Doctor, AvailableWeekdays with serviceImpl
 angularSuffix * with TCC
