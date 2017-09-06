@@ -1,16 +1,26 @@
 package br.com.tclinica.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A Appointment.
@@ -36,9 +46,9 @@ public class Appointment implements Serializable {
 
     @Column(name = "description")
     private String description;
-
+    
     @Column(name = "cancelled")
-    private Boolean cancelled;
+    private boolean cancelled;
 
     @OneToMany(mappedBy = "appointment")
     @JsonIgnore
@@ -106,9 +116,6 @@ public class Appointment implements Serializable {
     }
 
     public Boolean isCancelled() {
-    	if (cancelled == null) {
-    		return false;
-    	}
         return cancelled;
     }
 

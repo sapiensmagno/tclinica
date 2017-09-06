@@ -1,12 +1,22 @@
 package br.com.tclinica.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.Access;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.annotation.AccessType;
 
 /**
  * A Patient.
@@ -24,9 +34,9 @@ public class Patient implements Serializable {
 
     @Column(name = "nickname")
     private String nickname;
-
+    
     @Column(name = "inactive")
-    private Boolean inactive;
+    private boolean inactive;
 
     @OneToOne(optional = false)
     @NotNull

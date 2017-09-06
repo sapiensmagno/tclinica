@@ -27,7 +27,7 @@ public class Doctor implements Serializable {
     private String nickname;
 
     @Column(name = "inactive")
-    private Boolean inactive;
+    private boolean inactive;
 
     @OneToOne(optional = false)
     @NotNull
@@ -61,9 +61,6 @@ public class Doctor implements Serializable {
     }
 
     public Boolean isInactive() {
-    	if  (inactive == null) {
-    		return false;
-    	}
         return inactive;
     }
 

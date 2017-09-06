@@ -13,4 +13,8 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface PaymentInstallmentRepository extends JpaRepository<PaymentInstallment, Long> {
 
+	@Override
+	default void delete(Long id) {
+		this.saveAndFlush(this.findOne(id).cancelled(true));
+	}
 }

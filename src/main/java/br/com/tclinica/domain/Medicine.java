@@ -33,7 +33,7 @@ public class Medicine implements Serializable {
     private String manufacturer;
 
     @Column(name = "inactive")
-    private Boolean inactive;
+    private boolean inactive;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {

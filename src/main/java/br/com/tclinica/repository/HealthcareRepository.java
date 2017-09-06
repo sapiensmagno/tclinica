@@ -13,4 +13,8 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface HealthcareRepository extends JpaRepository<Healthcare, Long> {
 
+	@Override
+	default void delete(Long id) {
+		this.saveAndFlush(this.findOne(id).inactive(true));
+	}
 }

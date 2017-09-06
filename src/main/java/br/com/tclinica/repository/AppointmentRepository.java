@@ -15,5 +15,11 @@ import br.com.tclinica.domain.DoctorSchedule;
 @SuppressWarnings("unused")
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+	
 	public List<Appointment> findByDoctorSchedule (DoctorSchedule doctorSchedule);
+	
+	@Override
+	default void delete(Long id) {
+		this.saveAndFlush(this.findOne(id).cancelled(true));
+	}
 }

@@ -93,10 +93,8 @@ public class AppointmentServiceImpl implements AppointmentService{
      */
     @Override
     public void delete(Long id) {
-    	log.debug("Request to delete Appointment : {}. Cancelling it.", id);
-        Appointment appointment = findOne(id);
-        appointment.setCancelled(true);
-        appointmentRepository.save(appointment);
+        log.debug("Request to delete Doctor : {}", id);
+        appointmentRepository.delete(id);
     }
     
     @Override

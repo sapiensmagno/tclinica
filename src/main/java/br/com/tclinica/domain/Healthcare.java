@@ -28,7 +28,7 @@ public class Healthcare implements Serializable {
     private String name;
 
     @Column(name = "inactive")
-    private Boolean inactive;
+    private boolean inactive;
 
     @OneToMany(mappedBy = "healthcare")
     @JsonIgnore
