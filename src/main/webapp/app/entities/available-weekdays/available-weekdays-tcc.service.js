@@ -20,7 +20,8 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'deletar': { method:'DELETE', hasBody: true, headers: {"Content-Type": "application/json;charset=UTF-8"} }
         });
     }
 })();

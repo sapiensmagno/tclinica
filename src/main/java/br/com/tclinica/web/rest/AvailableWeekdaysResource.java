@@ -2,12 +2,14 @@ package br.com.tclinica.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +45,9 @@ public class AvailableWeekdaysResource {
      */
     @PostMapping("/available-weekdays")
     @Timed
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN 
+    		+"') or (hasRole('" + AuthoritiesConstants.DOCTOR 
+    		+"') and #availableWeekdays.doctorSchedule.doctor.user.login == authentication.name)")
     public ResponseEntity<AvailableWeekdays> createAvailableWeekdays(@Valid @RequestBody AvailableWeekdays availableWeekdays) throws URISyntaxException {
         log.debug("REST request to save AvailableWeekdays : {}", availableWeekdays);
         if (availableWeekdays.getId() != null) {
@@ -63,18 +68,20 @@ public class AvailableWeekdaysResource {
      * or with status 500 (Internal Server Error) if the availableWeekdays couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/available-weekdays")
-    @Timed
-    public ResponseEntity<AvailableWeekdays> updateAvailableWeekdays(@Valid @RequestBody AvailableWeekdays availableWeekdays) throws URISyntaxException {
-        log.debug("REST request to update AvailableWeekdays : {}", availableWeekdays);
-        if (availableWeekdays.getId() == null) {
-            return createAvailableWeekdays(availableWeekdays);
-        }
-        AvailableWeekdays result = availableWeekdaysService.save(availableWeekdays);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, availableWeekdays.getId().toString()))
-            .body(result);
-    }
+//    @PutMapping("/available-weekdays")
+//    @Timed
+//    @PreAuthorize("hasRole('" + AuthoritiesConstants.DOCTOR 
+//    		+ "') and #availableWeekdays.doctorSchedule.doctor.user.login == authentication.name)")
+//    public ResponseEntity<AvailableWeekdays> updateAvailableWeekdays(@Valid @RequestBody AvailableWeekdays availableWeekdays) throws URISyntaxException {
+//        log.debug("REST request to update AvailableWeekdays : {}", availableWeekdays);
+//        if (availableWeekdays.getId() == null) {
+//            return createAvailableWeekdays(availableWeekdays);
+//        }
+//        AvailableWeekdays result = availableWeekdaysService.save(availableWeekdays);
+//        return ResponseEntity.ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, availableWeekdays.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * GET  /available-weekdays : get all the availableWeekdays.
@@ -108,11 +115,17 @@ public class AvailableWeekdaysResource {
      * @param id the id of the availableWeekdays to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/available-weekdays/{id}")
+    
+//    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN 
+//    		+"') or (hasRole('" + AuthoritiesConstants.DOCTOR 
+//    		+"') and #availableWeekdays.doctorSchedule.doctor.user.login == authentication.name)")
+    //@DeleteMapping("/available-weekdays")
     @Timed
-    public ResponseEntity<Void> deleteAvailableWeekdays(@PathVariable Long id) {
-        log.debug("REST request to delete AvailableWeekdays : {}", id);
-        availableWeekdaysService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    //@RequestMapping(value = { "/available-weekdays/" }, method = { RequestMethod.DELETE })
+    @DeleteMapping("/available-weekdays")
+    public ResponseEntity<Void> deleteAvailableWeekdays(@RequestBody AvailableWeekdays availableWeekdays) throws URISyntaxException {
+        log.debug("REST request to delete AvailableWeekdays : {}", availableWeekdays.getId());
+        availableWeekdaysService.delete(availableWeekdays.getId());
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, availableWeekdays.getId().toString())).build();
     }
 }

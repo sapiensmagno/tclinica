@@ -35,6 +35,7 @@ public class Patient implements Serializable {
     @Column(name = "nickname")
     private String nickname;
     
+    @NotNull
     @Column(name = "inactive")
     private boolean inactive;
 
@@ -65,16 +66,16 @@ public class Patient implements Serializable {
         this.nickname = nickname;
     }
 
-    public Boolean isInactive() {
+    public boolean isInactive() {
         return inactive;
     }
 
-    public Patient inactive(Boolean inactive) {
+    public Patient inactive(boolean inactive) {
         this.inactive = inactive;
         return this;
     }
 
-    public void setInactive(Boolean inactive) {
+    public void setInactive(boolean inactive) {
         this.inactive = inactive;
     }
 

@@ -1,22 +1,36 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Accountant;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.AccountantRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Accountant;
+import br.com.tclinica.repository.AccountantRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Accountant.
@@ -43,6 +57,7 @@ public class AccountantResource {
      */
     @PostMapping("/accountants")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Accountant> createAccountant(@Valid @RequestBody Accountant accountant) throws URISyntaxException {
         log.debug("REST request to save Accountant : {}", accountant);
         if (accountant.getId() != null) {
@@ -65,6 +80,8 @@ public class AccountantResource {
      */
     @PutMapping("/accountants")
     @Timed
+    @Secured(AuthoritiesConstants.ACCOUNTANT)
+    @PreAuthorize("#accountant.user.login == authentication.name")
     public ResponseEntity<Accountant> updateAccountant(@Valid @RequestBody Accountant accountant) throws URISyntaxException {
         log.debug("REST request to update Accountant : {}", accountant);
         if (accountant.getId() == null) {
@@ -83,11 +100,12 @@ public class AccountantResource {
      */
     @GetMapping("/accountants")
     @Timed
+    @PostFilter("hasRole('" + AuthoritiesConstants.ADMIN + "') or filterObject.user.login==principal.username")
     public List<Accountant> getAllAccountants() {
         log.debug("REST request to get all Accountants");
         return accountantRepository.findAll();
         }
-
+ 
     /**
      * GET  /accountants/:id : get the "id" accountant.
      *
@@ -96,12 +114,13 @@ public class AccountantResource {
      */
     @GetMapping("/accountants/{id}")
     @Timed
+    @PostAuthorize("hasRole('" + AuthoritiesConstants.ADMIN +"') or returnObject.body.user.login==principal.username")
     public ResponseEntity<Accountant> getAccountant(@PathVariable Long id) {
         log.debug("REST request to get Accountant : {}", id);
         Accountant accountant = accountantRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountant));
     }
-
+        
     /**
      * DELETE  /accountants/:id : delete the "id" accountant.
      *
@@ -110,6 +129,7 @@ public class AccountantResource {
      */
     @DeleteMapping("/accountants/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteAccountant(@PathVariable Long id) {
         log.debug("REST request to delete Accountant : {}", id);
         accountantRepository.delete(id);

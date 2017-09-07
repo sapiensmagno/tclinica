@@ -207,6 +207,11 @@ public class DoctorSchedule implements Serializable {
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
+    
+    //@Transient
+    public boolean isInactive () { //TODO filter for appointments
+    	return this.getDoctor().isInactive();
+    }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override

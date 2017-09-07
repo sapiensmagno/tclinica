@@ -33,6 +33,7 @@ public class Accountant implements Serializable {
     @Column(name = "nickname")
     private String nickname;
     
+    @NotNull
     @Column(name = "inactive")
     private boolean inactive;
 
@@ -63,16 +64,16 @@ public class Accountant implements Serializable {
         this.nickname = nickname;
     }
 
-    public Boolean isInactive() {
+    public boolean isInactive() {
         return inactive;
     }
 
-    public Accountant inactive(Boolean inactive) {
+    public Accountant inactive(boolean inactive) {
         this.inactive = inactive;
         return this;
     }
 
-    public void setInactive(Boolean inactive) {
+    public void setInactive(boolean inactive) {
     	this.inactive = inactive;
     }
 

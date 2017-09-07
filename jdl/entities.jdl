@@ -3,17 +3,17 @@ entity User
 
 entity Doctor {
     nickname String,
-    inactive Boolean
+    inactive Boolean required
 }
 
 entity Patient {
     nickname String,
-    inactive Boolean
+    inactive Boolean required
 }
 
 entity Accountant {
     nickname String,
-    inactive Boolean
+    inactive Boolean required
 }
 
 relationship OneToOne {
@@ -50,7 +50,7 @@ entity Appointment (Appointment) {
     startDate ZonedDateTime required,
     endDate ZonedDateTime required,
     description String,
-    cancelled Boolean
+    cancelled Boolean required
 }
 
 relationship ManyToOne {
@@ -65,7 +65,7 @@ entity PaymentInstallment {
     installmentNumber Integer,
     checkNumber String,
     cardFinalNumber String,
-    cancelled Boolean
+    cancelled Boolean required
 }
 
 entity CardBrand {
@@ -74,7 +74,7 @@ entity CardBrand {
 
 entity PaymentMethod {
     name String required,
-    inactive Boolean
+    inactive Boolean required
 }
 
 relationship OneToOne {
@@ -84,7 +84,7 @@ relationship OneToOne {
 
 entity Healthcare {
     name String,
-    inactive Boolean
+    inactive Boolean required
 }
 
 relationship OneToMany {
@@ -133,7 +133,7 @@ entity Medicine {
     genericName String required,
     brandName String,
     manufacturer String,
-    inactive Boolean
+    inactive Boolean required
 }
 
 relationship ManyToMany {

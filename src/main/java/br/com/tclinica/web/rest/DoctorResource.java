@@ -10,6 +10,12 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.DoctorService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -53,6 +60,7 @@ public class DoctorResource {
      */
     @PostMapping("/doctors")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Doctor> createDoctor(@Valid @RequestBody Doctor doctor) throws URISyntaxException {
         log.debug("REST request to save Doctor : {}", doctor);
         if (doctor.getId() != null) {
@@ -75,6 +83,8 @@ public class DoctorResource {
      */
     @PutMapping("/doctors")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("#doctor.user.login == authentication.name")
     public ResponseEntity<Doctor> updateDoctor(@Valid @RequestBody Doctor doctor) throws URISyntaxException {
         log.debug("REST request to update Doctor : {}", doctor);
         if (doctor.getId() == null) {
@@ -125,6 +135,7 @@ public class DoctorResource {
      */
     @DeleteMapping("/doctors/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
         log.debug("REST request to delete Doctor : {}", id);
         doctorService.delete(id);

@@ -47,6 +47,7 @@ public class Appointment implements Serializable {
     @Column(name = "description")
     private String description;
     
+    @NotNull
     @Column(name = "cancelled")
     private boolean cancelled;
 
@@ -115,16 +116,16 @@ public class Appointment implements Serializable {
         this.description = description;
     }
 
-    public Boolean isCancelled() {
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public Appointment cancelled(Boolean cancelled) {
+    public Appointment cancelled(boolean cancelled) {
         this.cancelled = cancelled;
         return this;
     }
 
-    public void setCancelled(Boolean cancelled) {
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 

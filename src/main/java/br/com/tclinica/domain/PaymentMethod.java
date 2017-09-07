@@ -25,7 +25,8 @@ public class PaymentMethod implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-
+    
+    @NotNull
     @Column(name = "inactive")
     private boolean inactive;
 
@@ -51,16 +52,16 @@ public class PaymentMethod implements Serializable {
         this.name = name;
     }
 
-    public Boolean isInactive() {
+    public boolean isInactive() {
         return inactive;
     }
 
-    public PaymentMethod inactive(Boolean inactive) {
+    public PaymentMethod inactive(boolean inactive) {
         this.inactive = inactive;
         return this;
     }
 
-    public void setInactive(Boolean inactive) {
+    public void setInactive(boolean inactive) {
         this.inactive = inactive;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove

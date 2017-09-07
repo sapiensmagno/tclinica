@@ -50,7 +50,8 @@ public class PaymentInstallment implements Serializable {
 
     @Column(name = "card_final_number")
     private String cardFinalNumber;
-
+    
+    @NotNull
     @Column(name = "cancelled")
     private boolean cancelled;
 
@@ -156,16 +157,16 @@ public class PaymentInstallment implements Serializable {
         this.cardFinalNumber = cardFinalNumber;
     }
 
-    public Boolean isCancelled() {
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public PaymentInstallment cancelled(Boolean cancelled) {
+    public PaymentInstallment cancelled(boolean cancelled) {
         this.cancelled = cancelled;
         return this;
     }
 
-    public void setCancelled(Boolean cancelled) {
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 

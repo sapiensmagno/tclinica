@@ -1,21 +1,33 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.service.DoctorScheduleService;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.DoctorScheduleService;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing DoctorSchedule.
@@ -43,6 +55,7 @@ public class DoctorScheduleResource {
      */
     @PostMapping("/doctor-schedules")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<DoctorSchedule> createDoctorSchedule(@Valid @RequestBody DoctorSchedule doctorSchedule) throws URISyntaxException {
         log.debug("REST request to save DoctorSchedule : {}", doctorSchedule);
         if (doctorSchedule.getId() != null) {
@@ -65,6 +78,8 @@ public class DoctorScheduleResource {
      */
     @PutMapping("/doctor-schedules")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("#doctor.user.login == authentication.name")
     public ResponseEntity<DoctorSchedule> updateDoctorSchedule(@Valid @RequestBody DoctorSchedule doctorSchedule) throws URISyntaxException {
         log.debug("REST request to update DoctorSchedule : {}", doctorSchedule);
         if (doctorSchedule.getId() == null) {
@@ -108,11 +123,11 @@ public class DoctorScheduleResource {
      * @param id the id of the doctorSchedule to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/doctor-schedules/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteDoctorSchedule(@PathVariable Long id) {
-        log.debug("REST request to delete DoctorSchedule : {}", id);
-        doctorScheduleService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+//    @DeleteMapping("/doctor-schedules/{id}")
+//    @Timed
+//    public ResponseEntity<Void> deleteDoctorSchedule(@PathVariable Long id) {
+//        log.debug("REST request to delete DoctorSchedule : {}", id);
+//        doctorScheduleService.delete(id);
+//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+//    }
 }

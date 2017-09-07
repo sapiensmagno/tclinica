@@ -47,7 +47,7 @@
             </column>
 
             <column name="cancelled" type="bit">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="payment_method_id" type="bigint">
                 <constraints unique="true" nullable="false" />

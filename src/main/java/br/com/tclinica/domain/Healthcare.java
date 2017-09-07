@@ -1,14 +1,23 @@
 package br.com.tclinica.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A Healthcare.
@@ -26,7 +35,8 @@ public class Healthcare implements Serializable {
 
     @Column(name = "name")
     private String name;
-
+    
+    @NotNull
     @Column(name = "inactive")
     private boolean inactive;
 
@@ -57,16 +67,16 @@ public class Healthcare implements Serializable {
         this.name = name;
     }
 
-    public Boolean isInactive() {
+    public boolean isInactive() {
         return inactive;
     }
 
-    public Healthcare inactive(Boolean inactive) {
+    public Healthcare inactive(boolean inactive) {
         this.inactive = inactive;
         return this;
     }
 
-    public void setInactive(Boolean inactive) {
+    public void setInactive(boolean inactive) {
         this.inactive = inactive;
     }
 

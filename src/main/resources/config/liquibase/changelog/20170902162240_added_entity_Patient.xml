@@ -27,7 +27,7 @@
             </column>
 
             <column name="inactive" type="bit">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="false" />

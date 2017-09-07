@@ -31,7 +31,8 @@ public class Medicine implements Serializable {
 
     @Column(name = "manufacturer")
     private String manufacturer;
-
+    
+    @NotNull
     @Column(name = "inactive")
     private boolean inactive;
 
@@ -83,16 +84,16 @@ public class Medicine implements Serializable {
         this.manufacturer = manufacturer;
     }
 
-    public Boolean isInactive() {
+    public boolean isInactive() {
         return inactive;
     }
 
-    public Medicine inactive(Boolean inactive) {
+    public Medicine inactive(boolean inactive) {
         this.inactive = inactive;
         return this;
     }
 
-    public void setInactive(Boolean inactive) {
+    public void setInactive(boolean inactive) {
         this.inactive = inactive;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
