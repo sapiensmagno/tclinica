@@ -18,11 +18,11 @@
             $uibModalInstance.dismiss('cancel');
         }
 
-        function confirmDelete () {
-            AvailableWeekdays.deletar('api/available-weekdays', entity,
+        function confirmDelete (id) {
+            AvailableWeekdays.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);
-                }, function (e) { console.log(e); });
+                });
         }
     }
 })();
