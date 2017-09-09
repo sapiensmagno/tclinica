@@ -57,7 +57,7 @@ public class PaymentInstallment implements Serializable {
 
     @OneToOne(optional = false)
     @NotNull
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = false)
     private PaymentMethod paymentMethod;
 
     @OneToOne

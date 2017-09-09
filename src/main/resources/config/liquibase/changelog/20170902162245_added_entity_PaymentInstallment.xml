@@ -50,7 +50,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="payment_method_id" type="bigint">
-                <constraints unique="true" nullable="false" />
+                <constraints unique="false" nullable="false" />
             </column>            <column name="card_brand_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
