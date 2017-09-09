@@ -1,21 +1,31 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.MedicalRecord;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.MedicalRecordRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.MedicalRecord;
+import br.com.tclinica.repository.MedicalRecordRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing MedicalRecord.
@@ -42,6 +52,7 @@ public class MedicalRecordResource {
      */
     @PostMapping("/medical-records")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) throws URISyntaxException {
         log.debug("REST request to save MedicalRecord : {}", medicalRecord);
         if (medicalRecord.getId() != null) {
@@ -64,6 +75,7 @@ public class MedicalRecordResource {
      */
     @PutMapping("/medical-records")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) throws URISyntaxException {
         log.debug("REST request to update MedicalRecord : {}", medicalRecord);
         if (medicalRecord.getId() == null) {
@@ -82,6 +94,7 @@ public class MedicalRecordResource {
      */
     @GetMapping("/medical-records")
     @Timed
+    @PostFilter("hasRole('" + AuthoritiesConstants.DOCTOR + "')")
     public List<MedicalRecord> getAllMedicalRecords() {
         log.debug("REST request to get all MedicalRecords");
         return medicalRecordRepository.findAll();
@@ -95,6 +108,7 @@ public class MedicalRecordResource {
      */
     @GetMapping("/medical-records/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<MedicalRecord> getMedicalRecord(@PathVariable Long id) {
         log.debug("REST request to get MedicalRecord : {}", id);
         MedicalRecord medicalRecord = medicalRecordRepository.findOne(id);
@@ -109,6 +123,7 @@ public class MedicalRecordResource {
      */
     @DeleteMapping("/medical-records/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Void> deleteMedicalRecord(@PathVariable Long id) {
         log.debug("REST request to delete MedicalRecord : {}", id);
         medicalRecordRepository.delete(id);

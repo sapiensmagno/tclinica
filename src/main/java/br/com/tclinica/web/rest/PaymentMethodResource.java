@@ -1,22 +1,31 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.PaymentMethod;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.PaymentMethodRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.PaymentMethod;
+import br.com.tclinica.repository.PaymentMethodRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing PaymentMethod.
@@ -43,6 +52,7 @@ public class PaymentMethodResource {
      */
     @PostMapping("/payment-methods")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<PaymentMethod> createPaymentMethod(@Valid @RequestBody PaymentMethod paymentMethod) throws URISyntaxException {
         log.debug("REST request to save PaymentMethod : {}", paymentMethod);
         if (paymentMethod.getId() != null) {
@@ -51,28 +61,6 @@ public class PaymentMethodResource {
         PaymentMethod result = paymentMethodRepository.save(paymentMethod);
         return ResponseEntity.created(new URI("/api/payment-methods/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /payment-methods : Updates an existing paymentMethod.
-     *
-     * @param paymentMethod the paymentMethod to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated paymentMethod,
-     * or with status 400 (Bad Request) if the paymentMethod is not valid,
-     * or with status 500 (Internal Server Error) if the paymentMethod couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/payment-methods")
-    @Timed
-    public ResponseEntity<PaymentMethod> updatePaymentMethod(@Valid @RequestBody PaymentMethod paymentMethod) throws URISyntaxException {
-        log.debug("REST request to update PaymentMethod : {}", paymentMethod);
-        if (paymentMethod.getId() == null) {
-            return createPaymentMethod(paymentMethod);
-        }
-        PaymentMethod result = paymentMethodRepository.save(paymentMethod);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentMethod.getId().toString()))
             .body(result);
     }
 
@@ -110,6 +98,7 @@ public class PaymentMethodResource {
      */
     @DeleteMapping("/payment-methods/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deletePaymentMethod(@PathVariable Long id) {
         log.debug("REST request to delete PaymentMethod : {}", id);
         paymentMethodRepository.delete(id);

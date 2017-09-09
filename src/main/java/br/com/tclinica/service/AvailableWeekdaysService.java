@@ -42,4 +42,6 @@ public interface AvailableWeekdaysService {
     void delete(Long id);
 
 	AvailableWeekdays createInstance(DayOfWeek day, DoctorSchedule doctorSchedule);
+
+	boolean isDeletable(Long id);
 }

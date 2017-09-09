@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tclinica.domain.Authority;
 import br.com.tclinica.domain.Doctor;
 import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.DoctorRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.DoctorScheduleService;
@@ -141,4 +142,9 @@ public class DoctorServiceImpl implements DoctorService{
         log.debug("Request to delete Doctor : {}", id);
         doctorRepository.delete(id);
     }
+
+	@Override
+	public Doctor findByUser(User user) {
+		return doctorRepository.findByUser(user);
+	}
 }

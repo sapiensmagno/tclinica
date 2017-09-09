@@ -1,16 +1,19 @@
 package br.com.tclinica.service.impl;
 
-import br.com.tclinica.service.AvailableWeekdaysService;
-import br.com.tclinica.domain.AvailableWeekdays;
-import br.com.tclinica.domain.DoctorSchedule;
-import br.com.tclinica.repository.AvailableWeekdaysRepository;
+import java.time.DayOfWeek;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.util.List;
+import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.repository.AvailableWeekdaysRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.security.SecurityUtils;
+import br.com.tclinica.service.AvailableWeekdaysService;
 
 /**
  * Service Implementation for managing AvailableWeekdays.
@@ -81,4 +84,12 @@ public class AvailableWeekdaysServiceImpl implements AvailableWeekdaysService{
     	availableDay.setDoctorSchedule(doctorSchedule);
     	return availableDay;
     }
+    
+    @Override
+	public boolean isDeletable(Long id) {
+		AvailableWeekdays day = this.findOne(id);
+		return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+				(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
+				SecurityUtils.getCurrentUserLogin().equals(day.getDoctorSchedule().getDoctor().getUser().getLogin()));
+	}
 }

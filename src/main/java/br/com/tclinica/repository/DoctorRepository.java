@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.User;
 
 
 /**
@@ -17,4 +18,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 	default void delete(Long id) {
 		this.saveAndFlush(this.findOne(id).inactive(true));
 	}
+
+	Doctor findByUser(User user);
 }

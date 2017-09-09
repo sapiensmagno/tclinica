@@ -1,22 +1,32 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.ExamStatus;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.ExamStatusRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.ExamStatus;
+import br.com.tclinica.repository.ExamStatusRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing ExamStatus.
@@ -43,6 +53,7 @@ public class ExamStatusResource {
      */
     @PostMapping("/exam-statuses")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamStatus> createExamStatus(@Valid @RequestBody ExamStatus examStatus) throws URISyntaxException {
         log.debug("REST request to save ExamStatus : {}", examStatus);
         if (examStatus.getId() != null) {
@@ -65,6 +76,7 @@ public class ExamStatusResource {
      */
     @PutMapping("/exam-statuses")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamStatus> updateExamStatus(@Valid @RequestBody ExamStatus examStatus) throws URISyntaxException {
         log.debug("REST request to update ExamStatus : {}", examStatus);
         if (examStatus.getId() == null) {
@@ -83,6 +95,7 @@ public class ExamStatusResource {
      */
     @GetMapping("/exam-statuses")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public List<ExamStatus> getAllExamStatuses() {
         log.debug("REST request to get all ExamStatuses");
         return examStatusRepository.findAll();
@@ -96,6 +109,7 @@ public class ExamStatusResource {
      */
     @GetMapping("/exam-statuses/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamStatus> getExamStatus(@PathVariable Long id) {
         log.debug("REST request to get ExamStatus : {}", id);
         ExamStatus examStatus = examStatusRepository.findOne(id);
@@ -110,6 +124,7 @@ public class ExamStatusResource {
      */
     @DeleteMapping("/exam-statuses/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Void> deleteExamStatus(@PathVariable Long id) {
         log.debug("REST request to delete ExamStatus : {}", id);
         examStatusRepository.delete(id);

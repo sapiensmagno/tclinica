@@ -1,22 +1,31 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.CardBrand;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.CardBrandRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.CardBrand;
+import br.com.tclinica.repository.CardBrandRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing CardBrand.
@@ -43,6 +52,7 @@ public class CardBrandResource {
      */
     @PostMapping("/card-brands")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<CardBrand> createCardBrand(@Valid @RequestBody CardBrand cardBrand) throws URISyntaxException {
         log.debug("REST request to save CardBrand : {}", cardBrand);
         if (cardBrand.getId() != null) {
@@ -51,28 +61,6 @@ public class CardBrandResource {
         CardBrand result = cardBrandRepository.save(cardBrand);
         return ResponseEntity.created(new URI("/api/card-brands/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /card-brands : Updates an existing cardBrand.
-     *
-     * @param cardBrand the cardBrand to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated cardBrand,
-     * or with status 400 (Bad Request) if the cardBrand is not valid,
-     * or with status 500 (Internal Server Error) if the cardBrand couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/card-brands")
-    @Timed
-    public ResponseEntity<CardBrand> updateCardBrand(@Valid @RequestBody CardBrand cardBrand) throws URISyntaxException {
-        log.debug("REST request to update CardBrand : {}", cardBrand);
-        if (cardBrand.getId() == null) {
-            return createCardBrand(cardBrand);
-        }
-        CardBrand result = cardBrandRepository.save(cardBrand);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cardBrand.getId().toString()))
             .body(result);
     }
 
@@ -110,6 +98,7 @@ public class CardBrandResource {
      */
     @DeleteMapping("/card-brands/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteCardBrand(@PathVariable Long id) {
         log.debug("REST request to delete CardBrand : {}", id);
         cardBrandRepository.delete(id);

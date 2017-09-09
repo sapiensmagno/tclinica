@@ -1,12 +1,12 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Appointment;
-import br.com.tclinica.service.AppointmentService;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import br.com.tclinica.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,14 +14,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import br.com.tclinica.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing Appointment.
@@ -49,6 +62,7 @@ public class AppointmentResource {
      */
     @PostMapping("/appointments")
     @Timed
+    @PreAuthorize("#appointment.patient.user.login == authentication.name")
     public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to save Appointment : {}", appointment);
         appointment.setEndDate(appointmentService.calculateEnd(appointment));
@@ -75,6 +89,7 @@ public class AppointmentResource {
      */
     @PutMapping("/appointments")
     @Timed
+    @PreAuthorize("#appointment.patient.user.login == authentication.name or #appointment.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<Appointment> updateAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to update Appointment : {}", appointment);
         if (appointment.getId() == null) {
@@ -118,6 +133,9 @@ public class AppointmentResource {
      */
     @GetMapping("/appointments/{id}")
     @Timed
+    @PostAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or "
+    		+ "returnObject.body.patient.user.login == authentication.name or "
+    		+ "returnObject.body.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<Appointment> getAppointment(@PathVariable Long id) {
         log.debug("REST request to get Appointment : {}", id);
         Appointment appointment = appointmentService.findOne(id);
@@ -132,9 +150,13 @@ public class AppointmentResource {
      */
     @DeleteMapping("/appointments/{id}")
     @Timed
-    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
-        log.debug("REST request to delete Appointment : {}", id);
-        appointmentService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
+        log.debug("REST request to delete appointment : {}", id);
+		if (appointmentService.isDeletable(id)) {
+			appointmentService.delete(id);
+			return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString()))
+					.build();
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "exclusionForbidden", "No authorization to delete")).body(null);
     }
 }

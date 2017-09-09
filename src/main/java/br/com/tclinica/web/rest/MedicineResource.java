@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.Medicine;
 
 import br.com.tclinica.repository.MedicineRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import br.com.tclinica.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,6 +51,7 @@ public class MedicineResource {
      */
     @PostMapping("/medicines")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Medicine> createMedicine(@Valid @RequestBody Medicine medicine) throws URISyntaxException {
         log.debug("REST request to save Medicine : {}", medicine);
         if (medicine.getId() != null) {
@@ -71,6 +74,7 @@ public class MedicineResource {
      */
     @PutMapping("/medicines")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Medicine> updateMedicine(@Valid @RequestBody Medicine medicine) throws URISyntaxException {
         log.debug("REST request to update Medicine : {}", medicine);
         if (medicine.getId() == null) {
@@ -90,6 +94,7 @@ public class MedicineResource {
      */
     @GetMapping("/medicines")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<List<Medicine>> getAllMedicines(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Medicines");
         Page<Medicine> page = medicineRepository.findAll(pageable);
@@ -105,6 +110,7 @@ public class MedicineResource {
      */
     @GetMapping("/medicines/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Medicine> getMedicine(@PathVariable Long id) {
         log.debug("REST request to get Medicine : {}", id);
         Medicine medicine = medicineRepository.findOne(id);
@@ -119,6 +125,7 @@ public class MedicineResource {
      */
     @DeleteMapping("/medicines/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Void> deleteMedicine(@PathVariable Long id) {
         log.debug("REST request to delete Medicine : {}", id);
         medicineRepository.delete(id);

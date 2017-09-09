@@ -16,8 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.repository.PatientRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.security.SecurityUtils;
 import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.service.UserService;
 
 /**
  * Service Implementation for managing Appointment.
@@ -29,9 +37,18 @@ public class AppointmentServiceImpl implements AppointmentService{
     private final Logger log = LoggerFactory.getLogger(AppointmentServiceImpl.class);
 
     private final AppointmentRepository appointmentRepository;
-        
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
+    private final DoctorService doctorService;
+    private final UserService userService;
+    private final PatientRepository patientRepository;
+    
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, 
+    		DoctorService doctorService, 
+    		PatientRepository patientRepository,
+    		UserService userService) {
         this.appointmentRepository = appointmentRepository;
+        this.doctorService = doctorService;
+        this.userService = userService;
+        this.patientRepository = patientRepository;
     }
 
     /**
@@ -43,7 +60,18 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public Appointment save(Appointment appointment) {
         log.debug("Request to save Appointment : {}", appointment);
-        return appointmentRepository.save(appointment);
+        Appointment saved = appointment;
+        Appointment existingAppointment = null;
+        if (appointment.getId() != null) {
+        	existingAppointment = this.findOne(appointment.getId());
+        }
+        if (existingAppointment != null && existingAppointment.isCancelled()) {
+        	return saved;
+        }
+        if (appointment.getStartDate().isAfter(ZonedDateTime.now())) {
+        	saved= appointmentRepository.save(appointment);
+        }
+        return saved;
     }
 
     /**
@@ -56,7 +84,17 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Transactional(readOnly = true)
     public Page<Appointment> findAll(Pageable pageable) {
         log.debug("Request to get all Appointments");
-        return appointmentRepository.findAll(pageable);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        	return appointmentRepository.findAll(pageable);
+        } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR)) {
+        	User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        	Doctor doctor = doctorService.findByUser(user);
+        	return appointmentRepository.findByDoctorSchedule(doctor.getDoctorSchedule(), pageable);
+        } else {
+        	User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        	Patient patient = patientRepository.findByUser(user);
+        	return appointmentRepository.findByPatient(patient, pageable);
+        }
     }
 
 
@@ -98,6 +136,16 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
     
     @Override
+	public boolean isDeletable(Long id) {
+		Appointment appointment = this.findOne(id);
+		boolean hasPermission = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+				SecurityUtils.getCurrentUserLogin().equals(appointment.getPatient().getUser().getLogin()) ||
+				(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
+				SecurityUtils.getCurrentUserLogin().equals(appointment.getDoctorSchedule().getDoctor().getUser().getLogin()));
+		return !appointment.isCancelled() && appointment.getStartDate().isAfter(ZonedDateTime.now()) && hasPermission;
+	}
+    
+    @Override
     public boolean isValid(Appointment appointment) {
     	// Fail fast: using short-circuit to avoid trying all scenarios
     	boolean valid;
@@ -128,7 +176,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     	valid = valid && 
     			(existingAppointments.isEmpty() ||
     			existingAppointments.stream()
-    			.filter(aptmnt -> !aptmnt.isCancelled())
+    			.filter(existingAppointment -> !existingAppointment.equals(appointment) && !existingAppointment.isCancelled())
     			.allMatch(appointmentsDontCrash));
     	return valid;
     }

@@ -1,6 +1,8 @@
 package br.com.tclinica.service;
 
 import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.User;
+
 import java.util.List;
 
 /**
@@ -43,4 +45,6 @@ public interface DoctorService {
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+	Doctor findByUser(User user);
 }

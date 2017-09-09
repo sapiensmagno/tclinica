@@ -3,7 +3,6 @@ package br.com.tclinica.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Access;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.annotation.AccessType;
 
 /**
  * A Patient.

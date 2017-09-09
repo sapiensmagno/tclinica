@@ -1,10 +1,12 @@
 package br.com.tclinica.service;
 
 import java.time.ZonedDateTime;
-import br.com.tclinica.domain.Appointment;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.util.List;
+
+import br.com.tclinica.domain.Appointment;
 
 /**
  * Service Interface for managing Appointment.
@@ -51,4 +53,6 @@ public interface AppointmentService {
     boolean isValid(Appointment appointment);
     
     ZonedDateTime calculateEnd(Appointment appointment);
+
+	boolean isDeletable(Long id);
 }

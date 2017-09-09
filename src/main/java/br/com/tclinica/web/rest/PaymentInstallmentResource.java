@@ -1,21 +1,34 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.PaymentInstallment;
-import br.com.tclinica.service.PaymentInstallmentService;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.PaymentInstallment;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.PaymentInstallmentService;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing PaymentInstallment.
@@ -43,6 +56,7 @@ public class PaymentInstallmentResource {
      */
     @PostMapping("/payment-installments")
     @Timed
+    @PreAuthorize("#paymentInstallment.appointment.patient.user.login == authentication.name")
     public ResponseEntity<PaymentInstallment> createPaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
         log.debug("REST request to save PaymentInstallment : {}", paymentInstallment);
         if (paymentInstallment.getId() != null) {
@@ -55,34 +69,15 @@ public class PaymentInstallmentResource {
     }
 
     /**
-     * PUT  /payment-installments : Updates an existing paymentInstallment.
-     *
-     * @param paymentInstallment the paymentInstallment to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated paymentInstallment,
-     * or with status 400 (Bad Request) if the paymentInstallment is not valid,
-     * or with status 500 (Internal Server Error) if the paymentInstallment couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/payment-installments")
-    @Timed
-    public ResponseEntity<PaymentInstallment> updatePaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
-        log.debug("REST request to update PaymentInstallment : {}", paymentInstallment);
-        if (paymentInstallment.getId() == null) {
-            return createPaymentInstallment(paymentInstallment);
-        }
-        PaymentInstallment result = paymentInstallmentService.save(paymentInstallment);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentInstallment.getId().toString()))
-            .body(result);
-    }
-
-    /**
      * GET  /payment-installments : get all the paymentInstallments.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of paymentInstallments in body
      */
     @GetMapping("/payment-installments")
     @Timed
+    @PostFilter("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" + AuthoritiesConstants.ACCOUNTANT + "') or " +
+    		"filterObject.appointment.doctorSchedule.doctor.user.login == authentication.name or " +
+    		"filterObject.appointment.patient.user.login == authentication.name")
     public List<PaymentInstallment> getAllPaymentInstallments() {
         log.debug("REST request to get all PaymentInstallments");
         return paymentInstallmentService.findAll();
@@ -96,6 +91,9 @@ public class PaymentInstallmentResource {
      */
     @GetMapping("/payment-installments/{id}")
     @Timed
+    @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" + AuthoritiesConstants.ACCOUNTANT + "') or " +
+    		"returnObject.body.appointment.doctorSchedule.doctor.user.login == authentication.name or " +
+    		"returnObject.body.appointment.patient.user.login == authentication.name")
     public ResponseEntity<PaymentInstallment> getPaymentInstallment(@PathVariable Long id) {
         log.debug("REST request to get PaymentInstallment : {}", id);
         PaymentInstallment paymentInstallment = paymentInstallmentService.findOne(id);
@@ -110,6 +108,7 @@ public class PaymentInstallmentResource {
      */
     @DeleteMapping("/payment-installments/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deletePaymentInstallment(@PathVariable Long id) {
         log.debug("REST request to delete PaymentInstallment : {}", id);
         paymentInstallmentService.delete(id);

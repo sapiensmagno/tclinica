@@ -1,22 +1,32 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Prescription;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.PrescriptionRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Prescription;
+import br.com.tclinica.repository.PrescriptionRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Prescription.
@@ -43,6 +53,7 @@ public class PrescriptionResource {
      */
     @PostMapping("/prescriptions")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Prescription> createPrescription(@Valid @RequestBody Prescription prescription) throws URISyntaxException {
         log.debug("REST request to save Prescription : {}", prescription);
         if (prescription.getId() != null) {
@@ -65,6 +76,7 @@ public class PrescriptionResource {
      */
     @PutMapping("/prescriptions")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Prescription> updatePrescription(@Valid @RequestBody Prescription prescription) throws URISyntaxException {
         log.debug("REST request to update Prescription : {}", prescription);
         if (prescription.getId() == null) {
@@ -83,6 +95,7 @@ public class PrescriptionResource {
      */
     @GetMapping("/prescriptions")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public List<Prescription> getAllPrescriptions() {
         log.debug("REST request to get all Prescriptions");
         return prescriptionRepository.findAllWithEagerRelationships();
@@ -96,6 +109,7 @@ public class PrescriptionResource {
      */
     @GetMapping("/prescriptions/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Prescription> getPrescription(@PathVariable Long id) {
         log.debug("REST request to get Prescription : {}", id);
         Prescription prescription = prescriptionRepository.findOneWithEagerRelationships(id);
@@ -110,6 +124,7 @@ public class PrescriptionResource {
      */
     @DeleteMapping("/prescriptions/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Void> deletePrescription(@PathVariable Long id) {
         log.debug("REST request to delete Prescription : {}", id);
         prescriptionRepository.delete(id);

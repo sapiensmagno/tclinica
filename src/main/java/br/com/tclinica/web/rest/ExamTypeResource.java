@@ -1,13 +1,12 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.ExamType;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.ExamTypeRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import br.com.tclinica.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,14 +14,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.ExamType;
+import br.com.tclinica.repository.ExamTypeRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import br.com.tclinica.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing ExamType.
@@ -49,6 +59,7 @@ public class ExamTypeResource {
      */
     @PostMapping("/exam-types")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamType> createExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
         log.debug("REST request to save ExamType : {}", examType);
         if (examType.getId() != null) {
@@ -71,6 +82,7 @@ public class ExamTypeResource {
      */
     @PutMapping("/exam-types")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamType> updateExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
         log.debug("REST request to update ExamType : {}", examType);
         if (examType.getId() == null) {
@@ -90,6 +102,7 @@ public class ExamTypeResource {
      */
     @GetMapping("/exam-types")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<List<ExamType>> getAllExamTypes(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of ExamTypes");
         Page<ExamType> page = examTypeRepository.findAll(pageable);
@@ -105,6 +118,7 @@ public class ExamTypeResource {
      */
     @GetMapping("/exam-types/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<ExamType> getExamType(@PathVariable Long id) {
         log.debug("REST request to get ExamType : {}", id);
         ExamType examType = examTypeRepository.findOne(id);
@@ -119,6 +133,7 @@ public class ExamTypeResource {
      */
     @DeleteMapping("/exam-types/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
     public ResponseEntity<Void> deleteExamType(@PathVariable Long id) {
         log.debug("REST request to delete ExamType : {}", id);
         examTypeRepository.delete(id);

@@ -1,21 +1,29 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Healthcare;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.HealthcareRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Healthcare;
+import br.com.tclinica.repository.HealthcareRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Healthcare.
@@ -42,6 +50,7 @@ public class HealthcareResource {
      */
     @PostMapping("/healthcares")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Healthcare> createHealthcare(@RequestBody Healthcare healthcare) throws URISyntaxException {
         log.debug("REST request to save Healthcare : {}", healthcare);
         if (healthcare.getId() != null) {
@@ -50,28 +59,6 @@ public class HealthcareResource {
         Healthcare result = healthcareRepository.save(healthcare);
         return ResponseEntity.created(new URI("/api/healthcares/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /healthcares : Updates an existing healthcare.
-     *
-     * @param healthcare the healthcare to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated healthcare,
-     * or with status 400 (Bad Request) if the healthcare is not valid,
-     * or with status 500 (Internal Server Error) if the healthcare couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/healthcares")
-    @Timed
-    public ResponseEntity<Healthcare> updateHealthcare(@RequestBody Healthcare healthcare) throws URISyntaxException {
-        log.debug("REST request to update Healthcare : {}", healthcare);
-        if (healthcare.getId() == null) {
-            return createHealthcare(healthcare);
-        }
-        Healthcare result = healthcareRepository.save(healthcare);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, healthcare.getId().toString()))
             .body(result);
     }
 
@@ -109,6 +96,7 @@ public class HealthcareResource {
      */
     @DeleteMapping("/healthcares/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteHealthcare(@PathVariable Long id) {
         log.debug("REST request to delete Healthcare : {}", id);
         healthcareRepository.delete(id);

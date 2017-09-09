@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,7 +78,7 @@ public class DoctorScheduleResource {
     @PutMapping("/doctor-schedules")
     @Timed
     @Secured(AuthoritiesConstants.DOCTOR)
-    @PreAuthorize("#doctor.user.login == authentication.name")
+    @PreAuthorize("#doctorSchedule.user.login == authentication.name")
     public ResponseEntity<DoctorSchedule> updateDoctorSchedule(@Valid @RequestBody DoctorSchedule doctorSchedule) throws URISyntaxException {
         log.debug("REST request to update DoctorSchedule : {}", doctorSchedule);
         if (doctorSchedule.getId() == null) {
@@ -116,18 +115,4 @@ public class DoctorScheduleResource {
         DoctorSchedule doctorSchedule = doctorScheduleService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(doctorSchedule));
     }
-
-    /**
-     * DELETE  /doctor-schedules/:id : delete the "id" doctorSchedule.
-     *
-     * @param id the id of the doctorSchedule to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-//    @DeleteMapping("/doctor-schedules/{id}")
-//    @Timed
-//    public ResponseEntity<Void> deleteDoctorSchedule(@PathVariable Long id) {
-//        log.debug("REST request to delete DoctorSchedule : {}", id);
-//        doctorScheduleService.delete(id);
-//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-//    }
 }
