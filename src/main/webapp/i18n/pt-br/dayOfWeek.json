@@ -1,14 +1,14 @@
 {
     "tclinicaApp": {
-        "Weekdays" : {
+        "DayOfWeek" : {
             "null": "",
-            "SUNDAY": "DOMINGO",
             "MONDAY": "SEGUNDA",
             "TUESDAY": "TERÇA",
             "WEDNESDAY": "QUARTA",
             "THURSDAY": "QUINTA",
             "FRIDAY": "SEXTA",
-            "SATURDAY": "SÁBADO"
+            "SATURDAY": "SÁBADO",
+            "SUNDAY": "DOMINGO"
         }
     }
 }

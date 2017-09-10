@@ -2,22 +2,22 @@
     "tclinicaApp": {
         "accountant" : {
             "home": {
-                "title": "Accountants",
-                "createLabel": "Criar novo Accountant",
-                "createOrEditLabel": "Criar ou editar Accountant"
+                "title": "Contadores",
+                "createLabel": "Registrar novo contador",
+                "createOrEditLabel": "Registrar ou editar contador"
             },
-            "created": "Um novo Accountant foi criado com o identificador {{ param }}",
-            "updated": "Um Accountant foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Accountant foi deletado com o identificador {{ param }}",
+            "created": "Um novo contador foi registrado com o identificador {{ param }}",
+            "updated": "Um contador foi atualizado com o identificador {{ param }}",
+            "deleted": "Um contador foi deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Accountant {{ id }}?"
+                "question": "Tem certeza de que deseja desativar o contador {{ id }}?"
             },
             "detail": {
-                "title": "Accountant"
+                "title": "Contador"
             },
-            "nickname": "Nickname",
-            "inactive": "Inactive",
-            "user": "User"
+            "nickname": "Nome de tratamento",
+            "inactive": "Desativado",
+            "user": "Usuário"
         }
     }
 }

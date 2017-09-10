@@ -1,23 +1,23 @@
 {
     "tclinicaApp": {
-        "prescription" : {
+        "receita médica" : {
             "home": {
-                "title": "Prescriptions",
-                "createLabel": "Criar novo Prescription",
-                "createOrEditLabel": "Criar ou editar Prescription"
+                "title": "Receitas médicas",
+                "createLabel": "Criar nova receita médica",
+                "createOrEditLabel": "Criar ou editar receita médica"
             },
-            "created": "Um novo Prescription foi criado com o identificador {{ param }}",
-            "updated": "Um Prescription foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Prescription foi deletado com o identificador {{ param }}",
+            "created": "Uma nova receita médica foi criada com o identificador {{ param }}",
+            "updated": "Uma receita médica foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma receita médica foi deletada com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Prescription {{ id }}?"
+                "question": "Tem certeza de que deseja excluir a receita médica {{ id }}?"
             },
             "detail": {
-                "title": "Prescription"
+                "title": "Receita médica"
             },
-            "number": "Number",
-            "medicine": "Medicine",
-            "medicalRecord": "Medical Record"
+            "number": "Número",
+            "medicine": "Medicamento",
+            "medicalRecord": "Histórico clínico"
         }
     }
 }

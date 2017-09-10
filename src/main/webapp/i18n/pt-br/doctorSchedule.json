@@ -2,27 +2,27 @@
     "tclinicaApp": {
         "doctorSchedule" : {
             "home": {
-                "title": "Doctor Schedules",
-                "createLabel": "Criar novo Doctor Schedule",
-                "createOrEditLabel": "Criar ou editar Doctor Schedule"
+                "title": "Agendas médicas",
+                "createLabel": "Criar nova agenda médica",
+                "createOrEditLabel": "Criar ou editar agenda médica"
             },
-            "created": "Um novo Doctor Schedule foi criado com o identificador {{ param }}",
-            "updated": "Um Doctor Schedule foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Doctor Schedule foi deletado com o identificador {{ param }}",
+            "created": "Uma nova agenda médica foi criada com o identificador {{ param }}",
+            "updated": "Uma agenda médica foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma agenda médica foi deletada com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Doctor Schedule {{ id }}?"
+                "question": "Tem certeza de que deseja excluir a agenda médica {{ id }}?"
             },
             "detail": {
-                "title": "Doctor Schedule"
+                "title": "Agenda médica"
             },
-            "appointmentsDurationMinutes": "Appointments Duration Minutes",
-            "intervalBetweenAppointmentsMinutes": "Interval Between Appointments Minutes",
-            "earliestAppointmentTime": "Earliest Appointment Time",
-            "latestAppointmentTime": "Latest Appointment Time",
-            "calendarId": "Calendar Id",
-            "doctor": "Doctor",
-            "availableWeekdays": "Available Weekdays",
-            "appointment": "Appointment"
+            "appointmentsDurationMinutes": "Duração das consultas em minutos",
+            "intervalBetweenAppointmentsMinutes": "Intervalo entre as consultas em minutos",
+            "earliestAppointmentTime": "Horário mais cedo admitido para uma consulta",
+            "latestAppointmentTime": "Horário mais tarde admitido para uma consulta",
+            "calendarId": "Identificador do google calendar",
+            "doctor": "Médico",
+            "availableWeekdays": "Dias disponíveis",
+            "appointment": "Consultas"
         }
     }
 }

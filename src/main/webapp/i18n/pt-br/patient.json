@@ -1,23 +1,23 @@
 {
     "tclinicaApp": {
-        "patient" : {
+        "Paciente" : {
             "home": {
-                "title": "Patients",
-                "createLabel": "Criar novo Patient",
-                "createOrEditLabel": "Criar ou editar Patient"
+                "title": "Pacientes",
+                "createLabel": "Registrar novo paciente",
+                "createOrEditLabel": "Registrar ou editar paciente"
             },
-            "created": "Um novo Patient foi criado com o identificador {{ param }}",
-            "updated": "Um Patient foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Patient foi deletado com o identificador {{ param }}",
+            "created": "Um novo paciente foi registrado com o identificador {{ param }}",
+            "updated": "Um paciente foi atualizado com o identificador {{ param }}",
+            "deleted": "Um paciente foi desativado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Patient {{ id }}?"
+                "question": "Tem certeza de que deseja desativar o paciente {{ id }}?"
             },
             "detail": {
-                "title": "Patient"
+                "title": "Paciente"
             },
-            "nickname": "Nickname",
-            "inactive": "Inactive",
-            "user": "User"
+            "nickname": "Nome de tratamento",
+            "inactive": "Desativado",
+            "user": "Usuário"
         }
     }
 }

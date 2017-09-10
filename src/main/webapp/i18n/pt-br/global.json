@@ -7,22 +7,22 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
-                "doctorTcc": "Doctor",
-                "patientTcc": "Patient",
-                "accountantTcc": "Accountant",
-                "doctorScheduleTcc": "Doctor Schedule",
-                "availableWeekdaysTcc": "Available Weekdays",
-                "appointmentTcc": "Appointment",
-                "paymentInstallmentTcc": "Payment Installment",
-                "healthcareTcc": "Healthcare",
-                "cardBrandTcc": "Card Brand",
-                "paymentMethodTcc": "Payment Method",
-                "medicalRecordTcc": "Medical Record",
-                "examTcc": "Exam",
-                "examTypeTcc": "Exam Type",
-                "examStatusTcc": "Exam Status",
-                "prescriptionTcc": "Prescription",
-                "medicineTcc": "Medicine",
+                "doctorTcc": "Médico",
+                "patientTcc": "Paciente",
+                "accountantTcc": "Contador",
+                "doctorScheduleTcc": "Agenda médica",
+                "availableWeekdaysTcc": "Dias disponíveis",
+                "appointmentTcc": "Consulta",
+                "paymentInstallmentTcc": "Parcela de pagamento",
+                "healthcareTcc": "Plano de saúde",
+                "cardBrandTcc": "Bandeira de cartão",
+                "paymentMethodTcc": "Método de pagamento",
+                "medicalRecordTcc": "Histórico clínico",
+                "examTcc": "Exame",
+                "examTypeTcc": "Tipo de exame",
+                "examStatusTcc": "Situação do exame",
+                "prescriptionTcc": "Rceita médica",
+                "medicineTcc": "Medicamento",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -61,7 +61,7 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
+                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" e senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
                 "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Crie uma nova conta</a>"
             },
             "error": {
@@ -128,14 +128,14 @@
         }
     },
     "error": {
-        "internalServerError": "Internal server error",
+        "internalServerError": "Erro no servidor",
         "server.not.reachable": "Servidor indisponível",
-        "url.not.found": "Not found",
+        "url.not.found": "Não encontrado",
         "NotNull": "O Campo {{fieldName}} não pode ser vazio!",
         "Size": "O campo {{fieldName}} não obedece os requisitos de tamanho mínimo ou máximo!",
         "userexists": "Usuário já existente!",
         "emailexists": "Este email já está cadastrado!",
         "idexists": "Novo(a) {{entityName}} não pode ter uma ID"
     },
-    "footer": "Este é o seu rodapé"
+    "footer": "TCliniCa® - 2017 - PUC Minas - Desenvolvimento de aplicações web"
 }

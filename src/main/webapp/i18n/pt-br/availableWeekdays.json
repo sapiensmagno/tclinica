@@ -2,21 +2,21 @@
     "tclinicaApp": {
         "availableWeekdays" : {
             "home": {
-                "title": "Available Weekdays",
-                "createLabel": "Criar novo Available Weekdays",
-                "createOrEditLabel": "Criar ou editar Available Weekdays"
+                "title": "Dias disponíveis",
+                "createLabel": "Registrar novo dia disponível",
+                "createOrEditLabel": "Criar ou editar um dia disponível"
             },
-            "created": "Um novo Available Weekdays foi criado com o identificador {{ param }}",
-            "updated": "Um Available Weekdays foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Available Weekdays foi deletado com o identificador {{ param }}",
+            "created": "A disponibilidade neste dia foi registrada. Identificador {{ param }}",
+            "updated": "Disponibilidade editada com o identificador {{ param }}",
+            "deleted": "Removida a disponibilidade para esse dia. Identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Available Weekdays {{ id }}?"
+                "question": "Tem certeza de que deseja remover a disponibilidade para esse dia? Identificador {{ id }}?"
             },
             "detail": {
-                "title": "Available Weekdays"
+                "title": "Dia disponível"
             },
-            "weekday": "Weekday",
-            "doctorSchedule": "Doctor Schedule"
+            "weekday": "Dia da semana",
+            "doctorSchedule": "Agenda médica"
         }
     }
 }

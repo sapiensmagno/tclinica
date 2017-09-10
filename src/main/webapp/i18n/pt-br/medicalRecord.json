@@ -2,23 +2,23 @@
     "tclinicaApp": {
         "medicalRecord" : {
             "home": {
-                "title": "Medical Records",
-                "createLabel": "Criar novo Medical Record",
-                "createOrEditLabel": "Criar ou editar Medical Record"
+                "title": "Registros de histórico clínico",
+                "createLabel": "Criar novo registro de histórico clínico",
+                "createOrEditLabel": "Criar ou editar registro de histórico clínico"
             },
-            "created": "Um novo Medical Record foi criado com o identificador {{ param }}",
-            "updated": "Um Medical Record foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Medical Record foi deletado com o identificador {{ param }}",
+            "created": "Um novo registro de histórico clínico foi criado com o identificador {{ param }}",
+            "updated": "Um registro de histórico clínico foi atualizado com o identificador {{ param }}",
+            "deleted": "Um registro de histórico clínico foi deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Medical Record {{ id }}?"
+                "question": "Tem certeza de que deseja excluir o registro de histórico clínico {{ id }}?"
             },
             "detail": {
-                "title": "Medical Record"
+                "title": "Registro de histórico clínico"
             },
-            "description": "Description",
-            "appointment": "Appointment",
-            "exam": "Exam",
-            "prescription": "Prescription"
+            "description": "Descrição",
+            "appointment": "Consulta",
+            "exam": "Exame",
+            "prescription": "Receita médica"
         }
     }
 }

@@ -1,23 +1,23 @@
 {
     "tclinicaApp": {
-        "exam" : {
+        "exame" : {
             "home": {
-                "title": "Exams",
-                "createLabel": "Criar novo Exam",
-                "createOrEditLabel": "Criar ou editar Exam"
+                "title": "Exames",
+                "createLabel": "Criar novo exame",
+                "createOrEditLabel": "Criar ou editar exame"
             },
-            "created": "Um novo Exam foi criado com o identificador {{ param }}",
-            "updated": "Um Exam foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Exam foi deletado com o identificador {{ param }}",
+            "created": "Um novo exame foi criado com o identificador {{ param }}",
+            "updated": "Um exame foi atualizado com o identificador {{ param }}",
+            "deleted": "Um exame foi deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Exam {{ id }}?"
+                "question": "Tem certeza de que deseja excluir exame {{ id }}?"
             },
             "detail": {
-                "title": "Exam"
+                "title": "Exame"
             },
-            "examType": "Exam Type",
-            "examStatus": "Exam Status",
-            "medicalRecord": "Medical Record"
+            "exameType": "Tipo de exame",
+            "exameStatus": "Situação do exame",
+            "medicalRecord": "Histórico clínico"
         }
     }
 }

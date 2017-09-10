@@ -2,30 +2,30 @@
     "tclinicaApp": {
         "paymentInstallment" : {
             "home": {
-                "title": "Payment Installments",
-                "createLabel": "Criar novo Payment Installment",
-                "createOrEditLabel": "Criar ou editar Payment Installment"
+                "title": "Parcelas de pagamentos",
+                "createLabel": "Criar nova parcela de pagamento",
+                "createOrEditLabel": "Criar ou editar parcela de pagamento"
             },
-            "created": "Um novo Payment Installment foi criado com o identificador {{ param }}",
-            "updated": "Um Payment Installment foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Payment Installment foi deletado com o identificador {{ param }}",
+            "created": "Uma nova parcela de pagamento foi criada com o identificador {{ param }}",
+            "updated": "Uma parcela de pagamento foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma parcela de pagamento foi deletada com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Payment Installment {{ id }}?"
+                "question": "Tem certeza de que deseja excluir a parcela de pagamento {{ id }}?"
             },
             "detail": {
-                "title": "Payment Installment"
+                "title": "Parcela de pagamento"
             },
-            "payDate": "Pay Date",
-            "dueDate": "Due Date",
-            "value": "Value",
-            "installmentNumber": "Installment Number",
-            "checkNumber": "Check Number",
-            "cardFinalNumber": "Card Final Number",
-            "cancelled": "Cancelled",
-            "paymentMethod": "Payment Method",
-            "cardBrand": "Card Brand",
-            "healthcare": "Healthcare",
-            "appointment": "Appointment"
+            "payDate": "Data do pagamento",
+            "dueDate": "Data em que será recebido o pagamento",
+            "value": "Valor",
+            "installmentNumber": "Número da parcela",
+            "checkNumber": "Número do cheque",
+            "cardFinalNumber": "Últimos dígitos do cartão de crédito",
+            "cancelled": "Cancelado",
+            "paymentMethod": "Método de pagamento",
+            "cardBrand": "Bandeira do cartão",
+            "healthcare": "Plano de saúde",
+            "appointment": "Pagamento referente à consulta"
         }
     }
 }

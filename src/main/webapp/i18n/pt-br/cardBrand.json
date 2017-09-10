@@ -2,20 +2,20 @@
     "tclinicaApp": {
         "cardBrand" : {
             "home": {
-                "title": "Card Brands",
-                "createLabel": "Criar novo Card Brand",
-                "createOrEditLabel": "Criar ou editar Card Brand"
+                "title": "Bandeiras de cartão",
+                "createLabel": "Criar nova bandeira de cartão",
+                "createOrEditLabel": "Criar ou editar bandeira de cartão"
             },
-            "created": "Um novo Card Brand foi criado com o identificador {{ param }}",
-            "updated": "Um Card Brand foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Card Brand foi deletado com o identificador {{ param }}",
+            "created": "Uma nova bandeira foi criada com o identificador {{ param }}",
+            "updated": "Uma bandeira foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma bandeira foi deletada com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Card Brand {{ id }}?"
+                "question": "Tem certeza de que deseja excluir a bandeira de cartão {{ id }}?"
             },
             "detail": {
-                "title": "Card Brand"
+                "title": "Bandeira de cartão"
             },
-            "name": "Name"
+            "name": "Nome"
         }
     }
 }

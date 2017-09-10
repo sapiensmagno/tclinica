@@ -1,24 +1,24 @@
 {
     "tclinicaApp": {
-        "medicine" : {
+        "medicamento" : {
             "home": {
-                "title": "Medicines",
-                "createLabel": "Criar novo Medicine",
-                "createOrEditLabel": "Criar ou editar Medicine"
+                "title": "Medicamentos",
+                "createLabel": "Criar novo medicamento",
+                "createOrEditLabel": "Criar ou editar medicamento"
             },
-            "created": "Um novo Medicine foi criado com o identificador {{ param }}",
-            "updated": "Um Medicine foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Medicine foi deletado com o identificador {{ param }}",
+            "created": "Um novo medicamento foi criado com o identificador {{ param }}",
+            "updated": "Um medicamento foi atualizado com o identificador {{ param }}",
+            "deleted": "Um medicamento foi deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Medicine {{ id }}?"
+                "question": "Tem certeza de que deseja excluir medicamento {{ id }}?"
             },
             "detail": {
-                "title": "Medicine"
+                "title": "Medicamento"
             },
-            "genericName": "Generic Name",
-            "brandName": "Brand Name",
-            "manufacturer": "Manufacturer",
-            "inactive": "Inactive"
+            "genericName": "Nome genérico",
+            "brandName": "Nome da marca",
+            "manufacturer": "Fabricante",
+            "inactive": "Desativado"
         }
     }
 }

@@ -1,19 +1,19 @@
 {
     "home": {
-        "title": "Bem vindo, Java Hipster!",
-        "subtitle": "Esta é  a página principal",
+        "title": "Bem vindo ao TClíniCa",
+        "subtitle": "",
         "logged": {
-            "message": "Você está logado como \"{{username}}\"."
+            "message": "{{username}}"
         },
-        "question": "Em caso de dúvida sobre o JHipster:",
+        "question": "",
         "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster no Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "chat": "JHipster public chat room",
-            "follow": "contate @java_hipster on Twitter"
+            "homepage": "",
+            "stackoverflow": "",
+            "bugtracker": "",
+            "chat": "",
+            "follow": ""
         },
-        "like": "Se você gosta do JHipster, não se esqueça de avaliar no",
-        "github": "GitHub"
+        "like": "",
+        "github": "Que tal uma estrelinha no GitHub? :-)"
     }
 }
