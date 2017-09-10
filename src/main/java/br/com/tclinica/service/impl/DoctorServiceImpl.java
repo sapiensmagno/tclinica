@@ -1,6 +1,5 @@
 package br.com.tclinica.service.impl;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,7 +60,7 @@ public class DoctorServiceImpl implements DoctorService{
     
     // when creating a new schedule, set default values and create a schedule
     public Doctor create (Doctor doctor) {
-    	doctor.getUser().setAuthorities(defineDefaultAuthorities());
+    	doctor.getUser().setAuthorities(addDefaultAuthorities(doctor.getUser()));
     	UserMapper mapper = new UserMapper();
     	this.userService.updateUser(mapper.userToUserDTO(doctor.getUser()));
     	
@@ -82,13 +81,10 @@ public class DoctorServiceImpl implements DoctorService{
     	}
     	return nickname;
     }
-    private Set<Authority> defineDefaultAuthorities () {
-    	Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> addDefaultAuthorities (User user) {
+    	Set<Authority> authorities = userService.getUserWithAuthorities(user.getId()).getAuthorities();
 		Authority authority = new Authority();
 		authority.setName(AuthoritiesConstants.DOCTOR);
-		authorities.add(authority);
-		authority = new Authority();
-		authority.setName(AuthoritiesConstants.USER);
 		authorities.add(authority);
 		return authorities;
     }

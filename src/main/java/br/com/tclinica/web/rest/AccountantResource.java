@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -26,8 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Accountant;
+import br.com.tclinica.domain.Authority;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AccountantRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.mapper.UserMapper;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -43,8 +48,11 @@ public class AccountantResource {
     private static final String ENTITY_NAME = "accountant";
 
     private final AccountantRepository accountantRepository;
-    public AccountantResource(AccountantRepository accountantRepository) {
+    private final UserService userService;
+    
+    public AccountantResource(AccountantRepository accountantRepository, UserService userService) {
         this.accountantRepository = accountantRepository;
+        this.userService = userService;
     }
 
     /**
@@ -62,12 +70,23 @@ public class AccountantResource {
         if (accountant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new accountant cannot already have an ID")).body(null);
         }
+        accountant.getUser().setAuthorities(addDefaultAuthorities(accountant.getUser()));
+    	UserMapper mapper = new UserMapper();
+    	this.userService.updateUser(mapper.userToUserDTO(accountant.getUser()));
         Accountant result = accountantRepository.save(accountant);
         return ResponseEntity.created(new URI("/api/accountants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+    
+    private Set<Authority> addDefaultAuthorities (User user) {
+    	Set<Authority> authorities = userService.getUserWithAuthorities(user.getId()).getAuthorities();
+		Authority authority = new Authority();
+		authority.setName(AuthoritiesConstants.DOCTOR);
+		authorities.add(authority);
+		return authorities;
+    }
+    
     /**
      * PUT  /accountants : Updates an existing accountant.
      *

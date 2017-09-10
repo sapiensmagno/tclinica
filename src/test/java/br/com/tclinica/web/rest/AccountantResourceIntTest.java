@@ -1,11 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Accountant;
-import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.AccountantRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,13 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Accountant;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.AccountantRepository;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the AccountantResource REST controller.
@@ -58,6 +63,9 @@ public class AccountantResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private AccountantResource accountantResource;
 
     private MockMvc restAccountantMockMvc;
 
@@ -66,7 +74,6 @@ public class AccountantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AccountantResource accountantResource = new AccountantResource(accountantRepository);
         this.restAccountantMockMvc = MockMvcBuilders.standaloneSetup(accountantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
