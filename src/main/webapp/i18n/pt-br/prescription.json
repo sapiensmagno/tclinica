@@ -1,6 +1,6 @@
 {
     "tclinicaApp": {
-        "receita médica" : {
+        "prescription" : {
             "home": {
                 "title": "Receitas médicas",
                 "createLabel": "Criar nova receita médica",

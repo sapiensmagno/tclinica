@@ -1,6 +1,6 @@
 {
     "tclinicaApp": {
-        "Paciente" : {
+        "patient" : {
             "home": {
                 "title": "Pacientes",
                 "createLabel": "Registrar novo paciente",

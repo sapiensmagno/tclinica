@@ -3,6 +3,7 @@
         "title": "Tclinica",
         "browsehappy": "Você está usando um navegador <strong>desatualizado</strong>. Favor <a href=\"http://browsehappy.com/?locale=pt_BR\">atualizar o seu navegador</a> para ter uma experiência melhor.",
         "menu": {
+        	"user": "Usuário",
             "home": "Início",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
@@ -21,7 +22,7 @@
                 "examTcc": "Exame",
                 "examTypeTcc": "Tipo de exame",
                 "examStatusTcc": "Situação do exame",
-                "prescriptionTcc": "Rceita médica",
+                "prescriptionTcc": "Receita médica",
                 "medicineTcc": "Medicamento",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
@@ -52,6 +53,10 @@
         "form": {
             "username": "Usuário",
             "username.placeholder": "Seu usuário",
+            "firstName": "Primeiro nome",
+            "firstName.placeholder": "ex: João Pedro",
+            "lastName": "Último nome",
+            "lastName.placeholder": "ex: da Silva e Bragança",
             "newpassword": "Nova senha",
             "newpassword.placeholder": "Nova senha",
             "confirmpassword": "Confirmação de nova senha",
@@ -61,7 +66,7 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" e senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
+                "authenticated": "Faça <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">login</a> para agendar uma consulta com um de nossos médicos!",
                 "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Crie uma nova conta</a>"
             },
             "error": {

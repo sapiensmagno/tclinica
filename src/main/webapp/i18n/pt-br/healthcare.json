@@ -1,6 +1,6 @@
 {
     "tclinicaApp": {
-        "plano de saúde" : {
+        "healthcare" : {
             "home": {
                 "title": "Planos de saúde",
                 "createLabel": "Criar novo plano de saúde",

@@ -5,9 +5,9 @@
         .module('tclinicaApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope) {
         var vm = this;
 
         vm.isNavbarCollapsed = true;
@@ -23,6 +23,19 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+        vm.account = null;
+        
+        $scope.$on('authenticationSuccess', function() {
+            getAccount();
+        });
+        
+        getAccount();
+        
+        function getAccount() {
+            Principal.identity().then(function(account) {
+                vm.account = account;
+            });
+        }
 
         function login() {
             collapseNavbar();

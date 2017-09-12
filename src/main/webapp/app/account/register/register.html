@@ -73,6 +73,52 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="firstName" data-translate="global.form.firstName">First name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{'global.form.firstName.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.firstName" ng-minlength=1 ng-maxlength=50 ng-pattern="/*/" required>
+                    <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.required" data-translate="register.messages.validate.firstName.required">
+                            Your first name is required.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.minlength" data-translate="register.messages.validate.firstName.minlength">
+                            Your firstname is required to be at least 1 character.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.maxlength" data-translate="register.messages.validate.firstName.maxlength">
+                            Your first name cannot be longer than 50 characters.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.pattern" data-translate="register.messages.validate.firstName.pattern">
+                            Invalid name.
+                    </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="lastName" data-translate="global.form.lastName">Last name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{'global.form.lastName.placeholder' | translate}}"
+                           ng-model="vm.registerAccount.lastName" ng-minlength=1 ng-maxlength=50 ng-pattern="/*/" required>
+                    <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.required" data-translate="register.messages.validate.lastName.required">
+                            Your last name is required.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.minlength" data-translate="register.messages.validate.lastName.minlength">
+                            Your last name is required to be at least 1 character.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.maxlength" data-translate="register.messages.validate.lastName.maxlength">
+                            Your last name cannot be longer than 50 characters.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.pattern" data-translate="register.messages.validate.lastName.pattern">
+                            Invalid name.
+                    </p>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label" for="password" data-translate="global.form.newpassword">New password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="{{'global.form.newpassword.placeholder' | translate}}"
                            ng-model="vm.registerAccount.password" ng-minlength=4 ng-maxlength=50 required>

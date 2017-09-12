@@ -14,6 +14,11 @@
         </div>
         <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
+	            <li ng-class="{active: vm.$state.includes('admin')}"">
+	                <div class="alert" ng-switch-when="true">
+	                    <span class="hidden-sm" data-translate="global.menu.user">User</span>: {{vm.account.login}}
+	                </div>
+		        </li>
                 <li ui-sref-active="active">
                     <a ui-sref="home" ng-click="vm.collapseNavbar()">
                         <span class="glyphicon glyphicon-home"></span>

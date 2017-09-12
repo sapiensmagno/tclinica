@@ -1,6 +1,6 @@
 {
     "tclinicaApp": {
-        "exame" : {
+        "exam" : {
             "home": {
                 "title": "Exames",
                 "createLabel": "Criar novo exame",
@@ -15,8 +15,8 @@
             "detail": {
                 "title": "Exame"
             },
-            "exameType": "Tipo de exame",
-            "exameStatus": "Situação do exame",
+            "examType": "Tipo de exame",
+            "examStatus": "Situação do exame",
             "medicalRecord": "Histórico clínico"
         }
     }

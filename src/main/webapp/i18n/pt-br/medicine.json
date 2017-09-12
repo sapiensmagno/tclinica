@@ -1,6 +1,6 @@
 {
     "tclinicaApp": {
-        "medicamento" : {
+        "medicine" : {
             "home": {
                 "title": "Medicamentos",
                 "createLabel": "Criar novo medicamento",
