@@ -37,6 +37,7 @@ import br.com.tclinica.TclinicaApp;
 import br.com.tclinica.domain.Authority;
 import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AuthorityRepository;
+import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.repository.UserRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.MailService;
@@ -68,6 +69,9 @@ public class AccountResourceIntTest {
 
     @Autowired
     private HttpMessageConverter[] httpMessageConverters;
+    
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Mock
     private UserService mockUserService;
@@ -78,17 +82,17 @@ public class AccountResourceIntTest {
     private MockMvc restUserMockMvc;
 
     private MockMvc restMvc;
-
+    
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, patientRepository);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, patientRepository);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
