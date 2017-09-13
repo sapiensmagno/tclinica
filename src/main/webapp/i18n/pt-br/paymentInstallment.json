@@ -16,16 +16,16 @@
                 "title": "Parcela de pagamento"
             },
             "payDate": "Data do pagamento",
-            "dueDate": "Data em que será recebido o pagamento",
+            "dueDate": "Vencimento",
             "value": "Valor",
-            "installmentNumber": "Número da parcela",
-            "checkNumber": "Número do cheque",
-            "cardFinalNumber": "Últimos dígitos do cartão de crédito",
+            "installmentNumber": "Parcela nº",
+            "checkNumber": "Cheque nº",
+            "cardFinalNumber": "Cartão de crédito - últimos dígitos",
             "cancelled": "Cancelado",
             "paymentMethod": "Método de pagamento",
             "cardBrand": "Bandeira do cartão",
             "healthcare": "Plano de saúde",
-            "appointment": "Pagamento referente à consulta"
+            "appointment": "Consulta"
         }
     }
 }
