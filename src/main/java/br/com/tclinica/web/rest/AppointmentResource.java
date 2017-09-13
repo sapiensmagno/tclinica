@@ -92,6 +92,7 @@ public class AppointmentResource {
     @PreAuthorize("#appointment.patient.user.login == authentication.name or #appointment.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<Appointment> updateAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to update Appointment : {}", appointment);
+        appointment.setEndDate(appointmentService.calculateEnd(appointment));
         if (appointment.getId() == null) {
             return createAppointment(appointment);
         }

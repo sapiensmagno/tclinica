@@ -33,6 +33,7 @@
             if (vm.appointment.id !== null) {
                 Appointment.update(vm.appointment, onSaveSuccess, onSaveError);
             } else {
+            	vm.appointment.endDate = 0;
                 Appointment.save(vm.appointment, onSaveSuccess, onSaveError);
             }
         }
