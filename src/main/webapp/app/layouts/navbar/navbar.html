@@ -25,13 +25,74 @@
                         <span class="hidden-sm" data-translate="global.menu.home">Home</span>
                     </a>
                 </li>
-                <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+                
                 <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" uib-dropdown class="dropdown pointer">
+                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="patient-menu">
+                        <span>
+                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="hidden-sm" data-translate="global.menu.patient.main">
+                                Patient
+                            </span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
+                    	<li ui-sref-active="active">
+                            <a ui-sref="patient-tcc" ng-click="vm.collapseNavbar()">
+                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                <span data-translate="global.menu.patient.patientTcc">Profile</span>
+                            </a>
+                        </li>
+                        <li ui-sref-active="active">
+                           <a ui-sref="appointment-tcc" ng-click="vm.collapseNavbar()">
+                               <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                               <span data-translate="global.menu.patient.appointmentTcc">Appointments</span>
+                           </a>
+                       </li>
+                       <li ui-sref-active="active">
+                            <a ui-sref="payment-installment-tcc" ng-click="vm.collapseNavbar()">
+                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                <span data-translate="global.menu.patient.paymentInstallmentTcc">Payments</span>
+                            </a>
+                       </li>
+                    </ul>
+                </li>
+                
+                
+                <li ng-class="{active: vm.$state.includes('accountant')}"  ng-switch-when="true" has-authority="ROLE_ACCOUNTANT" uib-dropdown class="dropdown pointer">
+                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="accountant-menu">
+                        <span>
+                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="hidden-sm" data-translate="global.menu.accountant.main">
+                                Accountant
+                            </span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
+                    	<li ui-sref-active="active">
+                            <a ui-sref="accountant-tcc" ng-click="vm.collapseNavbar()">
+                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                <span data-translate="global.menu.accountant.accountantTcc">Profile</span>
+                            </a>
+                        </li>
+                    	<li ui-sref-active="active">
+                            <a ui-sref="payment-installment-tcc" ng-click="vm.collapseNavbar()">
+                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                <span data-translate="global.menu.accountant.paymentInstallmentTcc">Payments</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                
+                <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+                <li ng-class="{active: vm.$state.includes('doctor')}"  ng-switch-when="true" has-authority="ROLE_DOCTOR" uib-dropdown class="dropdown pointer">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" id="entity-menu">
                         <span>
                             <span class="glyphicon glyphicon-th-list"></span>
                             <span class="hidden-sm" data-translate="global.menu.entities.main">
-                                Entities
+                                Médico
                             </span>
                             <b class="caret"></b>
                         </span>
@@ -40,97 +101,62 @@
                         <li ui-sref-active="active">
                                 <a ui-sref="doctor-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.doctorTcc">Doctor Tcc</span>
+                                    <span data-translate="global.menu.entities.doctorTcc">Profile</span>
                                 </a>
                             </li>
                         <li ui-sref-active="active">
-                                <a ui-sref="patient-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.patientTcc">Patient Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="accountant-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.accountantTcc">Accountant Tcc</span>
-                                </a>
-                            </li>
+                           <a ui-sref="appointment-tcc" ng-click="vm.collapseNavbar()">
+                               <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                               <span data-translate="global.menu.entities.appointmentTcc">Appointments</span>
+                           </a>
+                       </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="doctor-schedule-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.doctorScheduleTcc">Doctor Schedule Tcc</span>
+                                    <span data-translate="global.menu.entities.doctorScheduleTcc">Customize Schedule</span>
                                 </a>
                             </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="available-weekdays-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.availableWeekdaysTcc">Available Weekdays Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="appointment-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.appointmentTcc">Appointment Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="payment-installment-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.paymentInstallmentTcc">Payment Installment Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="healthcare-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.healthcareTcc">Healthcare Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="card-brand-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.cardBrandTcc">Card Brand Tcc</span>
-                                </a>
-                            </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="payment-method-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.paymentMethodTcc">Payment Method Tcc</span>
+                                    <span data-translate="global.menu.entities.availableWeekdaysTcc">Available Weekdays</span>
                                 </a>
                             </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="medical-record-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.medicalRecordTcc">Medical Record Tcc</span>
+                                    <span data-translate="global.menu.entities.medicalRecordTcc">Medical Records</span>
                                 </a>
                             </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="exam-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.examTcc">Exam Tcc</span>
+                                    <span data-translate="global.menu.entities.examTcc">Exams</span>
                                 </a>
                             </li>
+	                    <li ui-sref-active="active">
+	                            <a ui-sref="exam-status-tcc" ng-click="vm.collapseNavbar()">
+	                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+	                                <span data-translate="global.menu.entities.examStatusTcc">Exam Status</span>
+	                            </a>
+	                        </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="exam-type-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.examTypeTcc">Exam Type Tcc</span>
+                                    <span data-translate="global.menu.entities.examTypeTcc">Exam Types</span>
                                 </a>
                             </li>
-                        <li ui-sref-active="active">
-                                <a ui-sref="exam-status-tcc" ng-click="vm.collapseNavbar()">
-                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.examStatusTcc">Exam Status Tcc</span>
-                                </a>
-                            </li>
+
                         <li ui-sref-active="active">
                                 <a ui-sref="prescription-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.prescriptionTcc">Prescription Tcc</span>
+                                    <span data-translate="global.menu.entities.prescriptionTcc">Prescriptions</span>
                                 </a>
                             </li>
                         <li ui-sref-active="active">
                                 <a ui-sref="medicine-tcc" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.medicineTcc">Medicine Tcc</span>
+                                    <span data-translate="global.menu.entities.medicineTcc">Medicines</span>
                                 </a>
                             </li>
                         <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
@@ -195,43 +221,73 @@
                             </a>
                         </li>
                         <li ui-sref-active="active">
+                               <a ui-sref="healthcare-tcc" ng-click="vm.collapseNavbar()">
+                                   <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                   <span data-translate="global.menu.admin.healthcareTcc">Healthcare Tcc</span>
+                               </a>
+                           </li>
+                       <li ui-sref-active="active">
+                               <a ui-sref="card-brand-tcc" ng-click="vm.collapseNavbar()">
+                                   <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                   <span data-translate="global.menu.admin.cardBrandTcc">Card Brand Tcc</span>
+                               </a>
+                           </li>
+                       <li ui-sref-active="active">
+                               <a ui-sref="payment-method-tcc" ng-click="vm.collapseNavbar()">
+                                   <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                   <span data-translate="global.menu.admin.paymentMethodTcc">Payment Method Tcc</span>
+                               </a>
+                           </li>
+                        <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+                    </ul>
+                    
+                    <li ng-class="{active: vm.$state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" uib-dropdown class="dropdown pointer">
+                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="admin-menu">
+                        <span>
+                            <span class="glyphicon glyphicon-tower"></span>
+                            <span class="hidden-sm" data-translate="global.menu.system.main">System</span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
+                      	<li ui-sref-active="active">
                             <a ui-sref="jhi-metrics" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-dashboard"></span>&nbsp;
-                                <span data-translate="global.menu.admin.metrics">Metrics</span>
+                                <span data-translate="global.menu.system.metrics">Metrics</span>
                             </a>
                         </li>
                         <li ui-sref-active="active">
                             <a ui-sref="jhi-health" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-heart"></span>&nbsp;
-                                <span data-translate="global.menu.admin.health">Health</span>
+                                <span data-translate="global.menu.system.health">Health</span>
                             </a>
                         </li>
                         <li ui-sref-active="active">
                             <a ui-sref="jhi-configuration" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-list-alt"></span>&nbsp;
-                                <span data-translate="global.menu.admin.configuration">Configuration</span>
+                                <span data-translate="global.menu.system.configuration">Configuration</span>
                             </a>
                         </li>
                         <li ui-sref-active="active">
                             <a ui-sref="audits" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-bell"></span>&nbsp;
-                                <span data-translate="global.menu.admin.audits">Audits</span>
+                                <span data-translate="global.menu.system.audits">Audits</span>
                             </a>
                         </li>
                         <li ui-sref-active="active">
                             <a ui-sref="logs" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-tasks"></span>&nbsp;
-                                <span data-translate="global.menu.admin.logs">Logs</span>
+                                <span data-translate="global.menu.system.logs">Logs</span>
                             </a>
                         </li>
                         <li ng-show="vm.swaggerEnabled" ui-sref-active="active">
                             <a ui-sref="docs" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-book"></span>&nbsp;
-                                <span data-translate="global.menu.admin.apidocs">API</span>
+                                <span data-translate="global.menu.system.apidocs">API</span>
                             </a>
                         </li>
-                        <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
-                    </ul>
+                   </ul>                  
+                    
                 </li>
                 <li ui-sref-active="active" uib-dropdown class="dropdown pointer" ng-controller="JhiLanguageController as languageVm">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" ng-if="languageVm.languages.length > 1">

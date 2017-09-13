@@ -6,24 +6,29 @@
         	"user": "Usuário",
             "home": "Início",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-            "entities": {
-                "main": "Entidades",
-                "doctorTcc": "Médico",
-                "patientTcc": "Paciente",
-                "accountantTcc": "Contador",
-                "doctorScheduleTcc": "Agenda médica",
+            "patient": {
+            	"main": "Paciente",
+            	"patientTcc": "Perfil",
+            	"appointmentTcc": "Minhas consultas",
+            	"paymentInstallmentTcc": "Meus pagamentos"
+          	},
+          	"accountant": {
+          		"main": "Contador",
+          		"accountantTcc": "Perfil",
+          		"paymentInstallmentTcc": "Pagamentos"
+          	},
+          	"entities": {
+                "main": "Médico",
+                "doctorTcc": "Perfil",
+                "appointmentTcc": "Consultas",
+                "doctorScheduleTcc": "Personalizar agenda",
                 "availableWeekdaysTcc": "Dias disponíveis",
-                "appointmentTcc": "Consulta",
-                "paymentInstallmentTcc": "Parcela de pagamento",
-                "healthcareTcc": "Plano de saúde",
-                "cardBrandTcc": "Bandeira de cartão",
-                "paymentMethodTcc": "Método de pagamento",
-                "medicalRecordTcc": "Histórico clínico",
-                "examTcc": "Exame",
-                "examTypeTcc": "Tipo de exame",
-                "examStatusTcc": "Situação do exame",
-                "prescriptionTcc": "Receita médica",
-                "medicineTcc": "Medicamento",
+                "medicalRecordTcc": "Registros clínicos",
+                "examTcc": "Exames",
+                "examStatusTcc": "Situação dos exames",
+                "examTypeTcc": "Tipos de exames",
+                "prescriptionTcc": "Receitas",
+                "medicineTcc": "Medicamentos",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -37,16 +42,22 @@
             },
             "admin": {
                 "main": "Administração",
-                "userManagement": "Gerenciamento de usuário",
+                "userManagement": "Gerenciamento de usuários",
                 "tracker": "Rastreamento de usuário",
-                "metrics": "Métricas",
+                "healthcareTcc": "Planos de saúde",
+                "cardBrandTcc": "Bandeiras de cartão",
+                "paymentMethodTcc": "Métodos de pagamento",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+            },
+           	"system": {
+           		"main": "Sistema",
+            	"metrics": "Métricas",
                 "health": "Estado do Sistema",
                 "configuration": "Configuração",
                 "logs": "Logs",
                 "audits": "Auditorias",
                 "apidocs": "API",
-                "database": "Banco de dados",
-                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+                "database": "Banco de dados" 
             },
             "language": "Idioma"
         },
