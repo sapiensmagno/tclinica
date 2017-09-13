@@ -24,6 +24,7 @@
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
         vm.account = null;
+        vm.showPatientMenu = false;
         
         $scope.$on('authenticationSuccess', function() {
             getAccount();
@@ -34,6 +35,7 @@
         function getAccount() {
             Principal.identity().then(function(account) {
                 vm.account = account;
+                vm.showPatientMenu = account.authorities.length == 1;
             });
         }
 
