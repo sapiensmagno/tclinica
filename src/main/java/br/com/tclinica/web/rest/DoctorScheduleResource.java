@@ -78,7 +78,7 @@ public class DoctorScheduleResource {
     @PutMapping("/doctor-schedules")
     @Timed
     @Secured(AuthoritiesConstants.DOCTOR)
-    @PreAuthorize("#doctorSchedule.user.login == authentication.name")
+    @PreAuthorize("#doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<DoctorSchedule> updateDoctorSchedule(@Valid @RequestBody DoctorSchedule doctorSchedule) throws URISyntaxException {
         log.debug("REST request to update DoctorSchedule : {}", doctorSchedule);
         if (doctorSchedule.getId() == null) {
