@@ -47,6 +47,7 @@
                 "healthcareTcc": "Planos de saúde",
                 "cardBrandTcc": "Bandeiras de cartão",
                 "paymentMethodTcc": "Métodos de pagamento",
+                "paymentInstallmentTcc": "Pagamentos",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
            	"system": {

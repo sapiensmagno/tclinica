@@ -36,8 +36,8 @@
             <tbody>
                 <tr ng-repeat="paymentInstallment in vm.paymentInstallments track by paymentInstallment.id">
                     <td><a ui-sref="payment-installment-tcc-detail({id:paymentInstallment.id})">{{paymentInstallment.id}}</a></td>
-                        <td>{{paymentInstallment.payDate | date:'mediumDate'}}</td>
-                        <td>{{paymentInstallment.dueDate | date:'mediumDate'}}</td>
+                        <td>{{paymentInstallment.payDate | date:'shortDate'}}</td>
+                        <td>{{paymentInstallment.dueDate | date:'shortDate'}}</td>
                     <td>{{paymentInstallment.value}}</td>
                     <td>{{paymentInstallment.installmentNumber}}</td>
                     <td>{{paymentInstallment.checkNumber}}</td>
@@ -53,7 +53,7 @@
                         <a ui-sref="healthcare-tcc-detail({id:paymentInstallment.healthcare.id})">{{paymentInstallment.healthcare.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="appointment-tcc-detail({id:paymentInstallment.appointment.id})">{{paymentInstallment.appointment.startDate}}</a>
+                        <a ui-sref="appointment-tcc-detail({id:paymentInstallment.appointment.id})">{{paymentInstallment.appointment.doctorSchedule.doctor.nickname}} {{paymentInstallment.appointment.startDate | date:'short'}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

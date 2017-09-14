@@ -88,7 +88,7 @@
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.paymentInstallment.appointment" for="field_appointment">Appointment</label>
-            <select class="form-control" id="field_appointment" name="appointment" ng-model="vm.paymentInstallment.appointment" ng-options="appointment as appointment.startDate for appointment in vm.appointments track by appointment.id">
+            <select class="form-control" id="field_appointment" name="appointment" ng-model="vm.paymentInstallment.appointment" ng-options="appointment as (appointment.doctorSchedule.doctor.nickname + ' ' + (appointment.startDate|date:'short')) for appointment in vm.appointments track by appointment.id">
                 <option value=""></option>
             </select>
         </div>

@@ -6,11 +6,11 @@
     <dl class="dl-horizontal jh-entity-details">
         <dt><span data-translate="tclinicaApp.paymentInstallment.payDate">Pay Date</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.payDate | date:'mediumDate'}}</span>
+            <span>{{vm.paymentInstallment.payDate | date:'shortDate'}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.dueDate">Due Date</span></dt>
         <dd>
-            <span>{{vm.paymentInstallment.dueDate | date:'mediumDate'}}</span>
+            <span>{{vm.paymentInstallment.dueDate | date:'shortDate'}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.value">Value</span></dt>
         <dd>
@@ -46,7 +46,7 @@
         </dd>
         <dt><span data-translate="tclinicaApp.paymentInstallment.appointment">Appointment</span></dt>
         <dd>
-            <a ui-sref="appointment-tcc-detail({id:vm.paymentInstallment.appointment.id})">{{vm.paymentInstallment.appointment.startDate}}</a>
+            <a ui-sref="appointment-tcc-detail({id:vm.paymentInstallment.appointment.id})">{{vm.paymentInstallment.appointment.doctorSchedule.doctor.nickname}} {{vm.paymentInstallment.appointment.startDate | date:'short'}}</a>
         </dd>
     </dl>
 
