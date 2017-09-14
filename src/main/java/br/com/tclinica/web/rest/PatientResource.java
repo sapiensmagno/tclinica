@@ -56,7 +56,7 @@ public class PatientResource {
      */
     @PostMapping("/patients")
     @Timed
-    @PreAuthorize("#patient.user.login == authentication.name")
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or #patient.user.login == authentication.name")
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to save Patient : {}", patient);
         if (patient.getId() != null) {
