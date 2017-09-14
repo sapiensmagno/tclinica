@@ -21,7 +21,7 @@
             "cancelled": "Cancelada",
             "paymentInstallment": "Parcela de pagamento",
             "patient": "Paciente",
-            "doctorSchedule": "Agenda médica",
+            "doctorSchedule": "Médico",
             "medicalRecord": "Histórico clínico"
         }
     }
