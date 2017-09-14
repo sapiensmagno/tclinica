@@ -35,7 +35,8 @@
                         </span>
                     </td>
                     <td>
-                        <a ui-sref="medical-record-tcc-detail({id:prescription.medicalRecord.id})">{{prescription.medicalRecord.id}}</a>
+                        <a ui-sref="medical-record-tcc-detail({id:prescription.medicalRecord.id})">
+                        {{prescription.medicalRecord.appointment.patient.nickname}} {{prescription.medicalRecord.appointment.startDate | date:'short'}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

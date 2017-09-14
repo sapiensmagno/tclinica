@@ -8,11 +8,6 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.medicalRecord.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.medicalRecord.id" readonly />
-        </div>
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.medicalRecord.description" for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
@@ -22,7 +17,9 @@
 
         <div class="form-group">
             <label data-translate="tclinicaApp.medicalRecord.appointment" for="field_appointment">Appointment</label>
-            <select class="form-control" id="field_appointment" name="appointment" ng-model="vm.medicalRecord.appointment" ng-options="appointment as appointment.startDate for appointment in vm.appointments | orderBy:'id' track by appointment.id">
+            <select class="form-control" id="field_appointment" name="appointment" 
+            ng-model="vm.medicalRecord.appointment" 
+            ng-options="appointment as (appointment.patient.nickname + ' ' + (appointment.startDate|date:'short')) for appointment in vm.appointments | orderBy:'id' track by appointment.id">
                 <option value=""></option>
             </select>
         </div>

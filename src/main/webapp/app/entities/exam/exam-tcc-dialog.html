@@ -22,7 +22,9 @@
         </div>
         <div class="form-group">
             <label data-translate="tclinicaApp.exam.medicalRecord" for="field_medicalRecord">Medical Record</label>
-            <select class="form-control" id="field_medicalRecord" name="medicalRecord" ng-model="vm.exam.medicalRecord" ng-options="medicalRecord as medicalRecord.id for medicalRecord in vm.medicalrecords track by medicalRecord.id">
+            <select class="form-control" id="field_medicalRecord" name="medicalRecord" 
+            ng-model="vm.exam.medicalRecord" 
+            ng-options="medicalRecord as (medicalRecord.appointment.patient.nickname + ' ' + (medicalRecord.appointment.startDate|date:'short')) for medicalRecord in vm.medicalrecords track by medicalRecord.id">
                 <option value=""></option>
             </select>
         </div>

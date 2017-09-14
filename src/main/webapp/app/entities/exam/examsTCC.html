@@ -31,7 +31,8 @@
                         <a ui-sref="exam-type-tcc-detail({id:exam.examType.id})">{{exam.examType.name}}</a>
                     </td>
                     <td>
-                        <a ui-sref="medical-record-tcc-detail({id:exam.medicalRecord.id})">{{exam.medicalRecord.id}}</a>
+                        <a ui-sref="medical-record-tcc-detail({id:exam.medicalRecord.id})">
+                        {{exam.medicalRecord.appointment.patient.nickname}} {{exam.medicalRecord.appointment.startDate | date:'short'}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

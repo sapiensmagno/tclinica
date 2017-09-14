@@ -10,7 +10,8 @@
         </dd>
         <dt><span data-translate="tclinicaApp.exam.medicalRecord">Medical Record</span></dt>
         <dd>
-            <a ui-sref="medical-record-tcc-detail({id:vm.exam.medicalRecord.id})">{{vm.exam.medicalRecord.id}}</a>
+            <a ui-sref="medical-record-tcc-detail({id:vm.exam.medicalRecord.id})">
+            {{vm.exam.medicalRecord.appointment.patient.nickname}} {{vm.exam.medicalRecord.appointment.startDate | date:'short'}}</a>
         </dd>
     </dl>
 

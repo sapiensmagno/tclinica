@@ -3,20 +3,20 @@
         "medicine" : {
             "home": {
                 "title": "Medicamentos",
-                "createLabel": "Criar novo medicamento",
-                "createOrEditLabel": "Criar ou editar medicamento"
+                "createLabel": "Cadastrar medicamento",
+                "createOrEditLabel": "Inserir ou editar medicamento"
             },
-            "created": "Um novo medicamento foi criado com o identificador {{ param }}",
+            "created": "Um novo medicamento foi cadastrado com o identificador {{ param }}",
             "updated": "Um medicamento foi atualizado com o identificador {{ param }}",
             "deleted": "Um medicamento foi deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir medicamento {{ id }}?"
+                "question": "Tem certeza de que deseja desativar o medicamento {{ id }}?"
             },
             "detail": {
                 "title": "Medicamento"
             },
             "genericName": "Nome genérico",
-            "brandName": "Nome da marca",
+            "brandName": "Nome comercial",
             "manufacturer": "Fabricante",
             "inactive": "Desativado"
         }

@@ -29,7 +29,8 @@
                     <td><a ui-sref="medical-record-tcc-detail({id:medicalRecord.id})">{{medicalRecord.id}}</a></td>
                     <td>{{medicalRecord.description}}</td>
                     <td>
-                        <a ui-sref="appointment-tcc-detail({id:medicalRecord.appointment.id})">{{medicalRecord.appointment.startDate}}</a>
+                        <a ui-sref="appointment-tcc-detail({id:medicalRecord.appointment.id})">
+                        {{medicalRecord.appointment.patient.nickname}} {{medicalRecord.appointment.startDate | date:'short'}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

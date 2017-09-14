@@ -16,7 +16,8 @@
         </dd>
         <dt><span data-translate="tclinicaApp.prescription.medicalRecord">Medical Record</span></dt>
         <dd>
-            <a ui-sref="medical-record-tcc-detail({id:vm.prescription.medicalRecord.id})">{{vm.prescription.medicalRecord.id}}</a>
+            <a ui-sref="medical-record-tcc-detail({id:vm.prescription.medicalRecord.id})">
+            {{vm.prescription.medicalRecord.appointment.patient.nickname}} {{vm.prescription.medicalRecord.appointment.startDate | date:'short'}}</a>
         </dd>
     </dl>
 
