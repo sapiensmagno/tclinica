@@ -27,7 +27,7 @@
             <tbody>
                 <tr ng-repeat="availableWeekdays in vm.availableWeekdays track by availableWeekdays.id">
                     <td><a ui-sref="available-weekdays-tcc-detail({id:availableWeekdays.id})">{{availableWeekdays.id}}</a></td>
-                    <td>{{availableWeekdays.weekday}}</td>
+                    <td data-translate="{{'tclinicaApp.DayOfWeek.' + availableWeekdays.weekday}}">{{availableWeekdays.weekday}}</td>
                     <td>
                         <a ui-sref="doctor-schedule-tcc-detail({id:availableWeekdays.doctorSchedule.id})">{{availableWeekdays.doctorSchedule.doctor.nickname}}</a>
                     </td>

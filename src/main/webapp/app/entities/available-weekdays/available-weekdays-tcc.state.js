@@ -26,6 +26,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('availableWeekdays');
+                    $translatePartialLoader.addPart('DayOfWeek');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
