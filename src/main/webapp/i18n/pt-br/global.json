@@ -9,19 +9,18 @@
             "patient": {
             	"main": "Paciente",
             	"patientTcc": "Perfil",
-            	"appointmentTcc": "Minhas consultas",
-            	"paymentInstallmentTcc": "Meus pagamentos"
-          	},
+            	"appointmentTcc": "Minhas consultas"
+           },
           	"accountant": {
           		"main": "Contador",
           		"accountantTcc": "Perfil",
           		"paymentInstallmentTcc": "Pagamentos"
           	},
-          	"entities": {
+          	"doctor": {
                 "main": "Médico",
                 "doctorTcc": "Perfil",
                 "appointmentTcc": "Consultas",
-                "doctorScheduleTcc": "Personalizar agenda",
+                "doctorScheduleTcc": "Configuração de agenda",
                 "availableWeekdaysTcc": "Dias disponíveis",
                 "medicalRecordTcc": "Registros clínicos",
                 "examTcc": "Exames",
@@ -29,6 +28,7 @@
                 "examTypeTcc": "Tipos de exames",
                 "prescriptionTcc": "Receitas",
                 "medicineTcc": "Medicamentos",
+                "paymentInstallmentTcc": "Pagamentos",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

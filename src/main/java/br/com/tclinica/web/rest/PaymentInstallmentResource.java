@@ -56,8 +56,7 @@ public class PaymentInstallmentResource {
      */
     @PostMapping("/payment-installments")
     @Timed
-    @PreAuthorize("#paymentInstallment.appointment.patient.user.login == authentication.name "
-    		+ "or hasRole('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
     public ResponseEntity<PaymentInstallment> createPaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
         log.debug("REST request to save PaymentInstallment : {}", paymentInstallment);
         if (paymentInstallment.getId() != null) {
@@ -77,8 +76,7 @@ public class PaymentInstallmentResource {
     @GetMapping("/payment-installments")
     @Timed
     @PostFilter("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" + AuthoritiesConstants.ACCOUNTANT + "') or " +
-    		"filterObject.appointment.doctorSchedule.doctor.user.login == authentication.name or " +
-    		"filterObject.appointment.patient.user.login == authentication.name")
+    		"filterObject.appointment.doctorSchedule.doctor.user.login == authentication.name")
     public List<PaymentInstallment> getAllPaymentInstallments() {
         log.debug("REST request to get all PaymentInstallments");
         return paymentInstallmentService.findAll();
@@ -93,8 +91,7 @@ public class PaymentInstallmentResource {
     @GetMapping("/payment-installments/{id}")
     @Timed
     @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" + AuthoritiesConstants.ACCOUNTANT + "') or " +
-    		"returnObject.body.appointment.doctorSchedule.doctor.user.login == authentication.name or " +
-    		"returnObject.body.appointment.patient.user.login == authentication.name")
+    		"returnObject.body.appointment.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<PaymentInstallment> getPaymentInstallment(@PathVariable Long id) {
         log.debug("REST request to get PaymentInstallment : {}", id);
         PaymentInstallment paymentInstallment = paymentInstallmentService.findOne(id);
