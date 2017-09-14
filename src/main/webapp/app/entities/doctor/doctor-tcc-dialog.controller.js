@@ -9,7 +9,18 @@
 
     function DoctorTccDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, Doctor, User, DoctorSchedule) {
         var vm = this;
-
+        
+        vm.hideUserSelect = false;
+        setDefaultUser();
+        function setDefaultUser() {
+            User.query((function(usr) {
+                if (!entity.id>0) {
+                	entity.user = usr[0];
+                }
+                vm.hideUserSelect = usr.length < 2;
+            }));
+        }
+        
         vm.doctor = entity;
         vm.clear = clear;
         vm.save = save;
