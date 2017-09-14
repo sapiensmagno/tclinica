@@ -6,13 +6,8 @@
                 ng-click="vm.clear()">&times;</button>
         <h4 class="modal-title" id="myAppointmentLabel" data-translate="tclinicaApp.appointment.home.createOrEditLabel">Create or edit a Appointment</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" ng-switch="vm.hidePatientSelect">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.appointment.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.appointment.id" readonly />
-        </div>
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.appointment.startDate" for="field_startDate">Start Date</label>
                 <div class="input-group">
@@ -39,13 +34,7 @@
                     ng-model="vm.appointment.description"
                     />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.appointment.cancelled" for="field_cancelled">Cancelled</label>
-                <input type="checkbox" name="cancelled" id="field_cancelled"
-                          ng-model="vm.appointment.cancelled"/>
-        </div>
-
-        <div class="form-group">
+        <div class="form-group" ng-switch-when="false">
             <label data-translate="tclinicaApp.appointment.patient" for="field_patient">Patient</label>
             <select class="form-control" id="field_patient" name="patient" ng-model="vm.appointment.patient" ng-options="patient as patient.nickname for patient in vm.patients track by patient.id" required>
             </select>

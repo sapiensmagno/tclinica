@@ -9,6 +9,17 @@
 
     function AppointmentTccDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Appointment, PaymentInstallment, Patient, DoctorSchedule, MedicalRecord) {
         var vm = this;
+        
+        vm.hidePatientSelect = false;
+        setDefaultPatient();
+        function setDefaultPatient() {
+            Patient.query((function(pat) {
+                if (!entity.id>0) {
+                	entity.patient = pat[0];
+                }
+                vm.hidePatientSelect = pat.length < 2;
+            }));
+        }
 
         vm.appointment = entity;
         vm.clear = clear;
