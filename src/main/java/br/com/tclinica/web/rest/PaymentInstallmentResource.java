@@ -56,7 +56,8 @@ public class PaymentInstallmentResource {
      */
     @PostMapping("/payment-installments")
     @Timed
-    @PreAuthorize("#paymentInstallment.appointment.patient.user.login == authentication.name")
+    @PreAuthorize("#paymentInstallment.appointment.patient.user.login == authentication.name "
+    		+ "or hasRole('" + AuthoritiesConstants.ADMIN + "')")
     public ResponseEntity<PaymentInstallment> createPaymentInstallment(@Valid @RequestBody PaymentInstallment paymentInstallment) throws URISyntaxException {
         log.debug("REST request to save PaymentInstallment : {}", paymentInstallment);
         if (paymentInstallment.getId() != null) {
