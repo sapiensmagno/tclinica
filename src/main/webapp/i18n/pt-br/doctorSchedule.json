@@ -15,10 +15,10 @@
             "detail": {
                 "title": "Agenda médica"
             },
-            "appointmentsDurationMinutes": "Duração das consultas em minutos",
-            "intervalBetweenAppointmentsMinutes": "Intervalo entre as consultas em minutos",
-            "earliestAppointmentTime": "Horário mais cedo admitido para uma consulta",
-            "latestAppointmentTime": "Horário mais tarde admitido para uma consulta",
+            "appointmentsDurationMinutes": "Duração das consultas (min)",
+            "intervalBetweenAppointmentsMinutes": "Intervalo entre consultas (min)",
+            "earliestAppointmentTime": "Início do dia",
+            "latestAppointmentTime": "Fim do dia",
             "calendarId": "Identificador do google calendar",
             "doctor": "Médico",
             "availableWeekdays": "Dias disponíveis",

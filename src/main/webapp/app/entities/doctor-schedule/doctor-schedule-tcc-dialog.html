@@ -8,11 +8,6 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.doctorSchedule.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.doctorSchedule.id" readonly />
-        </div>
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.doctorSchedule.appointmentsDurationMinutes" for="field_appointmentsDurationMinutes">Appointments Duration Minutes</label>
             <input type="number" class="form-control" name="appointmentsDurationMinutes" id="field_appointmentsDurationMinutes"
@@ -75,13 +70,6 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.doctorSchedule.calendarId" for="field_calendarId">Calendar Id</label>
-            <input type="text" class="form-control" name="calendarId" id="field_calendarId"
-                    ng-model="vm.doctorSchedule.calendarId"
-                    />
-        </div>
-
         <div class="form-group">
             <label data-translate="tclinicaApp.doctorSchedule.doctor" for="field_doctor">Doctor</label>
             <select class="form-control" id="field_doctor" name="doctor" ng-model="vm.doctorSchedule.doctor" ng-options="doctor as doctor.nickname for doctor in vm.doctors | orderBy:'id' track by doctor.id" required>

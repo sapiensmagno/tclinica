@@ -23,7 +23,6 @@
                     <th><span data-translate="tclinicaApp.doctorSchedule.intervalBetweenAppointmentsMinutes">Interval Between Appointments Minutes</span></th>
                     <th><span data-translate="tclinicaApp.doctorSchedule.earliestAppointmentTime">Earliest Appointment Time</span></th>
                     <th><span data-translate="tclinicaApp.doctorSchedule.latestAppointmentTime">Latest Appointment Time</span></th>
-                    <th><span data-translate="tclinicaApp.doctorSchedule.calendarId">Calendar Id</span></th>
                     <th><span data-translate="tclinicaApp.doctorSchedule.doctor">Doctor</span></th>
                     <th></th>
                 </tr>
@@ -33,9 +32,8 @@
                     <td><a ui-sref="doctor-schedule-tcc-detail({id:doctorSchedule.id})">{{doctorSchedule.id}}</a></td>
                     <td>{{doctorSchedule.appointmentsDurationMinutes}}</td>
                     <td>{{doctorSchedule.intervalBetweenAppointmentsMinutes}}</td>
-                    <td>{{doctorSchedule.earliestAppointmentTime | date:'medium'}}</td>
-                    <td>{{doctorSchedule.latestAppointmentTime | date:'medium'}}</td>
-                    <td>{{doctorSchedule.calendarId}}</td>
+                    <td>{{doctorSchedule.earliestAppointmentTime | date:'shortTime'}}</td>
+                    <td>{{doctorSchedule.latestAppointmentTime | date:'shortTime'}}</td>
                     <td>
                         <a ui-sref="doctor-tcc-detail({id:doctorSchedule.doctor.id})">{{doctorSchedule.doctor.nickname}}</a>
                     </td>

@@ -3,7 +3,7 @@
         "appointment" : {
             "home": {
                 "title": "Consultas",
-                "createLabel": "Agendar nova consulta",
+                "createLabel": "Agendar consulta",
                 "createOrEditLabel": "Agendar ou editar consulta"
             },
             "created": "A consulta foi agendada. Identificador: {{ param }}",
