@@ -1,10 +1,10 @@
 package br.com.tclinica.service;
 
-import br.com.tclinica.domain.AvailableWeekdays;
-import br.com.tclinica.domain.DoctorSchedule;
-
 import java.time.DayOfWeek;
 import java.util.List;
+
+import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.domain.DoctorSchedule;
 
 /**
  * Service Interface for managing AvailableWeekdays.
@@ -44,4 +44,6 @@ public interface AvailableWeekdaysService {
 	AvailableWeekdays createInstance(DayOfWeek day, DoctorSchedule doctorSchedule);
 
 	boolean isDeletable(Long id);
+
+	List<AvailableWeekdays> findByDoctorSchedule(DoctorSchedule doctorSchedule);
 }

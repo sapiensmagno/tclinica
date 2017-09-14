@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.Doctor;
 import br.com.tclinica.domain.Patient;
 import br.com.tclinica.domain.User;
@@ -24,6 +25,7 @@ import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.security.SecurityUtils;
 import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.service.AvailableWeekdaysService;
 import br.com.tclinica.service.DoctorService;
 import br.com.tclinica.service.UserService;
 
@@ -40,15 +42,18 @@ public class AppointmentServiceImpl implements AppointmentService{
     private final DoctorService doctorService;
     private final UserService userService;
     private final PatientRepository patientRepository;
+    private final AvailableWeekdaysService availableWeekdaysService;
     
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, 
     		DoctorService doctorService, 
     		PatientRepository patientRepository,
+    		AvailableWeekdaysService availableWeekdaysService,
     		UserService userService) {
         this.appointmentRepository = appointmentRepository;
         this.doctorService = doctorService;
         this.userService = userService;
         this.patientRepository = patientRepository;
+        this.availableWeekdaysService = availableWeekdaysService;
     }
 
     /**
@@ -161,23 +166,27 @@ public class AppointmentServiceImpl implements AppointmentService{
     	LocalTime appointmentEndTime = appointment.getEndDate().withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
     	LocalTime latestAppointmentPossible = LocalTime.from(appointment.getDoctorSchedule().getLatestAppointmentTime().atZone(ZoneId.systemDefault()));
     	valid = valid && appointmentEndTime.isBefore(latestAppointmentPossible);
-    	// TODO Is it an available weekday? (eliminate Weekdays and work with java's DayOfWeek)
-
-    	// Load appointments in this schedule
-    	existingAppointments = appointmentRepository.findByDoctorSchedule(appointment.getDoctorSchedule());
-    	
-    	// Is there a crash?
-    	appointmentsDontCrash = existingAppointment ->
-			(appointment.getStartDate().isAfter(existingAppointment.getEndDate()) || 
-			appointment.getStartDate().isBefore(existingAppointment.getStartDate()))
-			&&
-			(appointment.getEndDate().isBefore(existingAppointment.getStartDate()) ||
-			appointment.getEndDate().isAfter(existingAppointment.getEndDate()));
-    	valid = valid && 
-    			(existingAppointments.isEmpty() ||
-    			existingAppointments.stream()
-    			.filter(existingAppointment -> !existingAppointment.equals(appointment) && !existingAppointment.isCancelled())
-    			.allMatch(appointmentsDontCrash));
+    	//Is it an available weekday?
+    	if (valid) {
+	    	List<AvailableWeekdays> weekdays = availableWeekdaysService.findByDoctorSchedule(appointment.getDoctorSchedule());
+	    	valid = valid && weekdays.stream().anyMatch(wkday -> wkday.getWeekday().equals(appointment.getStartDate().getDayOfWeek()));
+    	}
+    	if (valid) {
+	    	// Load appointments in this schedule
+	    	existingAppointments = appointmentRepository.findByDoctorSchedule(appointment.getDoctorSchedule());
+	    	// Is there a crash?
+	    	appointmentsDontCrash = existingAppointment ->
+				(appointment.getStartDate().isAfter(existingAppointment.getEndDate()) || 
+				appointment.getStartDate().isBefore(existingAppointment.getStartDate()))
+				&&
+				(appointment.getEndDate().isBefore(existingAppointment.getStartDate()) ||
+				appointment.getEndDate().isAfter(existingAppointment.getEndDate()));
+	    	valid = valid && 
+	    			(existingAppointments.isEmpty() ||
+	    			existingAppointments.stream()
+	    			.filter(existingAppointment -> !existingAppointment.equals(appointment) && !existingAppointment.isCancelled())
+	    			.allMatch(appointmentsDontCrash));
+    	}
     	return valid;
     }
     

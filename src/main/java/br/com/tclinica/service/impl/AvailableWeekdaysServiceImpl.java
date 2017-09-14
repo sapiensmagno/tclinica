@@ -92,4 +92,9 @@ public class AvailableWeekdaysServiceImpl implements AvailableWeekdaysService{
 				(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
 				SecurityUtils.getCurrentUserLogin().equals(day.getDoctorSchedule().getDoctor().getUser().getLogin()));
 	}
+
+	@Override
+	public List<AvailableWeekdays> findByDoctorSchedule(DoctorSchedule doctorSchedule) {
+		return availableWeekdaysRepository.findByDoctorSchedule(doctorSchedule);
+	}
 }
