@@ -9,12 +9,23 @@
 
     function AccountantTccDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, Accountant, User) {
         var vm = this;
-
+        
+        vm.hideUserSelect = false;
+        setDefaultUser();
+        function setDefaultUser() {
+            User.query((function(usr) {
+                if (!entity.id>0) {
+                	entity.user = usr[0];
+                }
+                vm.hideUserSelect = usr.length < 2;
+            }));
+        }
+        
         vm.accountant = entity;
         vm.clear = clear;
         vm.save = save;
         vm.users = User.query();
-
+        
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });

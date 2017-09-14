@@ -6,7 +6,7 @@
                 ng-click="vm.clear()">&times;</button>
         <h4 class="modal-title" id="myAccountantLabel" data-translate="tclinicaApp.accountant.home.createOrEditLabel">Create or edit a Accountant</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" ng-switch="vm.hideUserSelect">
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
             <label class="control-label" data-translate="tclinicaApp.accountant.nickname" for="field_nickname">Nickname</label>
@@ -14,7 +14,7 @@
                     ng-model="vm.accountant.nickname"
                     />
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-switch-when="false">
             <label data-translate="tclinicaApp.accountant.user" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" ng-model="vm.accountant.user" 
             ng-options="user as user.firstName for user in vm.users track by user.id" required>
