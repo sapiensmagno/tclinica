@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>tclinica</title>
+    <title>TCliniCa</title>
     <meta name="description" content="">
     <meta name="google" value="notranslate">
     <meta name="theme-color" content="#000000">
@@ -25,7 +25,8 @@
     <!--[if lt IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <page-ribbon></page-ribbon>
+    <!-- <page-ribbon></page-ribbon> -->
+    <section class="topLine"></section>
     <div ui-view="navbar" ng-cloak></div>
     <div class="container">
         <div class="well" ui-view="content">
@@ -33,7 +34,9 @@
         </div>
 
         <div class="footer" ng-cloak>
-            <p data-translate="footer">TCliniCa® 2017</p>
+            <center><small><span data-translate="footer">TCliniCa® 2017</span>
+            	<a href="https://github.com/sapiensmagno/tclinica" target="_blank" rel="noopener" data-translate="home.github">GitHub</a>
+            </small></center>
         </div>
     </div>
     <noscript>

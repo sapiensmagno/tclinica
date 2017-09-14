@@ -1,6 +1,6 @@
 {
     "home": {
-        "title": "Bem vindo ao TClíniCa",
+        "title": "Sistema de gestão de clínica médica",
         "subtitle": "",
         "logged": {
             "message": "{{username}}"
@@ -13,7 +13,7 @@
             "chat": "",
             "follow": ""
         },
-        "like": "Gostou? Que tal nos dar uma estrelinha no",
-        "github": "GitHub? :-)"
+        "like": "",
+        "github": "GitHub"
     }
 }

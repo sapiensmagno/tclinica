@@ -11,6 +11,11 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     display: none !important;
 }
 
+.topLine {
+	background-color: #3380ff;
+	height: 5px;
+}
+
 /* ==========================================================================
 Development Ribbon
 ========================================================================== */
@@ -96,14 +101,20 @@ Main page styles
     }
 }
 
-.hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
-    background-size: contain;
+@media
+only screen and (min-device-width: 768px),
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2) { 
+	.hipster {
+	    display: inline-block;
+	    width: 347px;
+	    height: 497px;
+	    background: url("../images/hipster.png") no-repeat center top;
+	    background-size: contain;
+	}
 }
-
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),

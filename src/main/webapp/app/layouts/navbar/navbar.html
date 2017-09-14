@@ -9,14 +9,14 @@
             </button>
             <a class="navbar-brand logo" href="#/" ng-click="vm.collapseNavbar()">
                 <img class="logo-img" src="content/images/logo-jhipster.png" alt="logo"/>
-                <span data-translate="global.title">Tclinica</span> <span class="navbar-version">v{{VERSION}}</span>
+                <span data-translate="global.title">TCliniCa</span> <span class="navbar-version">v{{VERSION}}</span>
             </a>
         </div>
         <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
 	            <li ng-class="{active: vm.$state.includes('admin')}">
-	                <div class="alert" ng-switch-when="true">
-	                    <span class="hidden-sm" data-translate="global.menu.user">User</span>: {{vm.account.login}}
+	                <div class="nav navbar-nav" ng-switch-when="true">
+	                    <span data-translate="global.menu.user">Bem vindo</span>, {{vm.account.firstName}}
 	                </div>
 		        </li>
                 <li ui-sref-active="active">
