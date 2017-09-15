@@ -19,28 +19,28 @@
     -->
     <changeSet author="sapiensmagno" id="insertExamTypes-00">
         <insert tableName="exam_type">
-            <column name="name">hemogram</column>
+            <column name="name">hemograma</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">X-ray</column>
+            <column name="name">raio-X</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">electrocardiogram</column>
+            <column name="name">eletrocardiograma</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">blood glucose</column>
+            <column name="name">glicose</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">calcium</column>
+            <column name="name">cálcio</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">blood urea nitrogen</column>
+            <column name="name">uréia</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">albumin-to-creatinine ratio</column>
+            <column name="name">taxa de albumina/creatinina</column>
         </insert>
         <insert tableName="exam_type">
-            <column name="name">glomerular filtration rate</column>
+            <column name="name">taxa de filtração glomerular</column>
         </insert>
     </changeSet>
 </databaseChangeLog>
