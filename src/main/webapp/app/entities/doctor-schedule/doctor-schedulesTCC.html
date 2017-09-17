@@ -1,0 +1,66 @@
+<div>
+    <h2 data-translate="tclinicaApp.doctorSchedule.home.title">Doctor Schedules</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="doctor-schedule-tcc.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="tclinicaApp.doctorSchedule.home.createLabel">
+                        Create new Doctor Schedule
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="tclinicaApp.doctorSchedule.appointmentsDurationMinutes">Appointments Duration Minutes</span></th>
+                    <th><span data-translate="tclinicaApp.doctorSchedule.intervalBetweenAppointmentsMinutes">Interval Between Appointments Minutes</span></th>
+                    <th><span data-translate="tclinicaApp.doctorSchedule.earliestAppointmentTime">Earliest Appointment Time</span></th>
+                    <th><span data-translate="tclinicaApp.doctorSchedule.latestAppointmentTime">Latest Appointment Time</span></th>
+                    <th><span data-translate="tclinicaApp.doctorSchedule.doctor">Doctor</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doctorSchedule in vm.doctorSchedules track by doctorSchedule.id">
+                    <td><a ui-sref="doctor-schedule-tcc-detail({id:doctorSchedule.id})">{{doctorSchedule.id}}</a></td>
+                    <td>{{doctorSchedule.appointmentsDurationMinutes}}</td>
+                    <td>{{doctorSchedule.intervalBetweenAppointmentsMinutes}}</td>
+                    <td>{{doctorSchedule.earliestAppointmentTime | date:'shortTime'}}</td>
+                    <td>{{doctorSchedule.latestAppointmentTime | date:'shortTime'}}</td>
+                    <td>
+                        <a ui-sref="doctor-tcc-detail({id:doctorSchedule.doctor.id})">{{doctorSchedule.doctor.nickname}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="doctor-schedule-tcc-detail({id:doctorSchedule.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="doctor-schedule-tcc.edit({id:doctorSchedule.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="doctor-schedule-tcc.delete({id:doctorSchedule.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

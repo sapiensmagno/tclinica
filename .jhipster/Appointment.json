@@ -2,34 +2,61 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "patient",
-            "otherEntityName": "patient",
-            "otherEntityField": "id"
+            "relationshipType": "one-to-many",
+            "relationshipName": "paymentInstallment",
+            "otherEntityName": "paymentInstallment",
+            "otherEntityRelationshipName": "appointment"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "doctor",
-            "otherEntityName": "doctor",
+            "relationshipValidateRules": "required",
+            "relationshipName": "patient",
+            "otherEntityName": "patient",
+            "otherEntityField": "nickname"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "doctorSchedule",
+            "otherEntityName": "doctorSchedule",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "medicalRecord",
+            "otherEntityName": "medicalRecord",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "appointment"
         }
     ],
     "fields": [
         {
-            "fieldName": "scheduledDate",
+            "fieldName": "startDate",
             "fieldType": "ZonedDateTime",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
+            "fieldName": "endDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "cancelled",
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831184007",
+    "changelogDate": "20170902162244",
     "entityTableName": "appointment",
     "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
 }

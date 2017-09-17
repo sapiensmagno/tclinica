@@ -1,0 +1,21 @@
+{
+    "tclinicaApp": {
+        "examType" : {
+            "home": {
+                "title": "Tipos de exame",
+                "createLabel": "Criar novo tipo de exame",
+                "createOrEditLabel": "Criar ou editar tipo de exame"
+            },
+            "created": "Um novo tipo de exame foi criado com o identificador {{ param }}",
+            "updated": "Um tipo de exame foi atualizado com o identificador {{ param }}",
+            "deleted": "Um tipo de exame foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir o tipo de exame {{ id }}?"
+            },
+            "detail": {
+                "title": "Tipo de exame"
+            },
+            "name": "Nome"
+        }
+    }
+}

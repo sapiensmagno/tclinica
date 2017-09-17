@@ -1,0 +1,145 @@
+
+entity User
+
+entity Doctor {
+    nickname String,
+    inactive Boolean required
+}
+
+entity Patient {
+    nickname String,
+    inactive Boolean required
+}
+
+entity Accountant {
+    nickname String,
+    inactive Boolean required
+}
+
+relationship OneToOne {
+    Doctor{User(firstName) required} to User,
+    Patient{User(firstName) required} to User,
+    Accountant{User(firstName) required} to User
+}
+
+// Daily intervals, vacations and other events which
+// make a certain period unavailable may be 
+// inserted as appointments
+
+entity DoctorSchedule (DoctorSchedule) {
+    appointmentsDurationMinutes Integer required,
+    intervalBetweenAppointmentsMinutes Integer,
+    earliestAppointmentTime Instant required,
+    latestAppointmentTime Instant required,
+    calendarId String
+}
+
+relationship OneToOne {
+    DoctorSchedule{Doctor(nickname) required} to Doctor{DoctorSchedule}
+}
+
+relationship OneToMany {
+    DoctorSchedule{AvailableWeekdays(weekday)} to AvailableWeekdays
+}
+
+entity AvailableWeekdays {
+    weekday Integer required
+}
+
+entity Appointment (Appointment) {
+    startDate ZonedDateTime required,
+    endDate ZonedDateTime required,
+    description String,
+    cancelled Boolean required
+}
+
+relationship ManyToOne {
+    Appointment{Patient(nickname) required} to Patient,
+    Appointment{DoctorSchedule required} to DoctorSchedule{Appointment(startDate)}
+}
+
+entity PaymentInstallment {
+    payDate LocalDate,
+    dueDate LocalDate,
+    value BigDecimal,
+    installmentNumber Integer,
+    checkNumber String,
+    cardFinalNumber String,
+    cancelled Boolean required
+}
+
+entity CardBrand {
+    name String required
+}
+
+entity PaymentMethod {
+    name String required,
+    inactive Boolean required
+}
+
+relationship OneToOne {
+    PaymentInstallment{PaymentMethod(name) required} to PaymentMethod,
+    PaymentInstallment{CardBrand(name)} to CardBrand
+}
+
+entity Healthcare {
+    name String,
+    inactive Boolean required
+}
+
+relationship OneToMany {
+    Healthcare to PaymentInstallment{Healthcare(name)},
+    Appointment{PaymentInstallment(installmentNumber)} to PaymentInstallment{Appointment(startDate)}
+}
+
+entity MedicalRecord {
+    description String
+}
+
+relationship OneToMany {
+    MedicalRecord{Exam(ExamType)} to Exam{MedicalRecord},
+    MedicalRecord{Prescription(number)} to Prescription{MedicalRecord}
+}
+
+relationship OneToOne {
+    MedicalRecord{Appointment(startDate)} to Appointment{MedicalRecord}    
+}
+
+entity Exam { 
+}
+
+entity ExamType {
+    name String required
+}
+
+entity ExamStatus {
+    name String required,
+    creationDate ZonedDateTime required
+}
+
+relationship OneToOne {
+    Exam{ExamType(name)} to ExamType
+}
+
+relationship OneToMany {
+    Exam{ExamStatus(name)} to ExamStatus
+}
+
+entity Prescription {
+    text String
+}
+
+entity Medicine {
+    genericName String required,
+    brandName String,
+    manufacturer String,
+    inactive Boolean required
+}
+
+relationship ManyToMany {
+	Prescription{Medicine(genericName)} to Medicine
+}
+
+paginate Appointment, Medicine, ExamType with pagination
+service DoctorSchedule, Appointment, PaymentInstallment, Doctor, Accountant, AvailableWeekdays with serviceImpl
+angularSuffix * with TCC

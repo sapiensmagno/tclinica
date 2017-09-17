@@ -1,10 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Doctor;
-import br.com.tclinica.repository.DoctorRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +28,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.DoctorRepository;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the DoctorResource REST controller.
@@ -37,11 +44,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class DoctorResourceIntTest {
 
-    private static final String DEFAULT_SPECIALTY = "AAAAAAAAAA";
-    private static final String UPDATED_SPECIALTY = "BBBBBBBBBB";
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private DoctorService doctorService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -62,7 +75,7 @@ public class DoctorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DoctorResource doctorResource = new DoctorResource(doctorRepository);
+        final DoctorResource doctorResource = new DoctorResource(doctorService);
         this.restDoctorMockMvc = MockMvcBuilders.standaloneSetup(doctorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -77,7 +90,13 @@ public class DoctorResourceIntTest {
      */
     public static Doctor createEntity(EntityManager em) {
         Doctor doctor = new Doctor()
-            .specialty(DEFAULT_SPECIALTY);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        doctor.setUser(user);
         return doctor;
     }
 
@@ -101,7 +120,8 @@ public class DoctorResourceIntTest {
         List<Doctor> doctorList = doctorRepository.findAll();
         assertThat(doctorList).hasSize(databaseSizeBeforeCreate + 1);
         Doctor testDoctor = doctorList.get(doctorList.size() - 1);
-        assertThat(testDoctor.getSpecialty()).isEqualTo(DEFAULT_SPECIALTY);
+        assertThat(testDoctor.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testDoctor.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -125,24 +145,6 @@ public class DoctorResourceIntTest {
 
     @Test
     @Transactional
-    public void checkSpecialtyIsRequired() throws Exception {
-        int databaseSizeBeforeTest = doctorRepository.findAll().size();
-        // set the field null
-        doctor.setSpecialty(null);
-
-        // Create the Doctor, which fails.
-
-        restDoctorMockMvc.perform(post("/api/doctors")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(doctor)))
-            .andExpect(status().isBadRequest());
-
-        List<Doctor> doctorList = doctorRepository.findAll();
-        assertThat(doctorList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllDoctors() throws Exception {
         // Initialize the database
         doctorRepository.saveAndFlush(doctor);
@@ -152,7 +154,8 @@ public class DoctorResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(doctor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].specialty").value(hasItem(DEFAULT_SPECIALTY.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -166,7 +169,8 @@ public class DoctorResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(doctor.getId().intValue()))
-            .andExpect(jsonPath("$.specialty").value(DEFAULT_SPECIALTY.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -181,13 +185,15 @@ public class DoctorResourceIntTest {
     @Transactional
     public void updateDoctor() throws Exception {
         // Initialize the database
-        doctorRepository.saveAndFlush(doctor);
+        doctorService.save(doctor);
+
         int databaseSizeBeforeUpdate = doctorRepository.findAll().size();
 
         // Update the doctor
         Doctor updatedDoctor = doctorRepository.findOne(doctor.getId());
         updatedDoctor
-            .specialty(UPDATED_SPECIALTY);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restDoctorMockMvc.perform(put("/api/doctors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -198,7 +204,8 @@ public class DoctorResourceIntTest {
         List<Doctor> doctorList = doctorRepository.findAll();
         assertThat(doctorList).hasSize(databaseSizeBeforeUpdate);
         Doctor testDoctor = doctorList.get(doctorList.size() - 1);
-        assertThat(testDoctor.getSpecialty()).isEqualTo(UPDATED_SPECIALTY);
+        assertThat(testDoctor.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testDoctor.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test
@@ -223,7 +230,8 @@ public class DoctorResourceIntTest {
     @Transactional
     public void deleteDoctor() throws Exception {
         // Initialize the database
-        doctorRepository.saveAndFlush(doctor);
+        doctorService.save(doctor);
+
         int databaseSizeBeforeDelete = doctorRepository.findAll().size();
 
         // Get the doctor
@@ -233,7 +241,8 @@ public class DoctorResourceIntTest {
 
         // Validate the database is empty
         List<Doctor> doctorList = doctorRepository.findAll();
-        assertThat(doctorList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(doctor.isInactive());
+        assertThat(doctorList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

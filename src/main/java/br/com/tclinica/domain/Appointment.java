@@ -1,13 +1,26 @@
 package br.com.tclinica.domain;
 
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A Appointment.
@@ -24,17 +37,36 @@ public class Appointment implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "scheduled_date", nullable = false)
-    private ZonedDateTime scheduledDate;
+    @Column(name = "start_date", nullable = false)
+    private ZonedDateTime startDate;
 
+    @NotNull
+    @Column(name = "end_date", nullable = false)
+    private ZonedDateTime endDate;
+
+    @Column(name = "description")
+    private String description;
+    
+    @NotNull
     @Column(name = "cancelled")
-    private Boolean cancelled;
+    private boolean cancelled;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "appointment")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PaymentInstallment> paymentInstallments = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
     private Patient patient;
 
-    @ManyToOne
-    private Doctor doctor;
+    @ManyToOne(optional = false)
+    @NotNull
+    private DoctorSchedule doctorSchedule;
+
+    @OneToOne(mappedBy = "appointment")
+    @JsonIgnore
+    private MedicalRecord medicalRecord;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -45,30 +77,81 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getScheduledDate() {
-        return scheduledDate;
+    public ZonedDateTime getStartDate() {
+        return startDate;
     }
 
-    public Appointment scheduledDate(ZonedDateTime scheduledDate) {
-        this.scheduledDate = scheduledDate;
+    public Appointment startDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
         return this;
     }
 
-    public void setScheduledDate(ZonedDateTime scheduledDate) {
-        this.scheduledDate = scheduledDate;
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public Boolean isCancelled() {
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Appointment endDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Appointment description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public Appointment cancelled(Boolean cancelled) {
+    public Appointment cancelled(boolean cancelled) {
         this.cancelled = cancelled;
         return this;
     }
 
-    public void setCancelled(Boolean cancelled) {
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    public Set<PaymentInstallment> getPaymentInstallments() {
+        return paymentInstallments;
+    }
+
+    public Appointment paymentInstallments(Set<PaymentInstallment> paymentInstallments) {
+        this.paymentInstallments = paymentInstallments;
+        return this;
+    }
+
+    public Appointment addPaymentInstallment(PaymentInstallment paymentInstallment) {
+        this.paymentInstallments.add(paymentInstallment);
+        paymentInstallment.setAppointment(this);
+        return this;
+    }
+
+    public Appointment removePaymentInstallment(PaymentInstallment paymentInstallment) {
+        this.paymentInstallments.remove(paymentInstallment);
+        paymentInstallment.setAppointment(null);
+        return this;
+    }
+
+    public void setPaymentInstallments(Set<PaymentInstallment> paymentInstallments) {
+        this.paymentInstallments = paymentInstallments;
     }
 
     public Patient getPatient() {
@@ -84,17 +167,30 @@ public class Appointment implements Serializable {
         this.patient = patient;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
+    public DoctorSchedule getDoctorSchedule() {
+        return doctorSchedule;
     }
 
-    public Appointment doctor(Doctor doctor) {
-        this.doctor = doctor;
+    public Appointment doctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
         return this;
     }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public void setDoctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
+    }
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public Appointment medicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+        return this;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -122,7 +218,9 @@ public class Appointment implements Serializable {
     public String toString() {
         return "Appointment{" +
             "id=" + getId() +
-            ", scheduledDate='" + getScheduledDate() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", description='" + getDescription() + "'" +
             ", cancelled='" + isCancelled() + "'" +
             "}";
     }

@@ -1,9 +1,15 @@
 package br.com.tclinica.repository;
 
-import br.com.tclinica.domain.Appointment;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
+import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.domain.Patient;
 
 
 /**
@@ -12,5 +18,10 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-
+	
+	public List<Appointment> findByDoctorSchedule (DoctorSchedule doctorSchedule);
+	
+	public Page<Appointment> findByDoctorSchedule (DoctorSchedule doctorSchedule, Pageable pageable);
+	
+	public Page<Appointment> findByPatient(Patient patient, Pageable pageable);
 }

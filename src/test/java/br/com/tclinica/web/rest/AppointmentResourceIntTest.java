@@ -1,14 +1,27 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static br.com.tclinica.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Appointment;
-import br.com.tclinica.repository.AppointmentRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,18 +33,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static br.com.tclinica.web.rest.TestUtil.sameInstant;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.domain.DoctorSchedule;
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.repository.PatientRepository;
+import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.service.AvailableWeekdaysService;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.impl.AppointmentServiceImpl;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the AppointmentResource REST controller.
@@ -42,14 +55,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class AppointmentResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_SCHEDULED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_SCHEDULED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.now().plusDays(1L);
+    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.now().plusDays(10L);
+
+    private static final ZonedDateTime DEFAULT_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(100L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(200L), ZoneOffset.UTC);
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_CANCELLED = false;
     private static final Boolean UPDATED_CANCELLED = true;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentService appointmentService;
+    
+    @Autowired
+    DoctorService doctorService;
+    
+    @Autowired
+	PatientRepository patientRepository;
+	
+	@Autowired
+	AvailableWeekdaysService availableWeekdaysService;
+	
+	@Autowired
+	UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -64,19 +98,38 @@ public class AppointmentResourceIntTest {
     private EntityManager em;
 
     private MockMvc restAppointmentMockMvc;
+    
+    private MockMvc spiedRestAppointmentMockMvc;
 
     private Appointment appointment;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AppointmentResource appointmentResource = new AppointmentResource(appointmentRepository);
+        createResourceWithSpiedService();
+        final AppointmentResource appointmentResource = new AppointmentResource(appointmentService);
         this.restAppointmentMockMvc = MockMvcBuilders.standaloneSetup(appointmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
-
+    
+    private void createResourceWithSpiedService() {
+    	AppointmentServiceImpl serviceImpl = new AppointmentServiceImpl(appointmentRepository, 
+    			doctorService, patientRepository, availableWeekdaysService, userService);
+    	AppointmentService spiedAppointmentService = Mockito.spy(serviceImpl);
+        Mockito.doReturn(true).when(spiedAppointmentService).isDeletable(Mockito.anyLong());
+        Mockito.doReturn(true).when(spiedAppointmentService).isValid(Mockito.any(Appointment.class));        
+        Mockito.doReturn(DEFAULT_END_DATE).when(spiedAppointmentService).calculateEnd(Mockito.any(Appointment.class));
+        Mockito.doReturn(true).when(spiedAppointmentService).allowListAllAppointments();
+        final AppointmentResource spiedAppointmentResource = new AppointmentResource(spiedAppointmentService);
+        this.spiedRestAppointmentMockMvc = MockMvcBuilders.standaloneSetup(spiedAppointmentResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
+    }
+    
     /**
      * Create an entity for this test.
      *
@@ -85,8 +138,20 @@ public class AppointmentResourceIntTest {
      */
     public static Appointment createEntity(EntityManager em) {
         Appointment appointment = new Appointment()
-            .scheduledDate(DEFAULT_SCHEDULED_DATE)
+            .startDate(DEFAULT_START_DATE)
+            .endDate(DEFAULT_END_DATE)
+            .description(DEFAULT_DESCRIPTION)
             .cancelled(DEFAULT_CANCELLED);
+        // Add required entity
+        Patient patient = PatientResourceIntTest.createEntity(em);
+        em.persist(patient);
+        em.flush();
+        appointment.setPatient(patient);
+        // Add required entity
+        DoctorSchedule doctorSchedule = DoctorScheduleResourceIntTest.createEntity(em);
+        em.persist(doctorSchedule);
+        em.flush();
+        appointment.setDoctorSchedule(doctorSchedule);
         return appointment;
     }
 
@@ -101,7 +166,7 @@ public class AppointmentResourceIntTest {
         int databaseSizeBeforeCreate = appointmentRepository.findAll().size();
 
         // Create the Appointment
-        restAppointmentMockMvc.perform(post("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(post("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isCreated());
@@ -110,7 +175,10 @@ public class AppointmentResourceIntTest {
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate + 1);
         Appointment testAppointment = appointmentList.get(appointmentList.size() - 1);
-        assertThat(testAppointment.getScheduledDate()).isEqualTo(DEFAULT_SCHEDULED_DATE);
+        assertThat(testAppointment.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        //TODO create specific assertion for the end date
+        //assertThat(testAppointment.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testAppointment.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAppointment.isCancelled()).isEqualTo(DEFAULT_CANCELLED);
     }
 
@@ -135,10 +203,28 @@ public class AppointmentResourceIntTest {
 
     @Test
     @Transactional
-    public void checkScheduledDateIsRequired() throws Exception {
+    public void checkStartDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = appointmentRepository.findAll().size();
         // set the field null
-        appointment.setScheduledDate(null);
+        appointment.setStartDate(null);
+
+        // Create the Appointment, which fails.
+
+        restAppointmentMockMvc.perform(post("/api/appointments")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(appointment)))
+            .andExpect(status().isBadRequest());
+
+        List<Appointment> appointmentList = appointmentRepository.findAll();
+        assertThat(appointmentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkEndDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = appointmentRepository.findAll().size();
+        // set the field null
+        appointment.setEndDate(null);
 
         // Create the Appointment, which fails.
 
@@ -158,11 +244,13 @@ public class AppointmentResourceIntTest {
         appointmentRepository.saveAndFlush(appointment);
 
         // Get all the appointmentList
-        restAppointmentMockMvc.perform(get("/api/appointments?sort=id,desc"))
+        spiedRestAppointmentMockMvc.perform(get("/api/appointments?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(appointment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].scheduledDate").value(hasItem(sameInstant(DEFAULT_SCHEDULED_DATE))))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(sameInstant(DEFAULT_START_DATE))))
+            //.andExpect(jsonPath("$.[*].endDate").value(hasItem(sameInstant(DEFAULT_END_DATE))))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].cancelled").value(hasItem(DEFAULT_CANCELLED.booleanValue())));
     }
 
@@ -177,7 +265,9 @@ public class AppointmentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(appointment.getId().intValue()))
-            .andExpect(jsonPath("$.scheduledDate").value(sameInstant(DEFAULT_SCHEDULED_DATE)))
+            .andExpect(jsonPath("$.startDate").value(sameInstant(DEFAULT_START_DATE)))
+            //.andExpect(jsonPath("$.endDate").value(sameInstant(DEFAULT_END_DATE)))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.cancelled").value(DEFAULT_CANCELLED.booleanValue()));
     }
 
@@ -193,16 +283,19 @@ public class AppointmentResourceIntTest {
     @Transactional
     public void updateAppointment() throws Exception {
         // Initialize the database
-        appointmentRepository.saveAndFlush(appointment);
+        appointmentService.save(appointment);
+
         int databaseSizeBeforeUpdate = appointmentRepository.findAll().size();
 
         // Update the appointment
         Appointment updatedAppointment = appointmentRepository.findOne(appointment.getId());
         updatedAppointment
-            .scheduledDate(UPDATED_SCHEDULED_DATE)
+            .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
+            .description(UPDATED_DESCRIPTION)
             .cancelled(UPDATED_CANCELLED);
 
-        restAppointmentMockMvc.perform(put("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(put("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedAppointment)))
             .andExpect(status().isOk());
@@ -211,7 +304,9 @@ public class AppointmentResourceIntTest {
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeUpdate);
         Appointment testAppointment = appointmentList.get(appointmentList.size() - 1);
-        assertThat(testAppointment.getScheduledDate()).isEqualTo(UPDATED_SCHEDULED_DATE);
+        assertThat(testAppointment.getStartDate()).isEqualTo(UPDATED_START_DATE);
+        //assertThat(testAppointment.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testAppointment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAppointment.isCancelled()).isEqualTo(UPDATED_CANCELLED);
     }
 
@@ -223,7 +318,7 @@ public class AppointmentResourceIntTest {
         // Create the Appointment
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restAppointmentMockMvc.perform(put("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(put("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isCreated());
@@ -237,17 +332,19 @@ public class AppointmentResourceIntTest {
     @Transactional
     public void deleteAppointment() throws Exception {
         // Initialize the database
-        appointmentRepository.saveAndFlush(appointment);
+        appointmentRepository.save(appointment);
+
         int databaseSizeBeforeDelete = appointmentRepository.findAll().size();
 
         // Get the appointment
-        restAppointmentMockMvc.perform(delete("/api/appointments/{id}", appointment.getId())
+        spiedRestAppointmentMockMvc.perform(delete("/api/appointments/{id}", appointment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
-
-        // Validate the database is empty
+        
+        // Validate the database remains intact
         List<Appointment> appointmentList = appointmentRepository.findAll();
-        assertThat(appointmentList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(appointmentList).hasSize(databaseSizeBeforeDelete);
+        assertThat(appointment.isCancelled()); // An appointment must be simply cancelled
     }
 
     @Test

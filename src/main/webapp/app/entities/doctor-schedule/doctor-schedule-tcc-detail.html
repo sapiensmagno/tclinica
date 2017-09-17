@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="tclinicaApp.doctorSchedule.detail.title">Doctor Schedule</span> {{vm.doctorSchedule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="tclinicaApp.doctorSchedule.appointmentsDurationMinutes">Appointments Duration Minutes</span></dt>
+        <dd>
+            <span>{{vm.doctorSchedule.appointmentsDurationMinutes}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.doctorSchedule.intervalBetweenAppointmentsMinutes">Interval Between Appointments Minutes</span></dt>
+        <dd>
+            <span>{{vm.doctorSchedule.intervalBetweenAppointmentsMinutes}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.doctorSchedule.earliestAppointmentTime">Earliest Appointment Time</span></dt>
+        <dd>
+            <span>{{vm.doctorSchedule.earliestAppointmentTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.doctorSchedule.latestAppointmentTime">Latest Appointment Time</span></dt>
+        <dd>
+            <span>{{vm.doctorSchedule.latestAppointmentTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.doctorSchedule.calendarId">Calendar Id</span></dt>
+        <dd>
+            <span>{{vm.doctorSchedule.calendarId}}</span>
+        </dd>
+        <dt><span data-translate="tclinicaApp.doctorSchedule.doctor">Doctor</span></dt>
+        <dd>
+            <a ui-sref="doctor-tcc-detail({id:vm.doctorSchedule.doctor.id})">{{vm.doctorSchedule.doctor.nickname}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="doctor-schedule-tcc-detail.edit({id:vm.doctorSchedule.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

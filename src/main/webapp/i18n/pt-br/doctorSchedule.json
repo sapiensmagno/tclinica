@@ -1,0 +1,28 @@
+{
+    "tclinicaApp": {
+        "doctorSchedule" : {
+            "home": {
+                "title": "Agendas médicas",
+                "createLabel": "Criar nova agenda médica",
+                "createOrEditLabel": "Criar ou editar agenda médica"
+            },
+            "created": "Uma nova agenda médica foi criada com o identificador {{ param }}",
+            "updated": "Uma agenda médica foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma agenda médica foi deletada com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir a agenda médica {{ id }}?"
+            },
+            "detail": {
+                "title": "Agenda médica"
+            },
+            "appointmentsDurationMinutes": "Duração das consultas (min)",
+            "intervalBetweenAppointmentsMinutes": "Intervalo entre consultas (min)",
+            "earliestAppointmentTime": "Início do dia",
+            "latestAppointmentTime": "Fim do dia",
+            "calendarId": "Identificador do google calendar",
+            "doctor": "Médico",
+            "availableWeekdays": "Dias disponíveis",
+            "appointment": "Consultas"
+        }
+    }
+}

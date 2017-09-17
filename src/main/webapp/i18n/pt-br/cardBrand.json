@@ -1,0 +1,21 @@
+{
+    "tclinicaApp": {
+        "cardBrand" : {
+            "home": {
+                "title": "Bandeiras de cartão",
+                "createLabel": "Criar nova bandeira de cartão",
+                "createOrEditLabel": "Criar ou editar bandeira de cartão"
+            },
+            "created": "Uma nova bandeira foi criada com o identificador {{ param }}",
+            "updated": "Uma bandeira foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma bandeira foi deletada com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir a bandeira de cartão {{ id }}?"
+            },
+            "detail": {
+                "title": "Bandeira de cartão"
+            },
+            "name": "Nome"
+        }
+    }
+}

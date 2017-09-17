@@ -5,7 +5,8 @@
 /build/www/**
 /src/test/javascript/coverage/
 /src/test/javascript/PhantomJS*/
-
+/jdl/*.png
+.env
 ######################
 # Node
 ######################

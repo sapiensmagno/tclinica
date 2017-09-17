@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "healthcare" : {
+            "home": {
+                "title": "Planos de saúde",
+                "createLabel": "Criar novo plano de saúde",
+                "createOrEditLabel": "Criar ou editar plano de saúde"
+            },
+            "created": "Um novo plano de saúde foi criado com o identificador {{ param }}",
+            "updated": "Um plano de saúde foi atualizado com o identificador {{ param }}",
+            "deleted": "Um plano de saúde foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja desativar o plano de saúde {{ id }}?"
+            },
+            "detail": {
+                "title": "Plano de saúde"
+            },
+            "name": "Nome",
+            "inactive": "Desativado",
+            "paymentInstallment": "Parcela de pagamento"
+        }
+    }
+}

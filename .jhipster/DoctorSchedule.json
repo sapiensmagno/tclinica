@@ -1,0 +1,63 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "otherEntityField": "nickname",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "doctorSchedule"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "availableWeekdays",
+            "otherEntityName": "availableWeekdays",
+            "otherEntityRelationshipName": "doctorSchedule"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "appointment",
+            "otherEntityName": "appointment",
+            "otherEntityRelationshipName": "doctorSchedule"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "appointmentsDurationMinutes",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "intervalBetweenAppointmentsMinutes",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "earliestAppointmentTime",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "latestAppointmentTime",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "calendarId",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170902162242",
+    "entityTableName": "doctor_schedule",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
+}

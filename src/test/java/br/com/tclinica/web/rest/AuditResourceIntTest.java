@@ -1,10 +1,14 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
-import br.com.tclinica.config.audit.AuditEventConverter;
-import br.com.tclinica.domain.PersistentAuditEvent;
-import br.com.tclinica.repository.PersistenceAuditEventRepository;
-import br.com.tclinica.service.AuditEventService;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.config.audit.AuditEventConverter;
+import br.com.tclinica.domain.PersistentAuditEvent;
+import br.com.tclinica.repository.PersistenceAuditEventRepository;
+import br.com.tclinica.service.AuditEventService;
 
 /**
  * Test class for the AuditResource REST controller.

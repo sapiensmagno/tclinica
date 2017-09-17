@@ -3,22 +3,28 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "firstName",
             "ownerSide": true,
             "otherEntityRelationshipName": "patient"
         }
     ],
     "fields": [
         {
-            "fieldName": "gender",
+            "fieldName": "nickname",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831184005",
+    "changelogDate": "20170902162240",
     "entityTableName": "patient",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "angularJSSuffix": "TCC"
 }

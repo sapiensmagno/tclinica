@@ -1,5 +1,6 @@
 package br.com.tclinica.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,13 +23,21 @@ public class Doctor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nickname")
+    private String nickname;
+    
     @NotNull
-    @Column(name = "specialty", nullable = false)
-    private String specialty;
+    @Column(name = "inactive")
+    private boolean inactive;
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @NotNull
     @JoinColumn(unique = true)
     private User user;
+
+    @OneToOne(mappedBy = "doctor")
+    @JsonIgnore
+    private DoctorSchedule doctorSchedule;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -39,17 +48,30 @@ public class Doctor implements Serializable {
         this.id = id;
     }
 
-    public String getSpecialty() {
-        return specialty;
+    public String getNickname() {
+        return nickname;
     }
 
-    public Doctor specialty(String specialty) {
-        this.specialty = specialty;
+    public Doctor nickname(String nickname) {
+        this.nickname = nickname;
         return this;
     }
 
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public boolean isInactive() {
+        return inactive;
+    }
+
+    public Doctor inactive(boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(boolean inactive) {
+        this.inactive = inactive;
     }
 
     public User getUser() {
@@ -63,6 +85,19 @@ public class Doctor implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public DoctorSchedule getDoctorSchedule() {
+        return doctorSchedule;
+    }
+
+    public Doctor doctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
+        return this;
+    }
+
+    public void setDoctorSchedule(DoctorSchedule doctorSchedule) {
+        this.doctorSchedule = doctorSchedule;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -90,7 +125,8 @@ public class Doctor implements Serializable {
     public String toString() {
         return "Doctor{" +
             "id=" + getId() +
-            ", specialty='" + getSpecialty() + "'" +
+            ", nickname='" + getNickname() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

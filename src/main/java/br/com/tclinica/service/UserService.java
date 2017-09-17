@@ -1,14 +1,12 @@
 package br.com.tclinica.service;
 
-import br.com.tclinica.domain.Authority;
-import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.AuthorityRepository;
-import br.com.tclinica.config.Constants;
-import br.com.tclinica.repository.UserRepository;
-import br.com.tclinica.security.AuthoritiesConstants;
-import br.com.tclinica.security.SecurityUtils;
-import br.com.tclinica.service.util.RandomUtil;
-import br.com.tclinica.service.dto.UserDTO;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +17,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import br.com.tclinica.config.Constants;
+import br.com.tclinica.domain.Authority;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.AuthorityRepository;
+import br.com.tclinica.repository.UserRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.security.SecurityUtils;
+import br.com.tclinica.service.dto.UserDTO;
+import br.com.tclinica.service.util.RandomUtil;
 
 /**
  * Service class for managing users.
@@ -200,7 +203,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    	if (allowCompleteUserList()) {
+    		return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    	}
+    	return userRepository.findOneByLogin(pageable, SecurityUtils.getCurrentUserLogin()).map(UserDTO::new);
+    }
+    
+    public boolean allowCompleteUserList () {
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 
     @Transactional(readOnly = true)

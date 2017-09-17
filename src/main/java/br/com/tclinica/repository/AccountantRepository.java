@@ -1,9 +1,9 @@
 package br.com.tclinica.repository;
 
-import br.com.tclinica.domain.Accountant;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
+import br.com.tclinica.domain.Accountant;
 
 
 /**
@@ -13,4 +13,8 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface AccountantRepository extends JpaRepository<Accountant, Long> {
 
+	@Override
+	default void delete(Long id) {
+		this.saveAndFlush(this.findOne(id).inactive(true));
+	}
 }

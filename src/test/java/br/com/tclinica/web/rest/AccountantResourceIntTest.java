@@ -1,10 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Accountant;
-import br.com.tclinica.repository.AccountantRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +28,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Accountant;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.AccountantRepository;
+import br.com.tclinica.service.AccountantService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the AccountantResource REST controller.
@@ -37,11 +44,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class AccountantResourceIntTest {
 
-    private static final String DEFAULT_OFFICE_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_OFFICE_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
 
     @Autowired
     private AccountantRepository accountantRepository;
+    
+    @Autowired AccountantService accountantService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -54,7 +66,7 @@ public class AccountantResourceIntTest {
 
     @Autowired
     private EntityManager em;
-
+    
     private MockMvc restAccountantMockMvc;
 
     private Accountant accountant;
@@ -62,7 +74,7 @@ public class AccountantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AccountantResource accountantResource = new AccountantResource(accountantRepository);
+        final AccountantResource accountantResource = new AccountantResource(accountantService);
         this.restAccountantMockMvc = MockMvcBuilders.standaloneSetup(accountantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -77,7 +89,13 @@ public class AccountantResourceIntTest {
      */
     public static Accountant createEntity(EntityManager em) {
         Accountant accountant = new Accountant()
-            .officeName(DEFAULT_OFFICE_NAME);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        accountant.setUser(user);
         return accountant;
     }
 
@@ -101,7 +119,8 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate + 1);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
-        assertThat(testAccountant.getOfficeName()).isEqualTo(DEFAULT_OFFICE_NAME);
+        assertThat(testAccountant.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testAccountant.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -134,7 +153,8 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(accountant.getId().intValue())))
-            .andExpect(jsonPath("$.[*].officeName").value(hasItem(DEFAULT_OFFICE_NAME.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -148,7 +168,8 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(accountant.getId().intValue()))
-            .andExpect(jsonPath("$.officeName").value(DEFAULT_OFFICE_NAME.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -169,7 +190,8 @@ public class AccountantResourceIntTest {
         // Update the accountant
         Accountant updatedAccountant = accountantRepository.findOne(accountant.getId());
         updatedAccountant
-            .officeName(UPDATED_OFFICE_NAME);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restAccountantMockMvc.perform(put("/api/accountants")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,7 +202,8 @@ public class AccountantResourceIntTest {
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeUpdate);
         Accountant testAccountant = accountantList.get(accountantList.size() - 1);
-        assertThat(testAccountant.getOfficeName()).isEqualTo(UPDATED_OFFICE_NAME);
+        assertThat(testAccountant.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testAccountant.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test
@@ -214,8 +237,9 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
+        assertThat(accountant.isInactive());
         List<Accountant> accountantList = accountantRepository.findAll();
-        assertThat(accountantList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(accountantList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

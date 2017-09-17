@@ -1,0 +1,70 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "paymentMethod",
+            "otherEntityName": "paymentMethod",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "paymentInstallment"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cardBrand",
+            "otherEntityName": "cardBrand",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "paymentInstallment"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "healthcare",
+            "otherEntityName": "healthcare",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "appointment",
+            "otherEntityName": "appointment",
+            "otherEntityField": "startDate"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "payDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "dueDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "installmentNumber",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "checkNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cardFinalNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cancelled",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20170902162245",
+    "entityTableName": "payment_installment",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
+}

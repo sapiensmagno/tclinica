@@ -1,5 +1,5 @@
-var dataCacheName = 'Tclinica-v1';
-var cacheName = 'Tclinica-1';
+var dataCacheName = '"tclinicaApp-v1';
+var cacheName = '"tclinicaApp-1';
 var filesToCache = [
     '/',
     '/index.html'

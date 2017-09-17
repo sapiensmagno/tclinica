@@ -1,16 +1,9 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.util.Optional;
 
-import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.UserRepository;
-import br.com.tclinica.security.SecurityUtils;
-import br.com.tclinica.service.MailService;
-import br.com.tclinica.service.UserService;
-import br.com.tclinica.service.dto.UserDTO;
-import br.com.tclinica.web.rest.vm.KeyAndPasswordVM;
-import br.com.tclinica.web.rest.vm.ManagedUserVM;
-import br.com.tclinica.web.rest.util.HeaderUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,11 +12,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.*;
+import com.codahale.metrics.annotation.Timed;
+
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.PatientRepository;
+import br.com.tclinica.repository.UserRepository;
+import br.com.tclinica.security.SecurityUtils;
+import br.com.tclinica.service.MailService;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.dto.UserDTO;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import br.com.tclinica.web.rest.vm.KeyAndPasswordVM;
+import br.com.tclinica.web.rest.vm.ManagedUserVM;
 
 /**
  * REST controller for managing the current user's account.
@@ -40,14 +48,17 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    private final PatientRepository patientRepository;
+    
     private static final String CHECK_ERROR_MESSAGE = "Incorrect password";
-
+    
     public AccountResource(UserRepository userRepository, UserService userService,
-            MailService mailService) {
+            MailService mailService, PatientRepository patientRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.patientRepository = patientRepository;
     }
 
     /**
@@ -76,6 +87,11 @@ public class AccountResource {
                             managedUserVM.getFirstName(), managedUserVM.getLastName(),
                             managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(),
                             managedUserVM.getLangKey());
+                    
+                    Patient patient = new Patient();
+                    patient.nickname(user.getFirstName());
+                    patient.setUser(user);
+                    patientRepository.save(patient);
 
                     mailService.sendActivationEmail(user);
                     return new ResponseEntity<>(HttpStatus.CREATED);

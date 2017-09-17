@@ -6,11 +6,23 @@
         },
         "messages": {
             "validate": {
+            	"firstName": {
+                    "required": "O primeiro nome é obrigatório.",
+                    "pattern": "Nome inválido.",
+                    "minlength": "O primeiro nome deve ter pelo menos 1 caráter.",
+                    "maxlength": "O primeiro nome deve ter no máximo 50 caracteres."
+                },
+                "lastName": {
+                    "required": "O último nome é obrigatório.",
+                    "pattern": "Nome inválido.",
+                    "minlength": "O último nome deve ter pelo menos 1 caráter.",
+                    "maxlength": "O último nome deve ter no máximo 50 caracteres."
+                },
                 "login": {
                     "required": "O usuário é obrigatório.",
                     "minlength": "O usuário deve ter pelo menos 1 caractere",
                     "maxlength": "O usuário não pode ter mais de 50 caracteres",
-                    "pattern": "Your login can only contain lower-case letters and digits"
+                    "pattern": "O login somente pode ter letras minúsculas e números"
                 }
             },
             "success": "<strong>Cadstro salvo com sucesso!</strong> Favor verificar seu email para confirmar a conta.",

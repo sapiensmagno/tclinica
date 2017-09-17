@@ -1,11 +1,20 @@
 package br.com.tclinica.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Accountant.
@@ -21,10 +30,15 @@ public class Accountant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "office_name")
-    private String officeName;
+    @Column(name = "nickname")
+    private String nickname;
+    
+    @NotNull
+    @Column(name = "inactive")
+    private boolean inactive;
 
-    @OneToOne
+    @OneToOne(optional = false)
+    @NotNull
     @JoinColumn(unique = true)
     private User user;
 
@@ -37,17 +51,30 @@ public class Accountant implements Serializable {
         this.id = id;
     }
 
-    public String getOfficeName() {
-        return officeName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public Accountant officeName(String officeName) {
-        this.officeName = officeName;
+    public Accountant nickname(String nickname) {
+        this.nickname = nickname;
         return this;
     }
 
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public boolean isInactive() {
+        return inactive;
+    }
+
+    public Accountant inactive(boolean inactive) {
+        this.inactive = inactive;
+        return this;
+    }
+
+    public void setInactive(boolean inactive) {
+    	this.inactive = inactive;
     }
 
     public User getUser() {
@@ -88,7 +115,8 @@ public class Accountant implements Serializable {
     public String toString() {
         return "Accountant{" +
             "id=" + getId() +
-            ", officeName='" + getOfficeName() + "'" +
+            ", nickname='" + getNickname() + "'" +
+            ", inactive='" + isInactive() + "'" +
             "}";
     }
 }

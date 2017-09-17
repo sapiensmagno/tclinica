@@ -3,25 +3,35 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "firstName",
             "ownerSide": true,
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "doctorSchedule",
+            "otherEntityName": "doctorSchedule",
+            "ownerSide": false,
             "otherEntityRelationshipName": "doctor"
         }
     ],
     "fields": [
         {
-            "fieldName": "specialty",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "nickname",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831184004",
+    "changelogDate": "20170902162239",
     "entityTableName": "doctor",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
 }

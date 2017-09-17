@@ -1,0 +1,24 @@
+{
+    "tclinicaApp": {
+        "medicalRecord" : {
+            "home": {
+                "title": "Registros clínicos",
+                "createLabel": "Criar novo registro clínico",
+                "createOrEditLabel": "Criar ou editar registro clínico"
+            },
+            "created": "Um novo registro clínico foi criado com o identificador {{ param }}",
+            "updated": "Um registro clínico foi atualizado com o identificador {{ param }}",
+            "deleted": "Um registro clínico foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir o registro clínico {{ id }}?"
+            },
+            "detail": {
+                "title": "Registro clínico"
+            },
+            "description": "Descrição",
+            "appointment": "Consulta",
+            "exam": "Exame",
+            "prescription": "Receita médica"
+        }
+    }
+}

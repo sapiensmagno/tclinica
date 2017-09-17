@@ -1,0 +1,22 @@
+{
+    "tclinicaApp": {
+        "paymentMethod" : {
+            "home": {
+                "title": "Métodos de pagamento",
+                "createLabel": "Criar novo método de pagamento",
+                "createOrEditLabel": "Criar ou editar método de pagamento"
+            },
+            "created": "Um novo método de pagamento foi criado com o identificador {{ param }}",
+            "updated": "Um método de pagamento foi atualizado com o identificador {{ param }}",
+            "deleted": "Um método de pagamento foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja desativar o método de pagamento {{ id }}?"
+            },
+            "detail": {
+                "title": "Método de pagamento"
+            },
+            "name": "Nome",
+            "inactive": "Desativado"
+        }
+    }
+}

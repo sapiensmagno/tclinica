@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "examStatus" : {
+            "home": {
+                "title": "Situações de exames",
+                "createLabel": "Criar nova situação de exames",
+                "createOrEditLabel": "Criar ou editar situação de exames"
+            },
+            "created": "Uma nova situação de exames foi criada com o identificador {{ param }}",
+            "updated": "Uma situação de exames foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma situação de exames foi deletada com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir situação de exames {{ id }}?"
+            },
+            "detail": {
+                "title": "Situação de exames"
+            },
+            "name": "Nome",
+            "creationDate": "Data de criação",
+            "exam": "Exame"
+        }
+    }
+}

@@ -3,6 +3,7 @@ package br.com.tclinica.web.rest;
 import br.com.tclinica.TclinicaApp;
 
 import br.com.tclinica.domain.Patient;
+import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
@@ -37,8 +38,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class PatientResourceIntTest {
 
-    private static final String DEFAULT_GENDER = "AAAAAAAAAA";
-    private static final String UPDATED_GENDER = "BBBBBBBBBB";
+    private static final String DEFAULT_NICKNAME = "AAAAAAAAAA";
+    private static final String UPDATED_NICKNAME = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_INACTIVE = false;
+    private static final Boolean UPDATED_INACTIVE = true;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -77,7 +81,13 @@ public class PatientResourceIntTest {
      */
     public static Patient createEntity(EntityManager em) {
         Patient patient = new Patient()
-            .gender(DEFAULT_GENDER);
+            .nickname(DEFAULT_NICKNAME)
+            .inactive(DEFAULT_INACTIVE);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        patient.setUser(user);
         return patient;
     }
 
@@ -101,7 +111,8 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate + 1);
         Patient testPatient = patientList.get(patientList.size() - 1);
-        assertThat(testPatient.getGender()).isEqualTo(DEFAULT_GENDER);
+        assertThat(testPatient.getNickname()).isEqualTo(DEFAULT_NICKNAME);
+        assertThat(testPatient.isInactive()).isEqualTo(DEFAULT_INACTIVE);
     }
 
     @Test
@@ -134,7 +145,8 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())))
-            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())));
+            .andExpect(jsonPath("$.[*].nickname").value(hasItem(DEFAULT_NICKNAME.toString())))
+            .andExpect(jsonPath("$.[*].inactive").value(hasItem(DEFAULT_INACTIVE.booleanValue())));
     }
 
     @Test
@@ -148,7 +160,8 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(patient.getId().intValue()))
-            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()));
+            .andExpect(jsonPath("$.nickname").value(DEFAULT_NICKNAME.toString()))
+            .andExpect(jsonPath("$.inactive").value(DEFAULT_INACTIVE.booleanValue()));
     }
 
     @Test
@@ -169,7 +182,8 @@ public class PatientResourceIntTest {
         // Update the patient
         Patient updatedPatient = patientRepository.findOne(patient.getId());
         updatedPatient
-            .gender(UPDATED_GENDER);
+            .nickname(UPDATED_NICKNAME)
+            .inactive(UPDATED_INACTIVE);
 
         restPatientMockMvc.perform(put("/api/patients")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,7 +194,8 @@ public class PatientResourceIntTest {
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeUpdate);
         Patient testPatient = patientList.get(patientList.size() - 1);
-        assertThat(testPatient.getGender()).isEqualTo(UPDATED_GENDER);
+        assertThat(testPatient.getNickname()).isEqualTo(UPDATED_NICKNAME);
+        assertThat(testPatient.isInactive()).isEqualTo(UPDATED_INACTIVE);
     }
 
     @Test
@@ -214,8 +229,9 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
+        assertThat(patient.isInactive());
         List<Patient> patientList = patientRepository.findAll();
-        assertThat(patientList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(patientList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

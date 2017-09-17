@@ -1,22 +1,34 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Doctor;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.DoctorRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Doctor.
@@ -29,9 +41,10 @@ public class DoctorResource {
 
     private static final String ENTITY_NAME = "doctor";
 
-    private final DoctorRepository doctorRepository;
-    public DoctorResource(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
+    private final DoctorService doctorService;
+
+    public DoctorResource(DoctorService doctorService) {
+        this.doctorService = doctorService;
     }
 
     /**
@@ -43,12 +56,13 @@ public class DoctorResource {
      */
     @PostMapping("/doctors")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Doctor> createDoctor(@Valid @RequestBody Doctor doctor) throws URISyntaxException {
         log.debug("REST request to save Doctor : {}", doctor);
         if (doctor.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new doctor cannot already have an ID")).body(null);
         }
-        Doctor result = doctorRepository.save(doctor);
+        Doctor result = doctorService.save(doctor);
         return ResponseEntity.created(new URI("/api/doctors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -65,12 +79,14 @@ public class DoctorResource {
      */
     @PutMapping("/doctors")
     @Timed
+    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("#doctor.user.login == authentication.name")
     public ResponseEntity<Doctor> updateDoctor(@Valid @RequestBody Doctor doctor) throws URISyntaxException {
         log.debug("REST request to update Doctor : {}", doctor);
         if (doctor.getId() == null) {
             return createDoctor(doctor);
         }
-        Doctor result = doctorRepository.save(doctor);
+        Doctor result = doctorService.save(doctor);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, doctor.getId().toString()))
             .body(result);
@@ -79,13 +95,18 @@ public class DoctorResource {
     /**
      * GET  /doctors : get all the doctors.
      *
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of doctors in body
      */
     @GetMapping("/doctors")
     @Timed
-    public List<Doctor> getAllDoctors() {
+    public List<Doctor> getAllDoctors(@RequestParam(required = false) String filter) {
+        if ("doctorschedule-is-null".equals(filter)) {
+            log.debug("REST request to get all Doctors where doctorSchedule is null");
+            return doctorService.findAllWhereDoctorScheduleIsNull();
+        }
         log.debug("REST request to get all Doctors");
-        return doctorRepository.findAll();
+        return doctorService.findAll();
         }
 
     /**
@@ -98,7 +119,7 @@ public class DoctorResource {
     @Timed
     public ResponseEntity<Doctor> getDoctor(@PathVariable Long id) {
         log.debug("REST request to get Doctor : {}", id);
-        Doctor doctor = doctorRepository.findOne(id);
+        Doctor doctor = doctorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(doctor));
     }
 
@@ -110,9 +131,10 @@ public class DoctorResource {
      */
     @DeleteMapping("/doctors/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
         log.debug("REST request to delete Doctor : {}", id);
-        doctorRepository.delete(id);
+        doctorService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

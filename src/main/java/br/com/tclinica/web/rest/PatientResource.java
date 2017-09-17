@@ -1,21 +1,35 @@
 package br.com.tclinica.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import br.com.tclinica.domain.Patient;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import br.com.tclinica.repository.PatientRepository;
-import br.com.tclinica.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.tclinica.domain.Patient;
+import br.com.tclinica.repository.PatientRepository;
+import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Patient.
@@ -42,7 +56,8 @@ public class PatientResource {
      */
     @PostMapping("/patients")
     @Timed
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) throws URISyntaxException {
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or #patient.user.login == authentication.name")
+    public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to save Patient : {}", patient);
         if (patient.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new patient cannot already have an ID")).body(null);
@@ -64,7 +79,8 @@ public class PatientResource {
      */
     @PutMapping("/patients")
     @Timed
-    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient) throws URISyntaxException {
+    @PreAuthorize("#patient.user.login == authentication.name")
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to update Patient : {}", patient);
         if (patient.getId() == null) {
             return createPatient(patient);
@@ -82,10 +98,13 @@ public class PatientResource {
      */
     @GetMapping("/patients")
     @Timed
-    public List<Patient> getAllPatients() {
-        log.debug("REST request to get all Patients");
-        return patientRepository.findAll();
-        }
+	@PostFilter("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
+			+ AuthoritiesConstants.DOCTOR
+			+ "') or filterObject.user.login==principal.username")
+	public List<Patient> getAllPatients() {
+		log.debug("REST request to get all Patients");
+		return patientRepository.findAll();
+    }
 
     /**
      * GET  /patients/:id : get the "id" patient.
@@ -95,6 +114,9 @@ public class PatientResource {
      */
     @GetMapping("/patients/{id}")
     @Timed
+    @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
+			+ AuthoritiesConstants.DOCTOR
+			+ "') or returnObject.body.user.login==principal.username")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         log.debug("REST request to get Patient : {}", id);
         Patient patient = patientRepository.findOne(id);
@@ -109,6 +131,7 @@ public class PatientResource {
      */
     @DeleteMapping("/patients/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         log.debug("REST request to delete Patient : {}", id);
         patientRepository.delete(id);

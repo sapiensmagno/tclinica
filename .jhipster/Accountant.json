@@ -3,22 +3,28 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "firstName",
             "ownerSide": true,
             "otherEntityRelationshipName": "accountant"
         }
     ],
     "fields": [
         {
-            "fieldName": "officeName",
+            "fieldName": "nickname",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "inactive",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170831184006",
+    "changelogDate": "20170902162241",
     "entityTableName": "accountant",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "serviceImpl",
+    "angularJSSuffix": "TCC"
 }

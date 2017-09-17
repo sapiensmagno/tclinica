@@ -2,23 +2,27 @@
     "tclinicaApp": {
         "appointment" : {
             "home": {
-                "title": "Appointments",
-                "createLabel": "Criar novo Appointment",
-                "createOrEditLabel": "Criar ou editar Appointment"
+                "title": "Consultas",
+                "createLabel": "Agendar consulta",
+                "createOrEditLabel": "Agendar ou editar consulta"
             },
-            "created": "Um novo Appointment foi criado com o identificador {{ param }}",
-            "updated": "Um Appointment foi atualizado com o identificador {{ param }}",
-            "deleted": "Um Appointment foi deletado com o identificador {{ param }}",
+            "created": "A consulta foi agendada. Identificador: {{ param }}",
+            "updated": "A consulta foi atualizada. Identificador: {{ param }}",
+            "deleted": "A consulta {{ param }} foi cancelada",
             "delete": {
-                "question": "Tem certeza de que deseja excluir Appointment {{ id }}?"
+                "question": "Tem certeza de que deseja cancelar a consulta {{ id }}?"
             },
             "detail": {
-                "title": "Appointment"
+                "title": "Consulta"
             },
-            "scheduledDate": "Scheduled Date",
-            "cancelled": "Cancelled",
-            "patient": "Patient",
-            "doctor": "Doctor"
+            "startDate": "Início",
+            "endDate": "Término",
+            "description": "Descrição",
+            "cancelled": "Cancelada",
+            "paymentInstallment": "Parcela de pagamento",
+            "patient": "Paciente",
+            "doctorSchedule": "Médico",
+            "medicalRecord": "Histórico clínico"
         }
     }
 }

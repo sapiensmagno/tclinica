@@ -1,16 +1,34 @@
 {
     "global": {
-        "title": "Tclinica",
+        "title": "TCliniCa",
         "browsehappy": "Você está usando um navegador <strong>desatualizado</strong>. Favor <a href=\"http://browsehappy.com/?locale=pt_BR\">atualizar o seu navegador</a> para ter uma experiência melhor.",
         "menu": {
-            "home": "Início",
+        	"user": "Bem vindo",
+            "home": "Home",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-            "entities": {
-                "main": "Entidades",
-                "doctor": "Doctor",
-                "patient": "Patient",
-                "accountant": "Accountant",
-                "appointment": "Appointment",
+            "patient": {
+            	"main": "Paciente",
+            	"patientTcc": "Perfil",
+            	"appointmentTcc": "Minhas consultas"
+           },
+          	"accountant": {
+          		"main": "Contador",
+          		"accountantTcc": "Perfil",
+          		"paymentInstallmentTcc": "Pagamentos"
+          	},
+          	"doctor": {
+                "main": "Médico",
+                "doctorTcc": "Perfil",
+                "appointmentTcc": "Consultas",
+                "doctorScheduleTcc": "Configuração de agenda",
+                "availableWeekdaysTcc": "Dias disponíveis",
+                "medicalRecordTcc": "Registros clínicos",
+                "examTcc": "Exames",
+                "examStatusTcc": "Situação dos exames",
+                "examTypeTcc": "Tipos de exames",
+                "prescriptionTcc": "Receitas",
+                "medicineTcc": "Medicamentos",
+                "paymentInstallmentTcc": "Pagamentos",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -24,22 +42,36 @@
             },
             "admin": {
                 "main": "Administração",
-                "userManagement": "Gerenciamento de usuário",
+                "userManagement": "Gerenciamento de usuários",
+                "doctorTcc": "Médicos",
+                "accountantTcc": "Contadores",
+                "patientTcc": "Pacientes",
                 "tracker": "Rastreamento de usuário",
-                "metrics": "Métricas",
+                "healthcareTcc": "Planos de saúde",
+                "cardBrandTcc": "Bandeiras de cartão",
+                "paymentMethodTcc": "Métodos de pagamento",
+                "paymentInstallmentTcc": "Pagamentos",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+            },
+           	"system": {
+           		"main": "Sistema",
+            	"metrics": "Métricas",
                 "health": "Estado do Sistema",
                 "configuration": "Configuração",
                 "logs": "Logs",
                 "audits": "Auditorias",
                 "apidocs": "API",
-                "database": "Banco de dados",
-                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+                "database": "Banco de dados" 
             },
             "language": "Idioma"
         },
         "form": {
             "username": "Usuário",
             "username.placeholder": "Seu usuário",
+            "firstName": "Primeiro nome",
+            "firstName.placeholder": "ex: João Pedro",
+            "lastName": "Último nome",
+            "lastName.placeholder": "ex: da Silva e Bragança",
             "newpassword": "Nova senha",
             "newpassword.placeholder": "Nova senha",
             "confirmpassword": "Confirmação de nova senha",
@@ -49,15 +81,8 @@
         },
         "messages": {
             "info": {
-                "authenticated": {
-                    "prefix": "Para ",
-                    "link": "entrar",
-                    "suffix": ", utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\")."
-                },
-                "register": {
-                    "noaccount": "Não possui uma conta ainda?",
-                    "link": "Crie uma nova conta"
-                }
+                "authenticated": "Paciente? Agende sua consulta",
+                "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Registre-se</a>"
             },
             "error": {
                 "dontmatch" : "A senha e sua confirmação devem ser iguais!"
@@ -123,14 +148,14 @@
         }
     },
     "error": {
-        "internalServerError": "Internal server error",
+        "internalServerError": "Erro no servidor",
         "server.not.reachable": "Servidor indisponível",
-        "url.not.found": "Not found",
+        "url.not.found": "Não encontrado",
         "NotNull": "O Campo {{fieldName}} não pode ser vazio!",
         "Size": "O campo {{fieldName}} não obedece os requisitos de tamanho mínimo ou máximo!",
         "userexists": "Usuário já existente!",
         "emailexists": "Este email já está cadastrado!",
         "idexists": "Novo(a) {{entityName}} não pode ter uma ID"
     },
-    "footer": "Este é o seu rodapé"
+    "footer": "TCliniCa® - 2017 - PUC Minas - Desenvolvimento de aplicações web - "
 }

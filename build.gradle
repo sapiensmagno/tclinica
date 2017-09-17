@@ -29,13 +29,9 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 apply plugin: 'propdeps'
 apply plugin: 'com.moowork.node'
+apply plugin: 'com.moowork.gulp'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
-dependencyManagement {
-  imports {
-    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:' + spring_cloud_version
-  }
-}
 defaultTasks 'bootRun'
 
 bootRepackage {
@@ -108,6 +104,7 @@ task testReport(type: TestReport) {
 
 cucumberTest.finalizedBy(testReport)
 
+apply from: 'gradle/yeoman.gradle'
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/liquibase.gradle'
 apply from: 'gradle/mapstruct.gradle'
@@ -126,10 +123,6 @@ if (project.hasProperty('graphite')) {
 
 if (project.hasProperty('prometheus')) {
     apply from: 'gradle/prometheus.gradle'
-}
-
-if (project.hasProperty('zipkin')) {
-    apply from: 'gradle/zipkin.gradle'
 }
 
 group = 'br.com.tclinica'
@@ -197,8 +190,6 @@ dependencies {
     }
     compile "org.springframework.boot:spring-boot-starter-undertow"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka"
-    compile "org.springframework.cloud:spring-cloud-starter-config"
     compile "org.springframework.boot:spring-boot-starter-cloud-connectors"
     compile ("org.springframework:spring-context-support")
     compile "org.springframework.security:spring-security-config"
