@@ -25,7 +25,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="inactive" type="bit">
+            <column name="inactive" type="boolean">
                 <constraints nullable="false" />
             </column>
 

@@ -33,7 +33,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="cancelled" type="bit">
+            <column name="cancelled" type="boolean">
                 <constraints nullable="false" />
             </column>
 
