@@ -8,8 +8,7 @@
 
     <property name="now" value="now()" dbms="h2"/>
 
-    <property name="now" value="now()" dbms="mysql"/>
-    <property name="autoIncrement" value="true"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
 
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
@@ -19,27 +18,35 @@
     -->
     <changeSet author="sapiensmagno" id="insertExamTypes-00">
         <insert tableName="exam_type">
+            <column name="id">1</column>
             <column name="name">hemograma</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">2</column>
             <column name="name">raio-X</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">3</column>
             <column name="name">eletrocardiograma</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">4</column>
             <column name="name">glicose</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">5</column>
             <column name="name">cálcio</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">6</column>
             <column name="name">uréia</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">7</column>
             <column name="name">taxa de albumina/creatinina</column>
         </insert>
         <insert tableName="exam_type">
+            <column name="id">8</column>
             <column name="name">taxa de filtração glomerular</column>
         </insert>
     </changeSet>
