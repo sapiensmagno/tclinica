@@ -40,11 +40,11 @@ task liquibaseDiffChangelog(dependsOn: compileJava, type: JavaExec) {
     main = "liquibase.integration.commandline.Main"
 
     args "--changeLogFile=src/main/resources/config/liquibase/changelog/" + buildTimestamp() +"_changelog.xml"
-    args "--referenceUrl=hibernate:spring:br.com.tclinica.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
-    args "--username=root"
+    args "--referenceUrl=hibernate:spring:br.com.tclinica.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+    args "--username=tclinica"
     args "--password="
-    args "--url=jdbc:mariadb://localhost:3306/tclinica"
-    args "--driver=org.mariadb.jdbc.Driver"
+    args "--url=jdbc:postgresql://localhost:5432/tclinica"
+    args "--driver=org.postgresql.Driver"
     args "diffChangeLog"
 }
 

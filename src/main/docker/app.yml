@@ -1,14 +1,14 @@
 version: '2'
 services:
-    tclinica-app:
+    usingpgre-app:
         image: tclinica
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - SPRING_DATASOURCE_URL=jdbc:mariadb://tclinica-mariadb:3306/tclinica
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://usingpgre-postgresql:5432/usingPgre
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
         ports:
             - 8080:8080
-    tclinica-mariadb:
+    tclinica-postgresql:
         extends:
-            file: mariadb.yml
-            service: tclinica-mariadb
+            file: postgresql.yml
+            service: tclinica-postgresql
