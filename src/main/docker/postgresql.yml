@@ -1,9 +1,9 @@
 version: '2'
 services:
-    usingpgre-postgresql:
+    tclinica-postgresql:
         image: postgres:9.6.2
         # volumes:
-        #     - ~/volumes/jhipster/usingPgre/postgresql/:/var/lib/postgresql/data/
+        #     - ~/volumes/jhipster/tclinica/postgresql/:/var/lib/postgresql/data/
         environment:
             - POSTGRES_USER=tclinica
             - POSTGRES_PASSWORD=
