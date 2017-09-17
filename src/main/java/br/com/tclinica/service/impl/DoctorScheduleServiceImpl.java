@@ -50,9 +50,9 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService{
     
     // when creating a new schedule, set default fields and create available weekdays
     public DoctorSchedule create(DoctorSchedule doctorSchedule) {
-    	doctorSchedule.setEarliestAppointmentTime(doctorSchedule.getDefaultStartTime());
+    	doctorSchedule.setEarliestAppointmentTime(DoctorSchedule.getDefaultStartTime());
     	doctorSchedule.setAppointmentsDurationMinutes(DoctorSchedule.getDefaultAppointmentDuration());
-    	doctorSchedule.setLatestAppointmentTime(doctorSchedule.getDefaultStartTime().plus(10, ChronoUnit.HOURS));
+    	doctorSchedule.setLatestAppointmentTime(DoctorSchedule.getDefaultLatestTime());
     	final DoctorSchedule savedSchedule = doctorScheduleRepository.save(doctorSchedule);
     	
     	java.util.Arrays.asList(DayOfWeek.values())

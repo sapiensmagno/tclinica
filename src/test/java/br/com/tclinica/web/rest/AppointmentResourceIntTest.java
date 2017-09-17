@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +38,12 @@ import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.domain.Patient;
 import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.service.AppointmentService;
+import br.com.tclinica.service.AvailableWeekdaysService;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.service.UserService;
+import br.com.tclinica.service.impl.AppointmentServiceImpl;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
@@ -49,8 +55,8 @@ import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 @SpringBootTest(classes = TclinicaApp.class)
 public class AppointmentResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(10L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_START_DATE = ZonedDateTime.now().plusDays(1L);
+    private static final ZonedDateTime UPDATED_START_DATE = ZonedDateTime.now().plusDays(10L);
 
     private static final ZonedDateTime DEFAULT_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(100L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_END_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(200L), ZoneOffset.UTC);
@@ -66,6 +72,18 @@ public class AppointmentResourceIntTest {
 
     @Autowired
     private AppointmentService appointmentService;
+    
+    @Autowired
+    DoctorService doctorService;
+    
+    @Autowired
+	PatientRepository patientRepository;
+	
+	@Autowired
+	AvailableWeekdaysService availableWeekdaysService;
+	
+	@Autowired
+	UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -80,19 +98,38 @@ public class AppointmentResourceIntTest {
     private EntityManager em;
 
     private MockMvc restAppointmentMockMvc;
+    
+    private MockMvc spiedRestAppointmentMockMvc;
 
     private Appointment appointment;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        createResourceWithSpiedService();
         final AppointmentResource appointmentResource = new AppointmentResource(appointmentService);
         this.restAppointmentMockMvc = MockMvcBuilders.standaloneSetup(appointmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
-
+    
+    private void createResourceWithSpiedService() {
+    	AppointmentServiceImpl serviceImpl = new AppointmentServiceImpl(appointmentRepository, 
+    			doctorService, patientRepository, availableWeekdaysService, userService);
+    	AppointmentService spiedAppointmentService = Mockito.spy(serviceImpl);
+        Mockito.doReturn(true).when(spiedAppointmentService).isDeletable(Mockito.anyLong());
+        Mockito.doReturn(true).when(spiedAppointmentService).isValid(Mockito.any(Appointment.class));        
+        Mockito.doReturn(DEFAULT_END_DATE).when(spiedAppointmentService).calculateEnd(Mockito.any(Appointment.class));
+        Mockito.doReturn(true).when(spiedAppointmentService).allowListAllAppointments();
+        final AppointmentResource spiedAppointmentResource = new AppointmentResource(spiedAppointmentService);
+        this.spiedRestAppointmentMockMvc = MockMvcBuilders.standaloneSetup(spiedAppointmentResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
+    }
+    
     /**
      * Create an entity for this test.
      *
@@ -129,7 +166,7 @@ public class AppointmentResourceIntTest {
         int databaseSizeBeforeCreate = appointmentRepository.findAll().size();
 
         // Create the Appointment
-        restAppointmentMockMvc.perform(post("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(post("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isCreated());
@@ -207,7 +244,7 @@ public class AppointmentResourceIntTest {
         appointmentRepository.saveAndFlush(appointment);
 
         // Get all the appointmentList
-        restAppointmentMockMvc.perform(get("/api/appointments?sort=id,desc"))
+        spiedRestAppointmentMockMvc.perform(get("/api/appointments?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(appointment.getId().intValue())))
@@ -258,7 +295,7 @@ public class AppointmentResourceIntTest {
             .description(UPDATED_DESCRIPTION)
             .cancelled(UPDATED_CANCELLED);
 
-        restAppointmentMockMvc.perform(put("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(put("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedAppointment)))
             .andExpect(status().isOk());
@@ -281,7 +318,7 @@ public class AppointmentResourceIntTest {
         // Create the Appointment
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restAppointmentMockMvc.perform(put("/api/appointments")
+        spiedRestAppointmentMockMvc.perform(put("/api/appointments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isCreated());
@@ -295,12 +332,12 @@ public class AppointmentResourceIntTest {
     @Transactional
     public void deleteAppointment() throws Exception {
         // Initialize the database
-        appointmentService.save(appointment);
+        appointmentRepository.save(appointment);
 
         int databaseSizeBeforeDelete = appointmentRepository.findAll().size();
 
         // Get the appointment
-        restAppointmentMockMvc.perform(delete("/api/appointments/{id}", appointment.getId())
+        spiedRestAppointmentMockMvc.perform(delete("/api/appointments/{id}", appointment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
         

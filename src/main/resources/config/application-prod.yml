@@ -41,10 +41,16 @@ spring:
             hibernate.generate_statistics: false
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
     mail:
-        host: localhost
-        port: 25
+        host: smtp.gmail.com
+        port: 587
         username:
         password:
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.gmail.com
     thymeleaf:
         cache: true
 
@@ -93,7 +99,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 2f130ea5b72b8ba1ef8b55905e5747a6904ccb00
+                secret:
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000

@@ -79,7 +79,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: tclinica@localhost
+        from: tclinica@noreply.com
     swagger:
         default-include-pattern: /api/.*
         title: tclinica API

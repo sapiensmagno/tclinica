@@ -29,8 +29,8 @@ import com.codahale.metrics.annotation.Timed;
 import br.com.tclinica.domain.Accountant;
 import br.com.tclinica.domain.Authority;
 import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.AccountantRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
+import br.com.tclinica.service.AccountantService;
 import br.com.tclinica.service.UserService;
 import br.com.tclinica.service.mapper.UserMapper;
 import br.com.tclinica.web.rest.util.HeaderUtil;
@@ -47,12 +47,10 @@ public class AccountantResource {
 
     private static final String ENTITY_NAME = "accountant";
 
-    private final AccountantRepository accountantRepository;
-    private final UserService userService;
+    private final AccountantService accountantService;
     
-    public AccountantResource(AccountantRepository accountantRepository, UserService userService) {
-        this.accountantRepository = accountantRepository;
-        this.userService = userService;
+    public AccountantResource(AccountantService accountantService) {
+        this.accountantService = accountantService;
     }
 
     /**
@@ -70,21 +68,10 @@ public class AccountantResource {
         if (accountant.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new accountant cannot already have an ID")).body(null);
         }
-        accountant.getUser().setAuthorities(addDefaultAuthorities(accountant.getUser()));
-    	UserMapper mapper = new UserMapper();
-    	this.userService.updateUser(mapper.userToUserDTO(accountant.getUser()));
-        Accountant result = accountantRepository.save(accountant);
+        Accountant result = accountantService.save(accountant);
         return ResponseEntity.created(new URI("/api/accountants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-    
-    private Set<Authority> addDefaultAuthorities (User user) {
-    	Set<Authority> authorities = userService.getUserWithAuthorities(user.getId()).getAuthorities();
-		Authority authority = new Authority();
-		authority.setName(AuthoritiesConstants.DOCTOR);
-		authorities.add(authority);
-		return authorities;
     }
     
     /**
@@ -105,7 +92,7 @@ public class AccountantResource {
         if (accountant.getId() == null) {
             return createAccountant(accountant);
         }
-        Accountant result = accountantRepository.save(accountant);
+        Accountant result = accountantService.save(accountant);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, accountant.getId().toString()))
             .body(result);
@@ -121,7 +108,7 @@ public class AccountantResource {
     @PostFilter("hasRole('" + AuthoritiesConstants.ADMIN + "') or filterObject.user.login==principal.username")
     public List<Accountant> getAllAccountants() {
         log.debug("REST request to get all Accountants");
-        return accountantRepository.findAll();
+        return accountantService.findAll();
         }
  
     /**
@@ -135,7 +122,7 @@ public class AccountantResource {
     @PostAuthorize("hasRole('" + AuthoritiesConstants.ADMIN +"') or returnObject.body.user.login==principal.username")
     public ResponseEntity<Accountant> getAccountant(@PathVariable Long id) {
         log.debug("REST request to get Accountant : {}", id);
-        Accountant accountant = accountantRepository.findOne(id);
+        Accountant accountant = accountantService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountant));
     }
         
@@ -150,7 +137,7 @@ public class AccountantResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteAccountant(@PathVariable Long id) {
         log.debug("REST request to delete Accountant : {}", id);
-        accountantRepository.delete(id);
+        accountantService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

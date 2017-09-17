@@ -47,10 +47,10 @@ public class DoctorScheduleResourceIntTest {
     private static final Integer DEFAULT_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES = 1;
     private static final Integer UPDATED_INTERVAL_BETWEEN_APPOINTMENTS_MINUTES = 2;
 
-    private static final Instant DEFAULT_EARLIEST_APPOINTMENT_TIME = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_EARLIEST_APPOINTMENT_TIME = DoctorSchedule.getDefaultStartTime();
     private static final Instant UPDATED_EARLIEST_APPOINTMENT_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Instant DEFAULT_LATEST_APPOINTMENT_TIME = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_LATEST_APPOINTMENT_TIME = DoctorSchedule.getDefaultLatestTime();
     private static final Instant UPDATED_LATEST_APPOINTMENT_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_CALENDAR_ID = "AAAAAAAAAA";
@@ -315,11 +315,11 @@ public class DoctorScheduleResourceIntTest {
         // Get the doctorSchedule
         restDoctorScheduleMockMvc.perform(delete("/api/doctor-schedules/{id}", doctorSchedule.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the database is empty
+        // Validate the database is not empty
         List<DoctorSchedule> doctorScheduleList = doctorScheduleRepository.findAll();
-        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(doctorScheduleList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

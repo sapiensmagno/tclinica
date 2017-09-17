@@ -203,10 +203,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-    	if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+    	if (allowCompleteUserList()) {
     		return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     	}
     	return userRepository.findOneByLogin(pageable, SecurityUtils.getCurrentUserLogin()).map(UserDTO::new);
+    }
+    
+    public boolean allowCompleteUserList () {
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 
     @Transactional(readOnly = true)

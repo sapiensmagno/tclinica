@@ -23,10 +23,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	
 	public Page<Appointment> findByDoctorSchedule (DoctorSchedule doctorSchedule, Pageable pageable);
 	
-	@Override
-	default void delete(Long id) {
-		this.saveAndFlush(this.findOne(id).cancelled(true));
-	}
-
 	public Page<Appointment> findByPatient(Patient patient, Pageable pageable);
 }

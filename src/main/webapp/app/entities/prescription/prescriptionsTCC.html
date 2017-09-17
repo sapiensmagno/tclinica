@@ -19,7 +19,6 @@
             <thead>
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="tclinicaApp.prescription.number">Number</span></th>
                     <th><span data-translate="tclinicaApp.prescription.medicine">Medicine</span></th>
                     <th><span data-translate="tclinicaApp.prescription.medicalRecord">Medical Record</span></th>
                     <th></th>
@@ -28,7 +27,6 @@
             <tbody>
                 <tr ng-repeat="prescription in vm.prescriptions track by prescription.id">
                     <td><a ui-sref="prescription-tcc-detail({id:prescription.id})">{{prescription.id}}</a></td>
-                    <td>{{prescription.number}}</td>
                     <td>
                         <span ng-repeat="medicine in prescription.medicines">
                             <a class="form-control-static" ui-sref="medicine-tcc-detail({id: medicine.id})">{{medicine.genericName}}</a>{{$last ? '' : ', '}}

@@ -55,4 +55,8 @@ public interface AppointmentService {
     ZonedDateTime calculateEnd(Appointment appointment);
 
 	boolean isDeletable(Long id);
+
+	boolean allowListAllAppointments();
+
+	boolean allowListOnlyDoctorsOwnAppointments();
 }

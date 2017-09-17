@@ -1,15 +1,24 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.AvailableWeekdays;
-import br.com.tclinica.repository.AvailableWeekdaysRepository;
-import br.com.tclinica.service.AvailableWeekdaysService;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.time.DayOfWeek;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,15 +30,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-
-import java.time.DayOfWeek;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.AvailableWeekdays;
+import br.com.tclinica.repository.AvailableWeekdaysRepository;
+import br.com.tclinica.service.AvailableWeekdaysService;
+import br.com.tclinica.service.impl.AvailableWeekdaysServiceImpl;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the AvailableWeekdaysResource REST controller.
@@ -46,7 +52,7 @@ public class AvailableWeekdaysResourceIntTest {
     @Autowired
     private AvailableWeekdaysRepository availableWeekdaysRepository;
 
-    @Autowired
+    @Autowired 
     private AvailableWeekdaysService availableWeekdaysService;
 
     @Autowired
@@ -62,17 +68,33 @@ public class AvailableWeekdaysResourceIntTest {
     private EntityManager em;
 
     private MockMvc restAvailableWeekdaysMockMvc;
+    
+    private MockMvc spiedRestAvailableWeekdaysMockMvc;
 
     private AvailableWeekdays availableWeekdays;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+    	MockitoAnnotations.initMocks(this);
+    	createResourceWithSpiedService();
         final AvailableWeekdaysResource availableWeekdaysResource = new AvailableWeekdaysResource(availableWeekdaysService);
         this.restAvailableWeekdaysMockMvc = MockMvcBuilders.standaloneSetup(availableWeekdaysResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .build();
+    }
+    
+    private void createResourceWithSpiedService() {
+    	AvailableWeekdaysServiceImpl serviceImpl = new AvailableWeekdaysServiceImpl(this.availableWeekdaysRepository);
+    	AvailableWeekdaysService spiedAvailableWeekdaysService = Mockito.spy(serviceImpl);
+        Mockito.doReturn(true).when(spiedAvailableWeekdaysService).isDeletable(Mockito.anyLong());
+        final AvailableWeekdaysResource spiedAvailableWeekdaysResource = new AvailableWeekdaysResource(spiedAvailableWeekdaysService);
+        this.spiedRestAvailableWeekdaysMockMvc = MockMvcBuilders.standaloneSetup(spiedAvailableWeekdaysResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -158,7 +180,7 @@ public class AvailableWeekdaysResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(availableWeekdays.getId().intValue())))
-            .andExpect(jsonPath("$.[*].weekday").value(hasItem(DEFAULT_WEEKDAY)));
+            .andExpect(jsonPath("$.[*].weekday").value(hasItem(DEFAULT_WEEKDAY.toString())));
     }
 
     @Test
@@ -172,7 +194,7 @@ public class AvailableWeekdaysResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(availableWeekdays.getId().intValue()))
-            .andExpect(jsonPath("$.weekday").value(DEFAULT_WEEKDAY));
+            .andExpect(jsonPath("$.weekday").value(DEFAULT_WEEKDAY.toString()));
     }
 
     @Test
@@ -189,9 +211,6 @@ public class AvailableWeekdaysResourceIntTest {
         // Initialize the database
         availableWeekdaysService.save(availableWeekdays);
 
-        int databaseSizeBeforeUpdate = availableWeekdaysRepository.findAll().size();
-
-        // Update the availableWeekdays
         AvailableWeekdays updatedAvailableWeekdays = availableWeekdaysRepository.findOne(availableWeekdays.getId());
         updatedAvailableWeekdays
             .weekday(UPDATED_WEEKDAY);
@@ -199,13 +218,7 @@ public class AvailableWeekdaysResourceIntTest {
         restAvailableWeekdaysMockMvc.perform(put("/api/available-weekdays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedAvailableWeekdays)))
-            .andExpect(status().isOk());
-
-        // Validate the AvailableWeekdays in the database
-        List<AvailableWeekdays> availableWeekdaysList = availableWeekdaysRepository.findAll();
-        assertThat(availableWeekdaysList).hasSize(databaseSizeBeforeUpdate);
-        AvailableWeekdays testAvailableWeekdays = availableWeekdaysList.get(availableWeekdaysList.size() - 1);
-        assertThat(testAvailableWeekdays.getWeekday()).isEqualTo(UPDATED_WEEKDAY);
+            .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
@@ -213,29 +226,25 @@ public class AvailableWeekdaysResourceIntTest {
     public void updateNonExistingAvailableWeekdays() throws Exception {
         int databaseSizeBeforeUpdate = availableWeekdaysRepository.findAll().size();
 
-        // Create the AvailableWeekdays
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
         restAvailableWeekdaysMockMvc.perform(put("/api/available-weekdays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(availableWeekdays)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the AvailableWeekdays in the database
         List<AvailableWeekdays> availableWeekdaysList = availableWeekdaysRepository.findAll();
-        assertThat(availableWeekdaysList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(availableWeekdaysList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     public void deleteAvailableWeekdays() throws Exception {
         // Initialize the database
-        availableWeekdaysService.save(availableWeekdays);
+    	availableWeekdaysService.save(availableWeekdays);
 
         int databaseSizeBeforeDelete = availableWeekdaysRepository.findAll().size();
 
         // Get the availableWeekdays
-        restAvailableWeekdaysMockMvc.perform(delete("/api/available-weekdays/{id}", availableWeekdays.getId())
+        spiedRestAvailableWeekdaysMockMvc.perform(delete("/api/available-weekdays/{id}", availableWeekdays.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

@@ -126,7 +126,7 @@ relationship OneToMany {
 }
 
 entity Prescription {
-    number Integer required
+    text String
 }
 
 entity Medicine {
@@ -141,5 +141,5 @@ relationship ManyToMany {
 }
 
 paginate Appointment, Medicine, ExamType with pagination
-service DoctorSchedule, Appointment, PaymentInstallment, Doctor, AvailableWeekdays with serviceImpl
+service DoctorSchedule, Appointment, PaymentInstallment, Doctor, Accountant, AvailableWeekdays with serviceImpl
 angularSuffix * with TCC

@@ -32,6 +32,7 @@ import br.com.tclinica.TclinicaApp;
 import br.com.tclinica.domain.Accountant;
 import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AccountantRepository;
+import br.com.tclinica.service.AccountantService;
 import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
@@ -51,6 +52,8 @@ public class AccountantResourceIntTest {
 
     @Autowired
     private AccountantRepository accountantRepository;
+    
+    @Autowired AccountantService accountantService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -64,9 +67,6 @@ public class AccountantResourceIntTest {
     @Autowired
     private EntityManager em;
     
-    @Autowired
-    private AccountantResource accountantResource;
-
     private MockMvc restAccountantMockMvc;
 
     private Accountant accountant;
@@ -74,6 +74,7 @@ public class AccountantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        final AccountantResource accountantResource = new AccountantResource(accountantService);
         this.restAccountantMockMvc = MockMvcBuilders.standaloneSetup(accountantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -236,8 +237,9 @@ public class AccountantResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
+        assertThat(accountant.isInactive());
         List<Accountant> accountantList = accountantRepository.findAll();
-        assertThat(accountantList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(accountantList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

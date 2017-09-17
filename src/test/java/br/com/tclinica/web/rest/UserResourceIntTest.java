@@ -24,12 +24,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tclinica.TclinicaApp;
 import br.com.tclinica.domain.Authority;
 import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.AuthorityRepository;
 import br.com.tclinica.repository.UserRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.MailService;
@@ -90,6 +93,12 @@ public class UserResourceIntTest {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private AuthorityRepository authorityRepository;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -104,6 +113,8 @@ public class UserResourceIntTest {
 	private EntityManager em;
 
 	private MockMvc restUserMockMvc;
+	
+	private MockMvc spiedRestUserMockMvc;
 
 	private User user;
 	
@@ -112,12 +123,25 @@ public class UserResourceIntTest {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
+		createResourceWithSpiedService();
 		UserResource userResource = new UserResource(userRepository, mailService, userService);
 		this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
 				.setCustomArgumentResolvers(pageableArgumentResolver).setControllerAdvice(exceptionTranslator)
 				.setMessageConverters(jacksonMessageConverter).build();
 	}
-
+	
+	private void createResourceWithSpiedService() {
+    	UserService service = new UserService(userRepository, passwordEncoder, authorityRepository);
+    	UserService spiedUserService = Mockito.spy(service);
+        Mockito.doReturn(true).when(spiedUserService).allowCompleteUserList();
+        final UserResource spieduserResource = new UserResource(userRepository, mailService, spiedUserService);
+        this.spiedRestUserMockMvc = MockMvcBuilders.standaloneSetup(spieduserResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
+    }
+	
 	/**
 	 * Create a User.
 	 *
@@ -260,7 +284,7 @@ public class UserResourceIntTest {
 
 		decCreatedUsersCount(); //decrement counter so we repeat the created user
 		// Get all the users
-		restUserMockMvc.perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON))
+		spiedRestUserMockMvc.perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(jsonPath("$.[*].login").value(hasItem(generatedLogin())))
 				.andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRSTNAME)))

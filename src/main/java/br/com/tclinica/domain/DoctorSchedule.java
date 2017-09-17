@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -246,7 +247,7 @@ public class DoctorSchedule implements Serializable {
             "}";
     }
     
-    public Instant getDefaultStartTime () {
+    public static Instant getDefaultStartTime () {
     	//TODO work with LocalTime instead of Instant 	
     	ZoneId defaultZone = ZoneId.systemDefault();
     	return ZonedDateTime.of(2000, 01, 1, 8, 0, 0, 0, defaultZone).toInstant();
@@ -255,4 +256,8 @@ public class DoctorSchedule implements Serializable {
     public static Integer getDefaultAppointmentDuration () {
     	return 30;
     }
+
+	public static Instant getDefaultLatestTime() {
+		return getDefaultStartTime().plus(10, ChronoUnit.HOURS);
+	}
 }

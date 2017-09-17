@@ -1,10 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Healthcare;
-import br.com.tclinica.repository.HealthcareRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Healthcare;
+import br.com.tclinica.repository.HealthcareRepository;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the HealthcareResource REST controller.
@@ -182,14 +187,7 @@ public class HealthcareResourceIntTest {
         restHealthcareMockMvc.perform(put("/api/healthcares")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedHealthcare)))
-            .andExpect(status().isOk());
-
-        // Validate the Healthcare in the database
-        List<Healthcare> healthcareList = healthcareRepository.findAll();
-        assertThat(healthcareList).hasSize(databaseSizeBeforeUpdate);
-        Healthcare testHealthcare = healthcareList.get(healthcareList.size() - 1);
-        assertThat(testHealthcare.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testHealthcare.isInactive()).isEqualTo(UPDATED_INACTIVE);
+            .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
@@ -203,11 +201,11 @@ public class HealthcareResourceIntTest {
         restHealthcareMockMvc.perform(put("/api/healthcares")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(healthcare)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Healthcare in the database
         List<Healthcare> healthcareList = healthcareRepository.findAll();
-        assertThat(healthcareList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(healthcareList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -222,9 +220,9 @@ public class HealthcareResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate the database is empty
+        assertThat(healthcare.isInactive());
         List<Healthcare> healthcareList = healthcareRepository.findAll();
-        assertThat(healthcareList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(healthcareList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

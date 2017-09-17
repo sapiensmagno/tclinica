@@ -1,9 +1,9 @@
 {
   "name": "tclinica",
   "version": "0.0.0",
-  "description": "Description for tclinica",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "Gestão de clínica médica",
+  "private": false,
+  "license": "MIT",
   "cacheDirectories": [
     "node_modules",
     "src/main/webapp/bower_components"

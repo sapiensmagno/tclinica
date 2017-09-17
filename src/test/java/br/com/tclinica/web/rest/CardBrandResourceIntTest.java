@@ -192,13 +192,8 @@ public class CardBrandResourceIntTest {
         restCardBrandMockMvc.perform(put("/api/card-brands")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedCardBrand)))
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the CardBrand in the database
-        List<CardBrand> cardBrandList = cardBrandRepository.findAll();
-        assertThat(cardBrandList).hasSize(databaseSizeBeforeUpdate);
-        CardBrand testCardBrand = cardBrandList.get(cardBrandList.size() - 1);
-        assertThat(testCardBrand.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
@@ -212,11 +207,11 @@ public class CardBrandResourceIntTest {
         restCardBrandMockMvc.perform(put("/api/card-brands")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cardBrand)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the CardBrand in the database
         List<CardBrand> cardBrandList = cardBrandRepository.findAll();
-        assertThat(cardBrandList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(cardBrandList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test

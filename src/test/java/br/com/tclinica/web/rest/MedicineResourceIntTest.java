@@ -258,9 +258,9 @@ public class MedicineResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate the database is empty
+        assertThat(medicine.isInactive());
         List<Medicine> medicineList = medicineRepository.findAll();
-        assertThat(medicineList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(medicineList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

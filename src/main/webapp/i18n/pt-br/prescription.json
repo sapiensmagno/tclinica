@@ -15,7 +15,7 @@
             "detail": {
                 "title": "Receita médica"
             },
-            "number": "Número",
+            "text": "Texto",
             "medicine": "Medicamento",
             "medicalRecord": "Histórico clínico"
         }

@@ -24,9 +24,9 @@ public class Prescription implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "jhi_number", nullable = false)
-    private Integer number;
+    @Lob
+    @Column(name = "jhi_text", nullable = true)
+    private String text;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -47,17 +47,17 @@ public class Prescription implements Serializable {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
+    public String getText() {
+        return text;
     }
 
-    public Prescription number(Integer number) {
-        this.number = number;
+    public Prescription text(String text) {
+        this.text = text;
         return this;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Set<Medicine> getMedicines() {
@@ -121,7 +121,7 @@ public class Prescription implements Serializable {
     public String toString() {
         return "Prescription{" +
             "id=" + getId() +
-            ", number='" + getNumber() + "'" +
+            ", number='" + getText() + "'" +
             "}";
     }
 }

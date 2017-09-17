@@ -1,12 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Doctor;
-import br.com.tclinica.domain.User;
-import br.com.tclinica.repository.DoctorRepository;
-import br.com.tclinica.service.DoctorService;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,13 +28,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.User;
+import br.com.tclinica.repository.DoctorRepository;
+import br.com.tclinica.service.DoctorService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the DoctorResource REST controller.
@@ -236,7 +241,8 @@ public class DoctorResourceIntTest {
 
         // Validate the database is empty
         List<Doctor> doctorList = doctorRepository.findAll();
-        assertThat(doctorList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(doctor.isInactive());
+        assertThat(doctorList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

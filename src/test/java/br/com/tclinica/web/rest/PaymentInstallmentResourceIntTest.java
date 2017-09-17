@@ -236,19 +236,7 @@ public class PaymentInstallmentResourceIntTest {
         restPaymentInstallmentMockMvc.perform(put("/api/payment-installments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedPaymentInstallment)))
-            .andExpect(status().isOk());
-
-        // Validate the PaymentInstallment in the database
-        List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
-        assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeUpdate);
-        PaymentInstallment testPaymentInstallment = paymentInstallmentList.get(paymentInstallmentList.size() - 1);
-        assertThat(testPaymentInstallment.getPayDate()).isEqualTo(UPDATED_PAY_DATE);
-        assertThat(testPaymentInstallment.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
-        assertThat(testPaymentInstallment.getValue()).isEqualTo(UPDATED_VALUE);
-        assertThat(testPaymentInstallment.getInstallmentNumber()).isEqualTo(UPDATED_INSTALLMENT_NUMBER);
-        assertThat(testPaymentInstallment.getCheckNumber()).isEqualTo(UPDATED_CHECK_NUMBER);
-        assertThat(testPaymentInstallment.getCardFinalNumber()).isEqualTo(UPDATED_CARD_FINAL_NUMBER);
-        assertThat(testPaymentInstallment.isCancelled()).isEqualTo(UPDATED_CANCELLED);
+            .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
@@ -256,17 +244,14 @@ public class PaymentInstallmentResourceIntTest {
     public void updateNonExistingPaymentInstallment() throws Exception {
         int databaseSizeBeforeUpdate = paymentInstallmentRepository.findAll().size();
 
-        // Create the PaymentInstallment
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
         restPaymentInstallmentMockMvc.perform(put("/api/payment-installments")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(paymentInstallment)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the PaymentInstallment in the database
         List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
-        assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -281,10 +266,10 @@ public class PaymentInstallmentResourceIntTest {
         restPaymentInstallmentMockMvc.perform(delete("/api/payment-installments/{id}", paymentInstallment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
-
-        // Validate the database is empty
+        
+        assertThat(paymentInstallment.isCancelled());
         List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
-        assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

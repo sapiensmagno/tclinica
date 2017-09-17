@@ -187,11 +187,8 @@ public class PaymentMethodResourceIntTest {
     @Test
     @Transactional
     public void updatePaymentMethod() throws Exception {
-        // Initialize the database
         paymentMethodRepository.saveAndFlush(paymentMethod);
-        int databaseSizeBeforeUpdate = paymentMethodRepository.findAll().size();
 
-        // Update the paymentMethod
         PaymentMethod updatedPaymentMethod = paymentMethodRepository.findOne(paymentMethod.getId());
         updatedPaymentMethod
             .name(UPDATED_NAME)
@@ -200,14 +197,7 @@ public class PaymentMethodResourceIntTest {
         restPaymentMethodMockMvc.perform(put("/api/payment-methods")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedPaymentMethod)))
-            .andExpect(status().isOk());
-
-        // Validate the PaymentMethod in the database
-        List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodList).hasSize(databaseSizeBeforeUpdate);
-        PaymentMethod testPaymentMethod = paymentMethodList.get(paymentMethodList.size() - 1);
-        assertThat(testPaymentMethod.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testPaymentMethod.isInactive()).isEqualTo(UPDATED_INACTIVE);
+            .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
@@ -215,17 +205,13 @@ public class PaymentMethodResourceIntTest {
     public void updateNonExistingPaymentMethod() throws Exception {
         int databaseSizeBeforeUpdate = paymentMethodRepository.findAll().size();
 
-        // Create the PaymentMethod
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
         restPaymentMethodMockMvc.perform(put("/api/payment-methods")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(paymentMethod)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the PaymentMethod in the database
         List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(paymentMethodList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -242,7 +228,8 @@ public class PaymentMethodResourceIntTest {
 
         // Validate the database is empty
         List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAll();
-        assertThat(paymentMethodList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(paymentMethod.isInactive());
+        assertThat(paymentMethodList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test

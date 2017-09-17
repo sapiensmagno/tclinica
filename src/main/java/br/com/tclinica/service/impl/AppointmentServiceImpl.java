@@ -89,9 +89,9 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Transactional(readOnly = true)
     public Page<Appointment> findAll(Pageable pageable) {
         log.debug("Request to get all Appointments");
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        if (allowListAllAppointments()) {
         	return appointmentRepository.findAll(pageable);
-        } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR)) {
+        } else if (allowListOnlyDoctorsOwnAppointments()) {
         	User user = userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
         	Doctor doctor = doctorService.findByUser(user);
         	return appointmentRepository.findByDoctorSchedule(doctor.getDoctorSchedule(), pageable);
@@ -100,6 +100,16 @@ public class AppointmentServiceImpl implements AppointmentService{
         	Patient patient = patientRepository.findByUser(user);
         	return appointmentRepository.findByPatient(patient, pageable);
         }
+    }
+    
+    @Override
+    public boolean allowListAllAppointments() {
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
+    
+    @Override
+    public boolean allowListOnlyDoctorsOwnAppointments () {
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR);
     }
 
 
@@ -137,18 +147,23 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Doctor : {}", id);
-        appointmentRepository.delete(id);
+        Appointment appointment = appointmentRepository.findOne(id);
+        appointment.setCancelled(true);
+        appointmentRepository.save(appointment);
     }
     
     @Override
 	public boolean isDeletable(Long id) {
 		Appointment appointment = this.findOne(id);
-		boolean hasPermission = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-				SecurityUtils.getCurrentUserLogin().equals(appointment.getPatient().getUser().getLogin()) ||
-				(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
-				SecurityUtils.getCurrentUserLogin().equals(appointment.getDoctorSchedule().getDoctor().getUser().getLogin()));
-		return !appointment.isCancelled() && appointment.getStartDate().isAfter(ZonedDateTime.now()) && hasPermission;
+		return !appointment.isCancelled() && appointment.getStartDate().isAfter(ZonedDateTime.now()) && hasDeletePermission(appointment);
 	}
+    
+    private boolean hasDeletePermission (Appointment appointment) {
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+			SecurityUtils.getCurrentUserLogin().equals(appointment.getPatient().getUser().getLogin()) ||
+			(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
+			SecurityUtils.getCurrentUserLogin().equals(appointment.getDoctorSchedule().getDoctor().getUser().getLogin()));
+    }
     
     @Override
     public boolean isValid(Appointment appointment) {

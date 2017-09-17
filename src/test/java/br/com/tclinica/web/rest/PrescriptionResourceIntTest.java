@@ -37,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class PrescriptionResourceIntTest {
 
-    private static final Integer DEFAULT_NUMBER = 1;
-    private static final Integer UPDATED_NUMBER = 2;
+    private static final String DEFAULT_TEXT = "YOU'LL DIE";
+    private static final String UPDATED_TEXT = "YOU'LL LIVE";
 
     @Autowired
     private PrescriptionRepository prescriptionRepository;
@@ -77,7 +77,7 @@ public class PrescriptionResourceIntTest {
      */
     public static Prescription createEntity(EntityManager em) {
         Prescription prescription = new Prescription()
-            .number(DEFAULT_NUMBER);
+            .text(DEFAULT_TEXT);
         return prescription;
     }
 
@@ -101,7 +101,7 @@ public class PrescriptionResourceIntTest {
         List<Prescription> prescriptionList = prescriptionRepository.findAll();
         assertThat(prescriptionList).hasSize(databaseSizeBeforeCreate + 1);
         Prescription testPrescription = prescriptionList.get(prescriptionList.size() - 1);
-        assertThat(testPrescription.getNumber()).isEqualTo(DEFAULT_NUMBER);
+        assertThat(testPrescription.getText()).isEqualTo(DEFAULT_TEXT);
     }
 
     @Test
@@ -125,24 +125,6 @@ public class PrescriptionResourceIntTest {
 
     @Test
     @Transactional
-    public void checkNumberIsRequired() throws Exception {
-        int databaseSizeBeforeTest = prescriptionRepository.findAll().size();
-        // set the field null
-        prescription.setNumber(null);
-
-        // Create the Prescription, which fails.
-
-        restPrescriptionMockMvc.perform(post("/api/prescriptions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(prescription)))
-            .andExpect(status().isBadRequest());
-
-        List<Prescription> prescriptionList = prescriptionRepository.findAll();
-        assertThat(prescriptionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllPrescriptions() throws Exception {
         // Initialize the database
         prescriptionRepository.saveAndFlush(prescription);
@@ -152,7 +134,7 @@ public class PrescriptionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(prescription.getId().intValue())))
-            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)));
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
     }
 
     @Test
@@ -166,7 +148,7 @@ public class PrescriptionResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(prescription.getId().intValue()))
-            .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER));
+            .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
 
     @Test
@@ -187,7 +169,7 @@ public class PrescriptionResourceIntTest {
         // Update the prescription
         Prescription updatedPrescription = prescriptionRepository.findOne(prescription.getId());
         updatedPrescription
-            .number(UPDATED_NUMBER);
+            .text(UPDATED_TEXT);
 
         restPrescriptionMockMvc.perform(put("/api/prescriptions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -198,7 +180,7 @@ public class PrescriptionResourceIntTest {
         List<Prescription> prescriptionList = prescriptionRepository.findAll();
         assertThat(prescriptionList).hasSize(databaseSizeBeforeUpdate);
         Prescription testPrescription = prescriptionList.get(prescriptionList.size() - 1);
-        assertThat(testPrescription.getNumber()).isEqualTo(UPDATED_NUMBER);
+        assertThat(testPrescription.getText()).isEqualTo(UPDATED_TEXT);
     }
 
     @Test

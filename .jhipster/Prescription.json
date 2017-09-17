@@ -18,11 +18,9 @@
     ],
     "fields": [
         {
-            "fieldName": "number",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "text",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
         }
     ],
     "changelogDate": "20170905182944",

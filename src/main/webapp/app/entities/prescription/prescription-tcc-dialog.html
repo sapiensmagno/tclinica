@@ -14,20 +14,9 @@
                     ng-model="vm.prescription.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="tclinicaApp.prescription.number" for="field_number">Number</label>
-            <input type="number" class="form-control" name="number" id="field_number"
-                    ng-model="vm.prescription.number"
-                    required/>
-            <div ng-show="editForm.number.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.number.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.number.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
+            <label class="control-label" data-translate="tclinicaApp.prescription.text" for="field_text">Text</label>
+            <input type="text" class="form-control" name="text" id="field_text"
+                    ng-model="vm.prescription.text" />
         </div>
 
         <div class="form-group">

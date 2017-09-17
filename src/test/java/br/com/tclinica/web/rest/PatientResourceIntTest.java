@@ -229,8 +229,9 @@ public class PatientResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
+        assertThat(patient.isInactive());
         List<Patient> patientList = patientRepository.findAll();
-        assertThat(patientList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(patientList).hasSize(databaseSizeBeforeDelete);
     }
 
     @Test
