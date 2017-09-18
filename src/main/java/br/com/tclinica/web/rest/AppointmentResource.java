@@ -62,7 +62,8 @@ public class AppointmentResource {
      */
     @PostMapping("/appointments")
     @Timed
-    @PreAuthorize("#appointment.patient.user.login == authentication.name")
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.RECEPTIONIST + "') "
+    		+ "or #appointment.patient.user.login == authentication.name")
     public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to save Appointment : {}", appointment);
         appointment.setEndDate(appointmentService.calculateEnd(appointment));

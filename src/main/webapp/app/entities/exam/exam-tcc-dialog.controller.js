@@ -13,6 +13,10 @@
         vm.exam = entity;
         vm.clear = clear;
         vm.save = save;
+        vm.labRequest = labRequest;
+        vm.toDoctor = toDoctor;
+        vm.toPatient = toPatient;
+        vm.archive = archive;
         vm.examtypes = ExamType.query({filter: 'exam-is-null'});
         $q.all([vm.exam.$promise, vm.examtypes.$promise]).then(function() {
             if (!vm.exam.examType || !vm.exam.examType.id) {
@@ -32,7 +36,35 @@
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
-
+        
+        function labRequest () {
+        	vm.isSaving = true;
+        	if (vm.exam.id !== null) {
+        		ExamStatus.labRequest(vm.exam, onSaveSuccess, onSaveError);
+        	}
+        }
+        
+        function toDoctor () {
+        	vm.isSaving = true;
+        	if (vm.exam.id !== null) {
+        		ExamStatus.toDoctor(vm.exam, onSaveSuccess, onSaveError);
+        	}
+        }
+        
+        function toPatient () {
+        	vm.isSaving = true;
+        	if (vm.exam.id !== null) {
+        		ExamStatus.toPatient(vm.exam, onSaveSuccess, onSaveError);
+        	}
+        }
+        
+        function archive () {
+        	vm.isSaving = true;
+        	if (vm.exam.id !== null) {
+        		ExamStatus.archive(vm.exam, onSaveSuccess, onSaveError);
+        	}
+        }
+        
         function save () {
             vm.isSaving = true;
             if (vm.exam.id !== null) {

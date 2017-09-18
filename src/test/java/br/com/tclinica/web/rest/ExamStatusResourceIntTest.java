@@ -1,10 +1,23 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static br.com.tclinica.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.ExamStatus;
-import br.com.tclinica.repository.ExamStatusRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,18 +33,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static br.com.tclinica.web.rest.TestUtil.sameInstant;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.Exam;
+import br.com.tclinica.domain.ExamStatus;
+import br.com.tclinica.domain.enumeration.ExamStatuses;
+import br.com.tclinica.repository.ExamRepository;
+import br.com.tclinica.repository.ExamStatusRepository;
+import br.com.tclinica.service.ExamStatusService;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the ExamStatusResource REST controller.
@@ -42,15 +51,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TclinicaApp.class)
 public class ExamStatusResourceIntTest {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final ExamStatuses FIRST_NAME = ExamStatuses.LAB_REQUEST;
+    private static final ExamStatuses SECOND_NAME = ExamStatuses.TO_DOC;
+    private static final ExamStatuses THIRD_NAME = ExamStatuses.TO_PATIENT;
+    private static final ExamStatuses FORTH_NAME = ExamStatuses.ARCHIVE;
 
     private static final ZonedDateTime DEFAULT_CREATION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private ExamStatusRepository examStatusRepository;
-
+    
+    @Autowired
+    private ExamStatusService examStatusService;
+    
+    @Autowired
+    private ExamRepository examRepository;
+    
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -66,11 +83,14 @@ public class ExamStatusResourceIntTest {
     private MockMvc restExamStatusMockMvc;
 
     private ExamStatus examStatus;
+    
+    
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ExamStatusResource examStatusResource = new ExamStatusResource(examStatusRepository);
+        final ExamStatusResource examStatusResource = new ExamStatusResource(examStatusRepository,
+        		examStatusService, examRepository);
         this.restExamStatusMockMvc = MockMvcBuilders.standaloneSetup(examStatusResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -85,7 +105,7 @@ public class ExamStatusResourceIntTest {
      */
     public static ExamStatus createEntity(EntityManager em) {
         ExamStatus examStatus = new ExamStatus()
-            .name(DEFAULT_NAME)
+            .name(FIRST_NAME.toString())
             .creationDate(DEFAULT_CREATION_DATE);
         return examStatus;
     }
@@ -97,75 +117,69 @@ public class ExamStatusResourceIntTest {
 
     @Test
     @Transactional
-    public void createExamStatus() throws Exception {
+    public void createExamStatus_Lab() throws Exception {
         int databaseSizeBeforeCreate = examStatusRepository.findAll().size();
-
-        // Create the ExamStatus
-        restExamStatusMockMvc.perform(post("/api/exam-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examStatus)))
-            .andExpect(status().isCreated());
-
+        
+        sendPostToEndpoint("labRequest");
+        
         // Validate the ExamStatus in the database
         List<ExamStatus> examStatusList = examStatusRepository.findAll();
         assertThat(examStatusList).hasSize(databaseSizeBeforeCreate + 1);
         ExamStatus testExamStatus = examStatusList.get(examStatusList.size() - 1);
-        assertThat(testExamStatus.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testExamStatus.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+        assertThat(testExamStatus.getName()).isEqualTo(FIRST_NAME.toString());
     }
-
+    
     @Test
     @Transactional
-    public void createExamStatusWithExistingId() throws Exception {
+    public void createExamStatus_Doctor() throws Exception {
         int databaseSizeBeforeCreate = examStatusRepository.findAll().size();
-
-        // Create the ExamStatus with an existing ID
-        examStatus.setId(1L);
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restExamStatusMockMvc.perform(post("/api/exam-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examStatus)))
-            .andExpect(status().isBadRequest());
-
+        
+        sendPostToEndpoint("toDoctor");
+        
+        // Validate the ExamStatus in the database
         List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeCreate);
+        assertThat(examStatusList).hasSize(databaseSizeBeforeCreate + 1);
+        ExamStatus testExamStatus = examStatusList.get(examStatusList.size() - 1);
+        assertThat(testExamStatus.getName()).isEqualTo(SECOND_NAME.toString());
     }
-
+    
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = examStatusRepository.findAll().size();
-        // set the field null
-        examStatus.setName(null);
-
-        // Create the ExamStatus, which fails.
-
-        restExamStatusMockMvc.perform(post("/api/exam-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examStatus)))
-            .andExpect(status().isBadRequest());
-
+    public void createExamStatus_Patient() throws Exception {
+        int databaseSizeBeforeCreate = examStatusRepository.findAll().size();
+        
+        sendPostToEndpoint("toPatient");
+        
+        // Validate the ExamStatus in the database
         List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeTest);
+        assertThat(examStatusList).hasSize(databaseSizeBeforeCreate + 1);
+        ExamStatus testExamStatus = examStatusList.get(examStatusList.size() - 1);
+        assertThat(testExamStatus.getName()).isEqualTo(THIRD_NAME.toString());
     }
-
+    
     @Test
     @Transactional
-    public void checkCreationDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = examStatusRepository.findAll().size();
-        // set the field null
-        examStatus.setCreationDate(null);
-
-        // Create the ExamStatus, which fails.
-
-        restExamStatusMockMvc.perform(post("/api/exam-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examStatus)))
-            .andExpect(status().isBadRequest());
-
+    public void createExamStatus_Archive() throws Exception {
+        int databaseSizeBeforeCreate = examStatusRepository.findAll().size();
+        
+        sendPostToEndpoint("archive");
+        
+        // Validate the ExamStatus in the database
         List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeTest);
+        assertThat(examStatusList).hasSize(databaseSizeBeforeCreate + 1);
+        ExamStatus testExamStatus = examStatusList.get(examStatusList.size() - 1);
+        assertThat(testExamStatus.getName()).isEqualTo(FORTH_NAME.toString());
+    }
+    
+    private void sendPostToEndpoint (String endPoint) throws Exception {
+        // Create the ExamStatus
+    	Exam exam = ExamResourceIntTest.createEntity(this.em);
+        examRepository.save(exam);
+        
+        restExamStatusMockMvc.perform(post("/api/exam-statuses/" + endPoint)
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(exam)))
+            .andExpect(status().isCreated());
     }
 
     @Test
@@ -179,7 +193,7 @@ public class ExamStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(examStatus.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(sameInstant(DEFAULT_CREATION_DATE))));
     }
 
@@ -194,7 +208,7 @@ public class ExamStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(examStatus.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.name").value(FIRST_NAME.toString()))
             .andExpect(jsonPath("$.creationDate").value(sameInstant(DEFAULT_CREATION_DATE)));
     }
 
@@ -213,23 +227,15 @@ public class ExamStatusResourceIntTest {
         examStatusRepository.saveAndFlush(examStatus);
         int databaseSizeBeforeUpdate = examStatusRepository.findAll().size();
 
-        // Update the examStatus
         ExamStatus updatedExamStatus = examStatusRepository.findOne(examStatus.getId());
         updatedExamStatus
-            .name(UPDATED_NAME)
+            .name(SECOND_NAME.toString())
             .creationDate(UPDATED_CREATION_DATE);
 
         restExamStatusMockMvc.perform(put("/api/exam-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedExamStatus)))
-            .andExpect(status().isOk());
-
-        // Validate the ExamStatus in the database
-        List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeUpdate);
-        ExamStatus testExamStatus = examStatusList.get(examStatusList.size() - 1);
-        assertThat(testExamStatus.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testExamStatus.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
+            .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
@@ -237,17 +243,13 @@ public class ExamStatusResourceIntTest {
     public void updateNonExistingExamStatus() throws Exception {
         int databaseSizeBeforeUpdate = examStatusRepository.findAll().size();
 
-        // Create the ExamStatus
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
         restExamStatusMockMvc.perform(put("/api/exam-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(examStatus)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the ExamStatus in the database
         List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(examStatusList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -257,14 +259,10 @@ public class ExamStatusResourceIntTest {
         examStatusRepository.saveAndFlush(examStatus);
         int databaseSizeBeforeDelete = examStatusRepository.findAll().size();
 
-        // Get the examStatus
         restExamStatusMockMvc.perform(delete("/api/exam-statuses/{id}", examStatus.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+            .andExpect(status().isMethodNotAllowed());
 
-        // Validate the database is empty
-        List<ExamStatus> examStatusList = examStatusRepository.findAll();
-        assertThat(examStatusList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
     @Test

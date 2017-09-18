@@ -78,9 +78,9 @@
                 <li ng-class="{active: vm.$state.includes('doctor')}"  ng-switch-when="true" has-authority="ROLE_DOCTOR" uib-dropdown class="dropdown pointer">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" id="entity-menu">
                         <span>
-                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="glyphicon glyphicon-plus-sign"></span>
                             <span class="hidden-sm" data-translate="global.menu.doctor.main">
-                                Médico
+                                Doctor
                             </span>
                             <b class="caret"></b>
                         </span>
@@ -152,15 +152,51 @@
                                 <span data-translate="global.menu.doctor.paymentInstallmentTcc">Payments</span>
                             </a>
                        </li>
+                    </ul>
+                </li>
+                <li ng-class="{active: vm.$state.includes('receptionist')}"  ng-switch-when="true" has-authority="ROLE_RECEPTIONIST" uib-dropdown class="dropdown pointer">
+                   <a class="dropdown-toggle" uib-dropdown-toggle href="" id="receptionist-menu">
+                        <span>
+                            <span class="glyphicon glyphicon-phone-alt"></span>
+                            <span class="hidden-sm" data-translate="global.menu.receptionist.main">Receptionist</span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
                         <li ui-sref-active="active">
                                 <a ui-sref="receptionist" ng-click="vm.collapseNavbar()">
                                     <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                    <span data-translate="global.menu.entities.receptionist">Receptionist</span>
+                                    <span data-translate="global.menu.receptionist.profile">Profile</span>
                                 </a>
-                            </li>
-                        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-                    </ul>
-                </li>
+                        </li>
+                        <li ui-sref-active="active">
+                                <a ui-sref="patient-tcc" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.receptionist.patientTcc">Patients</span>
+                                </a>
+                        </li>
+                        <li ui-sref-active="active">
+                                <a ui-sref="appointment-tcc" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.receptionist.appointmentTcc">Appointments</span>
+                                </a>
+                        </li>
+                        <li ui-sref-active="active">
+                                <a ui-sref="exam-tcc" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.receptionist.examTcc">Exams</span>
+                                </a>
+                        </li>
+                        <li ui-sref-active="active">
+                                <a ui-sref="exam-status-tcc" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.receptionist.examStatusTcc">Exam status</span>
+                                </a>
+                        </li>
+                   </ul>
+               </li>                       
+                            
+                            
                 <li ng-class="{active: vm.$state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" uib-dropdown class="dropdown pointer">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" id="admin-menu">
                         <span>

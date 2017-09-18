@@ -17,7 +17,12 @@
             },
             "name": "Nome",
             "creationDate": "Data de criação",
-            "exam": "Exame"
+            "exam": "Exame",
+            "labRequest": "Solic. laboratório",
+            "toDoctor": "Entregue médico",
+            "toPatient": "Entregue paciente",
+            "archive": "Arquivado",
+            "change": "Alterar status"
         }
     }
 }

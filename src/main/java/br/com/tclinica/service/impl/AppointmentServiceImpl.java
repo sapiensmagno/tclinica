@@ -104,7 +104,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     
     @Override
     public boolean allowListAllAppointments() {
-    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+    			SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.RECEPTIONIST);
     }
     
     @Override
@@ -160,6 +161,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     
     private boolean hasDeletePermission (Appointment appointment) {
     	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+    			SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.RECEPTIONIST) ||
 			SecurityUtils.getCurrentUserLogin().equals(appointment.getPatient().getUser().getLogin()) ||
 			(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
 			SecurityUtils.getCurrentUserLogin().equals(appointment.getDoctorSchedule().getDoctor().getUser().getLogin()));

@@ -28,8 +28,8 @@
             <tbody>
                 <tr ng-repeat="examStatus in vm.examStatuses track by examStatus.id">
                     <td><a ui-sref="exam-status-tcc-detail({id:examStatus.id})">{{examStatus.id}}</a></td>
-                    <td>{{examStatus.name}}</td>
-                    <td>{{examStatus.creationDate | date:'medium'}}</td>
+                    <td data-translate="{{'tclinicaApp.ExamStatuses.' + examStatus.name}}" >{{examStatus.name}}</td>
+                    <td>{{examStatus.creationDate | date:'short'}}</td>
                     <td>
                         <a ui-sref="exam-tcc-detail({id:examStatus.exam.id})">{{examStatus.exam.id}}</a>
                     </td>
