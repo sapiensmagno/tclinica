@@ -123,7 +123,6 @@ public class PaymentMethodResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentMethod)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAll();
         assertThat(paymentMethodList).hasSize(databaseSizeBeforeCreate);
     }

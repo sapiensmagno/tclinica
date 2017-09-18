@@ -118,7 +118,6 @@ public class MedicalRecordResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(medicalRecord)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<MedicalRecord> medicalRecordList = medicalRecordRepository.findAll();
         assertThat(medicalRecordList).hasSize(databaseSizeBeforeCreate);
     }

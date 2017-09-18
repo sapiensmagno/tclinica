@@ -137,7 +137,6 @@ public class AccountantResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(accountant)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Accountant> accountantList = accountantRepository.findAll();
         assertThat(accountantList).hasSize(databaseSizeBeforeCreate);
     }

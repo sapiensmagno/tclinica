@@ -113,7 +113,6 @@ public class ExamResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(exam)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Exam> examList = examRepository.findAll();
         assertThat(examList).hasSize(databaseSizeBeforeCreate);
     }

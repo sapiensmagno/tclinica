@@ -196,7 +196,6 @@ public class AppointmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate);
     }

@@ -118,7 +118,6 @@ public class PrescriptionResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(prescription)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Prescription> prescriptionList = prescriptionRepository.findAll();
         assertThat(prescriptionList).hasSize(databaseSizeBeforeCreate);
     }

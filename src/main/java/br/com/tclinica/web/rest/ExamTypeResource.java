@@ -51,50 +51,6 @@ public class ExamTypeResource {
     }
 
     /**
-     * POST  /exam-types : Create a new examType.
-     *
-     * @param examType the examType to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new examType, or with status 400 (Bad Request) if the examType has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/exam-types")
-    @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
-    public ResponseEntity<ExamType> createExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
-        log.debug("REST request to save ExamType : {}", examType);
-        if (examType.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new examType cannot already have an ID")).body(null);
-        }
-        ExamType result = examTypeRepository.save(examType);
-        return ResponseEntity.created(new URI("/api/exam-types/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /exam-types : Updates an existing examType.
-     *
-     * @param examType the examType to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated examType,
-     * or with status 400 (Bad Request) if the examType is not valid,
-     * or with status 500 (Internal Server Error) if the examType couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/exam-types")
-    @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
-    public ResponseEntity<ExamType> updateExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
-        log.debug("REST request to update ExamType : {}", examType);
-        if (examType.getId() == null) {
-            return createExamType(examType);
-        }
-        ExamType result = examTypeRepository.save(examType);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, examType.getId().toString()))
-            .body(result);
-    }
-
-    /**
      * GET  /exam-types : get all the examTypes.
      *
      * @param pageable the pagination information

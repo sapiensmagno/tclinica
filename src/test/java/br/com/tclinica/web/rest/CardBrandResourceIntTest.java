@@ -118,7 +118,6 @@ public class CardBrandResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(cardBrand)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<CardBrand> cardBrandList = cardBrandRepository.findAll();
         assertThat(cardBrandList).hasSize(databaseSizeBeforeCreate);
     }
