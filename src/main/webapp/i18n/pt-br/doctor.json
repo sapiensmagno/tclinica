@@ -8,7 +8,7 @@
             },
             "created": "Um novo médico foi registrado com o identificador {{ param }}",
             "updated": "Um médico foi atualizado com o identificador {{ param }}",
-            "deleted": "Um médico foi deletado com o identificador {{ param }}",
+            "deleted": "Um médico foi desativado com o identificador {{ param }}",
             "delete": {
                 "question": "Tem certeza de que deseja desativar o médico {{ id }}?"
             },

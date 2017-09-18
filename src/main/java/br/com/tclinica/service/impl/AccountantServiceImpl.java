@@ -54,7 +54,6 @@ public class AccountantServiceImpl implements AccountantService{
         return accountantRepository.save(accountant);
     }
     
-    // when creating a new schedule, set default values and create a schedule
     public Accountant create (Accountant accountant) {
     	accountant.getUser().setAuthorities(addDefaultAuthorities(accountant.getUser()));
     	UserMapper mapper = new UserMapper();
@@ -69,7 +68,7 @@ public class AccountantServiceImpl implements AccountantService{
     private String defineDefaultNickname (Accountant accountant) {
     	String nickname = accountant.getNickname();
     	if (nickname == null || nickname == "") {
-    		nickname = (String.format("Sr. %s", accountant.getUser().getFirstName()));
+    		nickname = (String.format("%s", accountant.getUser().getFirstName()));
     	}
     	return nickname;
     }

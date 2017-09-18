@@ -16,10 +16,16 @@ entity Accountant {
     inactive Boolean required
 }
 
+entity Receptionist {
+    nickname String,
+    inactive Boolean required
+}
+
 relationship OneToOne {
     Doctor{User(firstName) required} to User,
     Patient{User(firstName) required} to User,
-    Accountant{User(firstName) required} to User
+    Accountant{User(firstName) required} to User,
+    Receptionist{User(firstName) required} to User
 }
 
 // Daily intervals, vacations and other events which
@@ -141,5 +147,5 @@ relationship ManyToMany {
 }
 
 paginate Appointment, Medicine, ExamType with pagination
-service DoctorSchedule, Appointment, PaymentInstallment, Doctor, Accountant, AvailableWeekdays with serviceImpl
+service DoctorSchedule, Appointment, PaymentInstallment, Doctor, Accountant, Receptionist, AvailableWeekdays with serviceImpl
 angularSuffix * with TCC

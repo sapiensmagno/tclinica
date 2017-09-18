@@ -29,6 +29,7 @@
                 "prescriptionTcc": "Receitas",
                 "medicineTcc": "Medicamentos",
                 "paymentInstallmentTcc": "Pagamentos",
+                "receptionist": "Recepcionista",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
