@@ -133,7 +133,6 @@ public class MedicineResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(medicine)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Medicine> medicineList = medicineRepository.findAll();
         assertThat(medicineList).hasSize(databaseSizeBeforeCreate);
     }

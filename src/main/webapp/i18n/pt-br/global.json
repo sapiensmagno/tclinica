@@ -24,12 +24,20 @@
                 "availableWeekdaysTcc": "Dias disponíveis",
                 "medicalRecordTcc": "Registros clínicos",
                 "examTcc": "Exames",
-                "examStatusTcc": "Situação dos exames",
+                "examStatusTcc": "Histórico de exames",
                 "examTypeTcc": "Tipos de exames",
                 "prescriptionTcc": "Receitas",
                 "medicineTcc": "Medicamentos",
                 "paymentInstallmentTcc": "Pagamentos",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "receptionist": {
+             "main": "Recepcionista",
+             "profile": "Perfil",
+             "patientTcc": "Pacientes",
+             "appointmentTcc": "Consultas",
+             "examTcc": "Exames",
+             "examStatusTcc": "Histórico de exames"
             },
             "account": {
                 "main": "Conta",

@@ -310,11 +310,11 @@ public class AccountResourceIntTest {
         // Good
         ManagedUserVM validUser = new ManagedUserVM(
             null,                   // id
-            "alice",                // login
+            "alicex",                // login
             "password",             // password
-            "Alice",                // firstName
+            "Alicex",                // firstName
             "Something",            // lastName
-            "alice@example.com",    // email
+            "alicex@example.com",    // email
             true,                   // activated
             "http://placehold.it/50x50", //imageUrl
             "pt-br",                   // langKey

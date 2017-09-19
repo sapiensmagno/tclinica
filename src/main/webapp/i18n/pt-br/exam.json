@@ -17,7 +17,8 @@
             },
             "examType": "Tipo de exame",
             "examStatus": "Situação do exame",
-            "medicalRecord": "Histórico clínico"
+            "medicalRecord": "Histórico clínico",
+            "currentExamStatus": "Status atual"
         }
     }
 }

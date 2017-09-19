@@ -1,0 +1,19 @@
+{
+    "tclinicaApp": {
+        "ExamStatuses" : {
+            "null": "",
+            
+            "requested to laboratory": 
+            "solicitado ao laboratório",
+            
+            "given to doctor":
+            "entregue ao médico",
+            
+            "given to patient":
+            "entregue ao paciente",
+            
+            "archived":
+            "arquivado"
+        }
+    }
+}

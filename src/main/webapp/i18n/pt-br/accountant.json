@@ -8,7 +8,7 @@
             },
             "created": "Um novo contador foi registrado com o identificador {{ param }}",
             "updated": "Um contador foi atualizado com o identificador {{ param }}",
-            "deleted": "Um contador foi deletado com o identificador {{ param }}",
+            "deleted": "Um contador foi desativado com o identificador {{ param }}",
             "delete": {
                 "question": "Tem certeza de que deseja desativar o contador {{ id }}?"
             },

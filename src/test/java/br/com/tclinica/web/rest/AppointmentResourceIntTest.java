@@ -38,6 +38,7 @@ import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.domain.DoctorSchedule;
 import br.com.tclinica.domain.Patient;
 import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.repository.MedicalRecordRepository;
 import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.service.AppointmentService;
 import br.com.tclinica.service.AvailableWeekdaysService;
@@ -83,6 +84,9 @@ public class AppointmentResourceIntTest {
 	AvailableWeekdaysService availableWeekdaysService;
 	
 	@Autowired
+	MedicalRecordRepository medicalRecordRepository;
+	
+	@Autowired
 	UserService userService;
 
     @Autowired
@@ -116,7 +120,8 @@ public class AppointmentResourceIntTest {
     
     private void createResourceWithSpiedService() {
     	AppointmentServiceImpl serviceImpl = new AppointmentServiceImpl(appointmentRepository, 
-    			doctorService, patientRepository, availableWeekdaysService, userService);
+    			doctorService, patientRepository, availableWeekdaysService, userService,
+    			medicalRecordRepository);
     	AppointmentService spiedAppointmentService = Mockito.spy(serviceImpl);
         Mockito.doReturn(true).when(spiedAppointmentService).isDeletable(Mockito.anyLong());
         Mockito.doReturn(true).when(spiedAppointmentService).isValid(Mockito.any(Appointment.class));        
@@ -196,7 +201,6 @@ public class AppointmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(appointment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<Appointment> appointmentList = appointmentRepository.findAll();
         assertThat(appointmentList).hasSize(databaseSizeBeforeCreate);
     }

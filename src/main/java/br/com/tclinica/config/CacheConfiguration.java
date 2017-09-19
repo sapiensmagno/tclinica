@@ -64,6 +64,7 @@ public class CacheConfiguration {
             cm.createCache(br.com.tclinica.domain.Prescription.class.getName(), jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.Prescription.class.getName() + ".medicines", jcacheConfiguration);
             cm.createCache(br.com.tclinica.domain.Medicine.class.getName(), jcacheConfiguration);
+            cm.createCache(br.com.tclinica.domain.Receptionist.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

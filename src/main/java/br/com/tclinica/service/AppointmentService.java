@@ -59,4 +59,6 @@ public interface AppointmentService {
 	boolean allowListAllAppointments();
 
 	boolean allowListOnlyDoctorsOwnAppointments();
+
+	Appointment createMedicalRecordForNewAppointment(Appointment appointment);
 }

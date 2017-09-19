@@ -10,11 +10,10 @@
     function ExamTccController(Exam) {
 
         var vm = this;
-
         vm.exams = [];
 
         loadAll();
-
+        
         function loadAll() {
             Exam.query(function(result) {
                 vm.exams = result;

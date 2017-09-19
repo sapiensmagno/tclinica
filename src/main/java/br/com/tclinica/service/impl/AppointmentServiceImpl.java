@@ -18,9 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tclinica.domain.Appointment;
 import br.com.tclinica.domain.AvailableWeekdays;
 import br.com.tclinica.domain.Doctor;
+import br.com.tclinica.domain.MedicalRecord;
 import br.com.tclinica.domain.Patient;
 import br.com.tclinica.domain.User;
 import br.com.tclinica.repository.AppointmentRepository;
+import br.com.tclinica.repository.MedicalRecordRepository;
 import br.com.tclinica.repository.PatientRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.security.SecurityUtils;
@@ -43,17 +45,20 @@ public class AppointmentServiceImpl implements AppointmentService{
     private final UserService userService;
     private final PatientRepository patientRepository;
     private final AvailableWeekdaysService availableWeekdaysService;
+    private final MedicalRecordRepository medicalRecordRepository;
     
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, 
     		DoctorService doctorService, 
     		PatientRepository patientRepository,
     		AvailableWeekdaysService availableWeekdaysService,
-    		UserService userService) {
+    		UserService userService,
+    		MedicalRecordRepository medicalRecordRepository) {
         this.appointmentRepository = appointmentRepository;
         this.doctorService = doctorService;
         this.userService = userService;
         this.patientRepository = patientRepository;
         this.availableWeekdaysService = availableWeekdaysService;
+        this.medicalRecordRepository = medicalRecordRepository;
     }
 
     /**
@@ -78,7 +83,17 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
         return saved;
     }
-
+    
+    @Override
+    public Appointment createMedicalRecordForNewAppointment(Appointment appointment) {
+    	MedicalRecord record = new MedicalRecord();
+    	record.setAppointment(appointment);
+    	medicalRecordRepository.save(record);
+    	appointment.setMedicalRecord(record);
+    	return appointment;
+    	
+    }
+    
     /**
      *  Get all the appointments.
      *
@@ -104,7 +119,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     
     @Override
     public boolean allowListAllAppointments() {
-    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+    			SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.RECEPTIONIST);
     }
     
     @Override
@@ -160,6 +176,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     
     private boolean hasDeletePermission (Appointment appointment) {
     	return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+    			SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.RECEPTIONIST) ||
 			SecurityUtils.getCurrentUserLogin().equals(appointment.getPatient().getUser().getLogin()) ||
 			(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.DOCTOR) &&
 			SecurityUtils.getCurrentUserLogin().equals(appointment.getDoctorSchedule().getDoctor().getUser().getLogin()));

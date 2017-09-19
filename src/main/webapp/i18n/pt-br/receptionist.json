@@ -1,0 +1,23 @@
+{
+    "tclinicaApp": {
+        "receptionist" : {
+            "home": {
+                "title": "Recepcionistas",
+                "createLabel": "Criar novo recepcionista",
+                "createOrEditLabel": "Criar ou editar recepcionista"
+            },
+            "created": "Um novo recepcionista foi registrado com o identificador {{ param }}",
+            "updated": "Um recepcionista foi atualizado com o identificador {{ param }}",
+            "deleted": "Um recepcionista foi desativado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir o recepcionista {{ id }}?"
+            },
+            "detail": {
+                "title": "Recepcionista"
+            },
+            "nickname": "Nome de tratamento",
+            "inactive": "Desativado",
+            "user": "Usuário"
+        }
+    }
+}

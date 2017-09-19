@@ -2,6 +2,7 @@ package br.com.tclinica.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Exam;
+import br.com.tclinica.domain.ExamStatus;
+import br.com.tclinica.domain.enumeration.ExamStatuses;
 import br.com.tclinica.repository.ExamRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.web.rest.util.HeaderUtil;
@@ -38,6 +42,7 @@ public class ExamResource {
     private static final String ENTITY_NAME = "exam";
 
     private final ExamRepository examRepository;
+    
     public ExamResource(ExamRepository examRepository) {
         this.examRepository = examRepository;
     }
@@ -62,7 +67,7 @@ public class ExamResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+    
     /**
      * PUT  /exams : Updates an existing exam.
      *
@@ -93,12 +98,13 @@ public class ExamResource {
      */
     @GetMapping("/exams")
     @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public List<Exam> getAllExams() {
         log.debug("REST request to get all Exams");
         return examRepository.findAll();
         }
-
+    
     /**
      * GET  /exams/:id : get the "id" exam.
      *
@@ -107,7 +113,8 @@ public class ExamResource {
      */
     @GetMapping("/exams/{id}")
     @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<Exam> getExam(@PathVariable Long id) {
         log.debug("REST request to get Exam : {}", id);
         Exam exam = examRepository.findOne(id);

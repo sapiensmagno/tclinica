@@ -88,61 +88,6 @@ public class ExamTypeResourceIntTest {
 
     @Test
     @Transactional
-    public void createExamType() throws Exception {
-        int databaseSizeBeforeCreate = examTypeRepository.findAll().size();
-
-        // Create the ExamType
-        restExamTypeMockMvc.perform(post("/api/exam-types")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examType)))
-            .andExpect(status().isCreated());
-
-        // Validate the ExamType in the database
-        List<ExamType> examTypeList = examTypeRepository.findAll();
-        assertThat(examTypeList).hasSize(databaseSizeBeforeCreate + 1);
-        ExamType testExamType = examTypeList.get(examTypeList.size() - 1);
-        assertThat(testExamType.getName()).isEqualTo(DEFAULT_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void createExamTypeWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = examTypeRepository.findAll().size();
-
-        // Create the ExamType with an existing ID
-        examType.setId(1L);
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restExamTypeMockMvc.perform(post("/api/exam-types")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examType)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the Alice in the database
-        List<ExamType> examTypeList = examTypeRepository.findAll();
-        assertThat(examTypeList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    public void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = examTypeRepository.findAll().size();
-        // set the field null
-        examType.setName(null);
-
-        // Create the ExamType, which fails.
-
-        restExamTypeMockMvc.perform(post("/api/exam-types")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examType)))
-            .andExpect(status().isBadRequest());
-
-        List<ExamType> examTypeList = examTypeRepository.findAll();
-        assertThat(examTypeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllExamTypes() throws Exception {
         // Initialize the database
         examTypeRepository.saveAndFlush(examType);
@@ -175,48 +120,6 @@ public class ExamTypeResourceIntTest {
         // Get the examType
         restExamTypeMockMvc.perform(get("/api/exam-types/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    public void updateExamType() throws Exception {
-        // Initialize the database
-        examTypeRepository.saveAndFlush(examType);
-        int databaseSizeBeforeUpdate = examTypeRepository.findAll().size();
-
-        // Update the examType
-        ExamType updatedExamType = examTypeRepository.findOne(examType.getId());
-        updatedExamType
-            .name(UPDATED_NAME);
-
-        restExamTypeMockMvc.perform(put("/api/exam-types")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedExamType)))
-            .andExpect(status().isOk());
-
-        // Validate the ExamType in the database
-        List<ExamType> examTypeList = examTypeRepository.findAll();
-        assertThat(examTypeList).hasSize(databaseSizeBeforeUpdate);
-        ExamType testExamType = examTypeList.get(examTypeList.size() - 1);
-        assertThat(testExamType.getName()).isEqualTo(UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void updateNonExistingExamType() throws Exception {
-        int databaseSizeBeforeUpdate = examTypeRepository.findAll().size();
-
-        // Create the ExamType
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
-        restExamTypeMockMvc.perform(put("/api/exam-types")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(examType)))
-            .andExpect(status().isCreated());
-
-        // Validate the ExamType in the database
-        List<ExamType> examTypeList = examTypeRepository.findAll();
-        assertThat(examTypeList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test

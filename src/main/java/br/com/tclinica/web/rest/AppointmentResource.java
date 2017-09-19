@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.repository.MedicalRecordRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.AppointmentService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
@@ -48,7 +49,7 @@ public class AppointmentResource {
     private static final String ENTITY_NAME = "appointment";
 
     private final AppointmentService appointmentService;
-
+    
     public AppointmentResource(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
@@ -62,7 +63,8 @@ public class AppointmentResource {
      */
     @PostMapping("/appointments")
     @Timed
-    @PreAuthorize("#appointment.patient.user.login == authentication.name")
+    @PreAuthorize("hasRole('" + AuthoritiesConstants.RECEPTIONIST + "') "
+    		+ "or #appointment.patient.user.login == authentication.name")
     public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody Appointment appointment) throws URISyntaxException {
         log.debug("REST request to save Appointment : {}", appointment);
         appointment.setEndDate(appointmentService.calculateEnd(appointment));
@@ -73,11 +75,12 @@ public class AppointmentResource {
         	return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "Appointment invalid", "Appointment is invalid and cannot be created.")).body(null);
         }
         Appointment result = appointmentService.save(appointment);
+        result = appointmentService.createMedicalRecordForNewAppointment(result);
         return ResponseEntity.created(new URI("/api/appointments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+   
     /**
      * PUT  /appointments : Updates an existing appointment.
      *
@@ -134,7 +137,8 @@ public class AppointmentResource {
      */
     @GetMapping("/appointments/{id}")
     @Timed
-    @PostAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or "
+    @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
+    		+ AuthoritiesConstants.RECEPTIONIST + "') or "
     		+ "returnObject.body.patient.user.login == authentication.name or "
     		+ "returnObject.body.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<Appointment> getAppointment(@PathVariable Long id) {

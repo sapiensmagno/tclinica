@@ -58,7 +58,6 @@ public class DoctorServiceImpl implements DoctorService{
         return doctorRepository.save(doctor);
     }
     
-    // when creating a new schedule, set default values and create a schedule
     public Doctor create (Doctor doctor) {
     	doctor.getUser().setAuthorities(addDefaultAuthorities(doctor.getUser()));
     	UserMapper mapper = new UserMapper();

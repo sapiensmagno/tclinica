@@ -1,20 +1,16 @@
 
 <div>
-    <h2><span data-translate="tclinicaApp.examStatus.detail.title">Exam Status</span> {{vm.examStatus.id}}</h2>
+    <h2><span data-translate="tclinicaApp.examStatus.detail.title">Exam Status</span></h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
         <dt><span data-translate="tclinicaApp.examStatus.name">Name</span></dt>
         <dd>
-            <span>{{vm.examStatus.name}}</span>
+            <span data-translate="{{'tclinicaApp.ExamStatuses.' + vm.examStatus.name}}">{{vm.examStatus.name}}</span>
         </dd>
         <dt><span data-translate="tclinicaApp.examStatus.creationDate">Creation Date</span></dt>
         <dd>
-            <span>{{vm.examStatus.creationDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="tclinicaApp.examStatus.exam">Exam</span></dt>
-        <dd>
-            <a ui-sref="exam-tcc-detail({id:vm.examStatus.exam.id})">{{vm.examStatus.exam.id}}</a>
+            <span>{{vm.examStatus.creationDate | date:'short'}}</span>
         </dd>
     </dl>
 

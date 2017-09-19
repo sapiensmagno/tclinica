@@ -26,6 +26,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('examStatus');
+                    $translatePartialLoader.addPart('ExamStatuses');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]

@@ -1,11 +1,7 @@
 package br.com.tclinica.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,50 +45,6 @@ public class ExamTypeResource {
     }
 
     /**
-     * POST  /exam-types : Create a new examType.
-     *
-     * @param examType the examType to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new examType, or with status 400 (Bad Request) if the examType has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/exam-types")
-    @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
-    public ResponseEntity<ExamType> createExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
-        log.debug("REST request to save ExamType : {}", examType);
-        if (examType.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new examType cannot already have an ID")).body(null);
-        }
-        ExamType result = examTypeRepository.save(examType);
-        return ResponseEntity.created(new URI("/api/exam-types/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /exam-types : Updates an existing examType.
-     *
-     * @param examType the examType to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated examType,
-     * or with status 400 (Bad Request) if the examType is not valid,
-     * or with status 500 (Internal Server Error) if the examType couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/exam-types")
-    @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
-    public ResponseEntity<ExamType> updateExamType(@Valid @RequestBody ExamType examType) throws URISyntaxException {
-        log.debug("REST request to update ExamType : {}", examType);
-        if (examType.getId() == null) {
-            return createExamType(examType);
-        }
-        ExamType result = examTypeRepository.save(examType);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, examType.getId().toString()))
-            .body(result);
-    }
-
-    /**
      * GET  /exam-types : get all the examTypes.
      *
      * @param pageable the pagination information
@@ -102,7 +52,8 @@ public class ExamTypeResource {
      */
     @GetMapping("/exam-types")
     @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<List<ExamType>> getAllExamTypes(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of ExamTypes");
         Page<ExamType> page = examTypeRepository.findAll(pageable);
@@ -118,7 +69,8 @@ public class ExamTypeResource {
      */
     @GetMapping("/exam-types/{id}")
     @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<ExamType> getExamType(@PathVariable Long id) {
         log.debug("REST request to get ExamType : {}", id);
         ExamType examType = examTypeRepository.findOne(id);

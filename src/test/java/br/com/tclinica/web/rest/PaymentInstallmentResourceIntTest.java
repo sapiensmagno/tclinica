@@ -161,7 +161,6 @@ public class PaymentInstallmentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentInstallment)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<PaymentInstallment> paymentInstallmentList = paymentInstallmentRepository.findAll();
         assertThat(paymentInstallmentList).hasSize(databaseSizeBeforeCreate);
     }

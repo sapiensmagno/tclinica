@@ -146,7 +146,6 @@ public class AvailableWeekdaysResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(availableWeekdays)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
         List<AvailableWeekdays> availableWeekdaysList = availableWeekdaysRepository.findAll();
         assertThat(availableWeekdaysList).hasSize(databaseSizeBeforeCreate);
     }

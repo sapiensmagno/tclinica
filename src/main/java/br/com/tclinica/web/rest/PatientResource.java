@@ -56,11 +56,16 @@ public class PatientResource {
      */
     @PostMapping("/patients")
     @Timed
-    @PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or #patient.user.login == authentication.name")
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')"
+    		+ " or #patient.user.login == authentication.name")
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to save Patient : {}", patient);
         if (patient.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new patient cannot already have an ID")).body(null);
+        }
+        if (patient.getNickname() == null) {
+        	patient.setNickname(patient.getUser().getFirstName());
         }
         Patient result = patientRepository.save(patient);
         return ResponseEntity.created(new URI("/api/patients/" + result.getId()))
@@ -79,7 +84,9 @@ public class PatientResource {
      */
     @PutMapping("/patients")
     @Timed
-    @PreAuthorize("#patient.user.login == authentication.name")
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')"
+    		+ " or #patient.user.login == authentication.name")
     public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient) throws URISyntaxException {
         log.debug("REST request to update Patient : {}", patient);
         if (patient.getId() == null) {
@@ -100,7 +107,8 @@ public class PatientResource {
     @Timed
 	@PostFilter("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
 			+ AuthoritiesConstants.DOCTOR
-			+ "') or filterObject.user.login==principal.username")
+			+ "','" + AuthoritiesConstants.RECEPTIONIST + "') "
+					+ "or filterObject.user.login==principal.username")
 	public List<Patient> getAllPatients() {
 		log.debug("REST request to get all Patients");
 		return patientRepository.findAll();
@@ -116,7 +124,8 @@ public class PatientResource {
     @Timed
     @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
 			+ AuthoritiesConstants.DOCTOR
-			+ "') or returnObject.body.user.login==principal.username")
+			+ "','" + AuthoritiesConstants.RECEPTIONIST + "') "
+					+ "or returnObject.body.user.login==principal.username")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         log.debug("REST request to get Patient : {}", id);
         Patient patient = patientRepository.findOne(id);
@@ -131,7 +140,8 @@ public class PatientResource {
      */
     @DeleteMapping("/patients/{id}")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         log.debug("REST request to delete Patient : {}", id);
         patientRepository.delete(id);

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,7 +95,8 @@ public class MedicalRecordResource {
      */
     @GetMapping("/medical-records")
     @Timed
-    @PostFilter("hasRole('" + AuthoritiesConstants.DOCTOR + "')")
+    @PostFilter("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public List<MedicalRecord> getAllMedicalRecords() {
         log.debug("REST request to get all MedicalRecords");
         return medicalRecordRepository.findAll();
@@ -108,7 +110,8 @@ public class MedicalRecordResource {
      */
     @GetMapping("/medical-records/{id}")
     @Timed
-    @Secured(AuthoritiesConstants.DOCTOR)
+    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<MedicalRecord> getMedicalRecord(@PathVariable Long id) {
         log.debug("REST request to get MedicalRecord : {}", id);
         MedicalRecord medicalRecord = medicalRecordRepository.findOne(id);

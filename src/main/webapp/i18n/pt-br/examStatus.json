@@ -2,22 +2,27 @@
     "tclinicaApp": {
         "examStatus" : {
             "home": {
-                "title": "Situações de exames",
+                "title": "Situações de exame",
                 "createLabel": "Criar nova situação de exames",
                 "createOrEditLabel": "Criar ou editar situação de exames"
             },
-            "created": "Uma nova situação de exames foi criada com o identificador {{ param }}",
-            "updated": "Uma situação de exames foi atualizada com o identificador {{ param }}",
-            "deleted": "Uma situação de exames foi deletada com o identificador {{ param }}",
+            "created": "Uma nova situação de exame foi definida com o identificador {{ param }}",
+            "updated": "Uma situação de examee foi atualizada com o identificador {{ param }}",
+            "deleted": "Uma situação de exame foi deletada com o identificador {{ param }}",
             "delete": {
-                "question": "Tem certeza de que deseja excluir situação de exames {{ id }}?"
+                "question": "Tem certeza de que deseja excluir a situação de exame {{ id }}?"
             },
             "detail": {
-                "title": "Situação de exames"
+                "title": "Situação do exame"
             },
             "name": "Nome",
             "creationDate": "Data de criação",
-            "exam": "Exame"
+            "exam": "Exame",
+            "labRequest": "Solic. laboratório",
+            "toDoctor": "Entregue médico",
+            "toPatient": "Entregue paciente",
+            "archive": "Arquivado",
+            "change": "Alterar status"
         }
     }
 }

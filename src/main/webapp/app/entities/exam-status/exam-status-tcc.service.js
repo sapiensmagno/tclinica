@@ -21,7 +21,23 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'labRequest':{
+                method: 'POST',
+                url: '/api/exam-statuses/labRequest'
+              },
+             'toDoctor':{
+                  method: 'POST',
+                  url: '/api/exam-statuses/toDoctor'
+                },
+              'toPatient':{
+                    method: 'POST',
+                    url: '/api/exam-statuses/toPatient'
+               },
+              'archive':{
+                   method: 'POST',
+                   url: '/api/exam-statuses/archive'
+              }
         });
     }
 })();
