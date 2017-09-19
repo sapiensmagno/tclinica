@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Appointment;
+import br.com.tclinica.repository.MedicalRecordRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
 import br.com.tclinica.service.AppointmentService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
@@ -48,7 +49,7 @@ public class AppointmentResource {
     private static final String ENTITY_NAME = "appointment";
 
     private final AppointmentService appointmentService;
-
+    
     public AppointmentResource(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
@@ -74,11 +75,12 @@ public class AppointmentResource {
         	return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "Appointment invalid", "Appointment is invalid and cannot be created.")).body(null);
         }
         Appointment result = appointmentService.save(appointment);
+        result = appointmentService.createMedicalRecordForNewAppointment(result);
         return ResponseEntity.created(new URI("/api/appointments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+   
     /**
      * PUT  /appointments : Updates an existing appointment.
      *
