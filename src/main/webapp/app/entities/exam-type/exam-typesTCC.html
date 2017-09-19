@@ -4,12 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="exam-type-tcc.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="tclinicaApp.examType.home.createLabel">
-                        Create new Exam Type
-                    </span>
-                </button>
+ 
             </div>
         </div>
     </div>
@@ -35,13 +30,13 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_DOCTOR" type="submit"
                                     ui-sref="exam-type-tcc.edit({id:examType.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_DOCTOR" type="submit"
                                     ui-sref="exam-type-tcc.delete({id:examType.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="accountant-tcc.new" >
+                <button has-authority="ROLE_ADMIN" class="btn btn-primary" ui-sref="accountant-tcc.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="tclinicaApp.accountant.home.createLabel">
                         Create new Accountant
@@ -41,13 +41,13 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_ACCOUNTANT" type="submit"
                                     ui-sref="accountant-tcc.edit({id:accountant.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_ADMIN" type="submit"
                                     ui-sref="accountant-tcc.delete({id:accountant.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>

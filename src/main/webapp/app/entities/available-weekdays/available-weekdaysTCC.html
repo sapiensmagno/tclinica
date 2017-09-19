@@ -3,7 +3,7 @@
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
+            <div has-any-authority="ROLE_DOCTOR,ROLE_ADMIN" class="col-xs-4 no-padding-left">
                 <button class="btn btn-primary" ui-sref="available-weekdays-tcc.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="tclinicaApp.availableWeekdays.home.createLabel">
@@ -39,13 +39,7 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
-                            <button type="submit"
-                                    ui-sref="available-weekdays-tcc.edit({id:availableWeekdays.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
+                            <button has-any-authority="ROLE_DOCTOR,ROLE_ADMIN" type="submit"
                                     ui-sref="available-weekdays-tcc.delete({id:availableWeekdays.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>

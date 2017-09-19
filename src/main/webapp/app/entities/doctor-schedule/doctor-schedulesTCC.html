@@ -4,7 +4,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="doctor-schedule-tcc.new" >
+                <button has-authority="ROLE_ADMIN" 
+                class="btn btn-primary" ui-sref="doctor-schedule-tcc.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="tclinicaApp.doctorSchedule.home.createLabel">
                         Create new Doctor Schedule
@@ -50,12 +51,6 @@
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="doctor-schedule-tcc.delete({id:doctorSchedule.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
                             </button>
                         </div>
                     </td>

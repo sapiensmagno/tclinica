@@ -4,7 +4,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="exam-tcc.new" >
+                <button has-authority="ROLE_DOCTOR" 
+                class="btn btn-primary" ui-sref="exam-tcc.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="tclinicaApp.exam.home.createLabel">
                         Create new Exam
@@ -48,13 +49,13 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
-                            <button type="submit"
+                            <button has-any-authority="ROLE_DOCTOR,ROLE_RECEPTIONIST" type="submit"
                                     ui-sref="exam-tcc.edit({id:exam.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
-                            <button type="submit"
+                            <button has-authority="ROLE_DOCTOR" type="submit"
                                     ui-sref="exam-tcc.delete({id:exam.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>

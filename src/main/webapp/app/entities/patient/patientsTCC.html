@@ -4,9 +4,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="patient-tcc.new" >
+                <button class="btn btn-primary" ui-sref="patient-tcc.new" has-any-authority="ROLE_RECEPTIONIST,ROLE_ADMIN">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="tclinicaApp.patient.home.createLabel">
+                    <span data-translate="tclinicaApp.patient.home.createLabel">
                         Create new Patient
                     </span>
                 </button>
@@ -47,7 +47,7 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
-                            <button type="submit"
+                            <button has-any-authority="ROLE_RECEPTIONIST,ROLE_ADMIN" type="submit"
                                     ui-sref="patient-tcc.delete({id:patient.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
