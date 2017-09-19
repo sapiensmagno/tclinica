@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,7 +95,7 @@ public class MedicalRecordResource {
      */
     @GetMapping("/medical-records")
     @Timed
-    @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
+    @PostFilter("hasAnyRole('" + AuthoritiesConstants.DOCTOR + "','" 
     		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public List<MedicalRecord> getAllMedicalRecords() {
         log.debug("REST request to get all MedicalRecords");
