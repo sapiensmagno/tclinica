@@ -1,10 +1,18 @@
 package br.com.tclinica.web.rest;
 
-import br.com.tclinica.TclinicaApp;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.tclinica.domain.Prescription;
-import br.com.tclinica.repository.PrescriptionRepository;
-import br.com.tclinica.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.tclinica.TclinicaApp;
+import br.com.tclinica.domain.MedicalRecord;
+import br.com.tclinica.domain.Prescription;
+import br.com.tclinica.repository.PrescriptionRepository;
+import br.com.tclinica.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the PrescriptionResource REST controller.
@@ -76,8 +82,13 @@ public class PrescriptionResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Prescription createEntity(EntityManager em) {
+    	MedicalRecord record = MedicalRecordResourceIntTest.createEntity(em);
+    	em.persist(record);
+    	em.flush();
+    	
         Prescription prescription = new Prescription()
-            .text(DEFAULT_TEXT);
+            .text(DEFAULT_TEXT)
+        	.medicalRecord(record);
         return prescription;
     }
 
