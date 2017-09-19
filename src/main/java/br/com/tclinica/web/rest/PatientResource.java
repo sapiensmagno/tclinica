@@ -141,8 +141,7 @@ public class PatientResource {
     @DeleteMapping("/patients/{id}")
     @Timed
     @PreAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','" 
-    		+ AuthoritiesConstants.RECEPTIONIST + "')"
-    		+ " or #patient.user.login == authentication.name")
+    		+ AuthoritiesConstants.RECEPTIONIST + "')")
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         log.debug("REST request to delete Patient : {}", id);
         patientRepository.delete(id);
