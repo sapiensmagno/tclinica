@@ -137,7 +137,8 @@ public class AppointmentResource {
      */
     @GetMapping("/appointments/{id}")
     @Timed
-    @PostAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "') or "
+    @PostAuthorize("hasAnyRole('" + AuthoritiesConstants.ADMIN + "','"
+    		+ AuthoritiesConstants.RECEPTIONIST + "') or "
     		+ "returnObject.body.patient.user.login == authentication.name or "
     		+ "returnObject.body.doctorSchedule.doctor.user.login == authentication.name")
     public ResponseEntity<Appointment> getAppointment(@PathVariable Long id) {
