@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,6 +49,7 @@ public class Prescription implements Serializable {
     private Set<Medicine> medicines = new HashSet<>();
 
     @ManyToOne
+    @NotNull
     private MedicalRecord medicalRecord;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove

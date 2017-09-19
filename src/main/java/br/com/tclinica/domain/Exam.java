@@ -44,7 +44,6 @@ public class Exam implements Serializable {
 
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "exam")
     @JsonManagedReference
-
     private List<ExamStatus> examStatuses = new ArrayList<>();
 
     @ManyToOne
