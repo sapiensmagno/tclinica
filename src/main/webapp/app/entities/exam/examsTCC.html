@@ -21,6 +21,7 @@
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="tclinicaApp.exam.examType">Exam Type</span></th>
                     <th><span data-translate="tclinicaApp.exam.medicalRecord">Medical Record</span></th>
+                    <th><span data-translate="tclinicaApp.exam.currentExamStatus">Status</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,6 +34,11 @@
                     <td>
                         <a ui-sref="medical-record-tcc-detail({id:exam.medicalRecord.id})">
                         {{exam.medicalRecord.appointment.patient.nickname}} {{exam.medicalRecord.appointment.startDate | date:'short'}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="exam-status-tcc-detail({id:exam.currentExamStatus.id})" 
+                        data-translate="{{'tclinicaApp.ExamStatuses.' + exam.currentExamStatus.name}}">
+                        {{exam.currentExamStatus.name}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

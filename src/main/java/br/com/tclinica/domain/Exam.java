@@ -1,11 +1,13 @@
 package br.com.tclinica.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * A Exam.
@@ -40,10 +42,10 @@ public class Exam implements Serializable {
     @JoinColumn(unique = true)
     private ExamType examType;
 
-    @OneToMany(mappedBy = "exam")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ExamStatus> examStatuses = new HashSet<>();
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "exam")
+    @JsonManagedReference
+
+    private List<ExamStatus> examStatuses = new ArrayList<>();
 
     @ManyToOne
     private MedicalRecord medicalRecord;
@@ -69,12 +71,23 @@ public class Exam implements Serializable {
     public void setExamType(ExamType examType) {
         this.examType = examType;
     }
-
-    public Set<ExamStatus> getExamStatuses() {
+    
+    @JsonManagedReference
+    public ExamStatus getCurrentExamStatus() {
+    	if (this.getExamStatuses().isEmpty()) {
+    		return null;
+    	}
+    	Collections.sort(this.getExamStatuses());
+    	return this.getExamStatuses().get(this.getExamStatuses().size()-1);
+    }
+    
+    @JsonManagedReference
+    public List<ExamStatus> getExamStatuses() {
         return examStatuses;
     }
-
-    public Exam examStatuses(Set<ExamStatus> examStatuses) {
+    
+    @JsonManagedReference
+    public Exam examStatuses(List<ExamStatus> examStatuses) {
         this.examStatuses = examStatuses;
         return this;
     }
@@ -91,7 +104,7 @@ public class Exam implements Serializable {
         return this;
     }
 
-    public void setExamStatuses(Set<ExamStatus> examStatuses) {
+    public void setExamStatuses(List<ExamStatus> examStatuses) {
         this.examStatuses = examStatuses;
     }
 

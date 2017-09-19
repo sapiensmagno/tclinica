@@ -21,7 +21,6 @@
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="tclinicaApp.examStatus.name">Name</span></th>
                     <th><span data-translate="tclinicaApp.examStatus.creationDate">Creation Date</span></th>
-                    <th><span data-translate="tclinicaApp.examStatus.exam">Exam</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,9 +29,6 @@
                     <td><a ui-sref="exam-status-tcc-detail({id:examStatus.id})">{{examStatus.id}}</a></td>
                     <td data-translate="{{'tclinicaApp.ExamStatuses.' + examStatus.name}}" >{{examStatus.name}}</td>
                     <td>{{examStatus.creationDate | date:'short'}}</td>
-                    <td>
-                        <a ui-sref="exam-tcc-detail({id:examStatus.exam.id})">{{examStatus.exam.id}}</a>
-                    </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

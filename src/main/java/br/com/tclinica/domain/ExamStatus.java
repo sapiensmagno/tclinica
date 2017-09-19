@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -17,13 +18,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * A ExamStatus.
  */
 @Entity
 @Table(name = "exam_status")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ExamStatus implements Serializable {
+public class ExamStatus implements Serializable, Comparable<ExamStatus> {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,6 +45,7 @@ public class ExamStatus implements Serializable {
     private ZonedDateTime creationDate;
 
     @ManyToOne
+    @JsonBackReference
     private Exam exam;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
@@ -77,19 +82,22 @@ public class ExamStatus implements Serializable {
     public void setCreationDate(ZonedDateTime creationDate) {
         this.creationDate = creationDate;
     }
-
+    
+    @JsonBackReference
     public Exam getExam() {
         return exam;
     }
-
+    
+    @JsonBackReference
     public ExamStatus exam(Exam exam) {
         this.exam = exam;
         return this;
     }
-
+        
     public void setExam(Exam exam) {
         this.exam = exam;
     }
+        
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
@@ -120,4 +128,14 @@ public class ExamStatus implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             "}";
     }
+
+	@Override
+	public int compareTo(ExamStatus otherExamStatus) {
+		if (otherExamStatus.equals(this)) {
+			return 0;
+		}
+		else {
+			return this.getCreationDate().compareTo(otherExamStatus.getCreationDate());
+		}
+	}
 }

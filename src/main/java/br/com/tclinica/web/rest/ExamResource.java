@@ -2,6 +2,7 @@ package br.com.tclinica.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import br.com.tclinica.domain.Exam;
+import br.com.tclinica.domain.ExamStatus;
 import br.com.tclinica.domain.enumeration.ExamStatuses;
 import br.com.tclinica.repository.ExamRepository;
 import br.com.tclinica.security.AuthoritiesConstants;
-import br.com.tclinica.service.ExamStatusService;
 import br.com.tclinica.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -103,7 +104,7 @@ public class ExamResource {
         log.debug("REST request to get all Exams");
         return examRepository.findAll();
         }
-
+    
     /**
      * GET  /exams/:id : get the "id" exam.
      *
