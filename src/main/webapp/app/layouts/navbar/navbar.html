@@ -213,10 +213,22 @@
                             </a>
                         </li>
                         <li ui-sref-active="active">
+                                <a ui-sref="receptionist" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.admin.receptionist">Receptionists</span>
+                                </a>
+                        </li>
+                        <li ui-sref-active="active">
                             <a ui-sref="patient-tcc" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
                                 <span data-translate="global.menu.admin.patientTcc">Patients</span>
                             </a>
+                        </li>
+                        <li ui-sref-active="active">
+                                <a ui-sref="appointment-tcc" ng-click="vm.collapseNavbar()">
+                                    <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+                                    <span data-translate="global.menu.admin.appointmentTcc">Appointments</span>
+                                </a>
                         </li>
                         <li ui-sref-active="active">
                                <a ui-sref="healthcare-tcc" ng-click="vm.collapseNavbar()">
